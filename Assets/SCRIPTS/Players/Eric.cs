@@ -2,20 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player_Movement : MonoBehaviour
+public class Eric : MonoBehaviour
 {
-    //Variables del awake
+    [SerializeField]Stats stats;
+    
     private CharacterController controller;
     
     //Variables de movimiento
-    [SerializeField]float speed;
     Vector3 velocity;
     [SerializeField]float smoothTimeMove;
     [SerializeField]float smoothTimeLookAtMouse;
     [SerializeField]float accelerationTime;
-    [SerializeField]float decelerationTime;
     float timePassed;
-    bool hasStopped;
 
     //Variables Smooth rotacion
     [SerializeField]float turnSmoothTime;
@@ -33,7 +31,6 @@ public class Player_Movement : MonoBehaviour
 
     void Movement()
     {
-        Debug.Log(controller.velocity);
         Vector3 move = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical")).normalized;
         if(move != Vector3.zero && Input.GetButton("Fire1") == false)
         {
@@ -53,45 +50,31 @@ public class Player_Movement : MonoBehaviour
                 Quaternion rotation = Quaternion.LookRotation(direction);
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, rotation.eulerAngles.y, 0f), Time.deltaTime * smoothTimeLookAtMouse);
             }
-        }
-        
+        } 
         if(move != Vector3.zero)
         {
-            if(hasStopped) // Check if the character has stopped moving before resetting the time elapsed
-            {
-                timePassed = 0; // Reset the time elapsed when the character stops moving
-
-                hasStopped = false; // Set the boolean to true when the character stops moving
-            }
             float x = 0;
             timePassed += Time.deltaTime;
             float acceleration = timePassed / accelerationTime; // Calculate the change in x over each unit of time
 
             x = Mathf.Lerp(0, 1, acceleration);
 
-            float currentSpeed = Mathf.Lerp(0, speed, x); // Gradually increase the speed
+            float currentSpeed = Mathf.Lerp(0, stats.speed, x); // Gradually increase the speed
             controller.Move(move.normalized * currentSpeed * Time.deltaTime);
         }
-
-        if(move == Vector3.zero) 
+        else
         {
-            if(!hasStopped) // Check if the character has stopped moving before resetting the time elapsed
-            {
-                timePassed = 0; // Reset the time elapsed when the character stops moving
-
-                hasStopped = true; // Set the boolean to true when the character stops moving
-            }
-
-            float x = 0;
-            timePassed += Time.deltaTime;
-            float deceleration = timePassed / decelerationTime; // Calculate the change in x over each unit of time
-
-            x = Mathf.Lerp(1f, 0f, deceleration);
-            
-
-            float currentSpeed = Mathf.Lerp(speed, 0, x); // Gradually decrease the speed
-            controller.Move(move.normalized * currentSpeed * Time.deltaTime);
+            timePassed = 0;
         }
     }
-    
+
+    void OnCollisionEnter()
+    {
+        stats.vida = stats.vida - 20;
+        Debug.Log(stats.vida);
+        if(stats.vida < 0)
+        {
+            Destroy(this.gameObject);
+        }
+    }
 }
