@@ -19,6 +19,9 @@ public class Eric : MonoBehaviour
     [SerializeField]float turnSmoothTime;
     float turnSmoothVelocity;
 
+    //Variables attacks y cosos
+    //[SerializeField]float attack1CD;
+
     void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -27,6 +30,22 @@ public class Eric : MonoBehaviour
     void Update()
     {
         Movement();
+
+        
+        // Esto es para los ataques
+        /*else if(Input.GetButton("Fire1"))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                Vector3 direction = hit.point - transform.position;
+                Quaternion rotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, rotation.eulerAngles.y, 0f), Time.deltaTime * smoothTimeLookAtMouse);
+            }
+        }*/
+
     }
 
     void Movement()
@@ -39,18 +58,6 @@ public class Eric : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, angle, 0);
         }
         
-        else if(Input.GetButton("Fire1"))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit))
-            {
-                Vector3 direction = hit.point - transform.position;
-                Quaternion rotation = Quaternion.LookRotation(direction);
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, rotation.eulerAngles.y, 0f), Time.deltaTime * smoothTimeLookAtMouse);
-            }
-        } 
         if(move != Vector3.zero)
         {
             float x = 0;
@@ -68,13 +75,5 @@ public class Eric : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter()
-    {
-        stats.vida = stats.vida - 20;
-        Debug.Log(stats.vida);
-        if(stats.vida < 0)
-        {
-            Destroy(this.gameObject);
-        }
-    }
+    
 }
