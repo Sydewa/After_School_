@@ -8,5 +8,6 @@ public class Stats : ScriptableObject
     public int vida;
     public int speed;
     public int attack;
+    public int power;
 
 }
