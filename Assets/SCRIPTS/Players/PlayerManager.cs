@@ -12,10 +12,10 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]GameObject sora;
 
     //Stats personajes
-    [SerializeField]Stats ericStats;
-    [SerializeField]Stats antiaStats;
-    [SerializeField]Stats soraStats;
-    [SerializeField]Stats mossiStats;
+    public Stats ericStats;
+    public Stats antiaStats;
+    public Stats soraStats;
+    public Stats mossiStats;
     public static int ericVida;
     public static int antiaVida;
     public static int soraVida;
@@ -29,6 +29,7 @@ public class PlayerManager : MonoBehaviour
     {
         activeCharacter = eric;
         activeCharacter.name = "Eric";
+        eric.transform.position = new Vector3(activeCharacter.transform.position.x, 0.6f, activeCharacter.transform.position.z);
         antia.SetActive(false);
         mossi.SetActive(false);
         sora.SetActive(false);
@@ -61,8 +62,12 @@ public class PlayerManager : MonoBehaviour
                 Debug.Log(antiaVida);
             break;
             case "Sora":
+                soraVida -= damageTaken;
+                Debug.Log(soraVida);
             break;
             case "Mossi":
+                mossiVida -= damageTaken;
+                Debug.Log(mossiVida);
             break;
             default:
             break;
@@ -75,8 +80,10 @@ public class PlayerManager : MonoBehaviour
         {
             case "1":
             //Desactivo char activo, copio su transform y se lo aplico al personaje que quiero. Activo el personaje y lo convierto en el personaje activo.
+                
+                eric.transform.position = new Vector3(activeCharacter.transform.position.x, 0.6f, activeCharacter.transform.position.z);
+                eric.transform.rotation = Quaternion.Euler(0f, activeCharacter.transform.rotation.y, 0f);
                 activeCharacter.SetActive(false);
-                eric.transform.position = new Vector3(activeCharacter.transform.position.x, 0f, activeCharacter.transform.position.z);
                 eric.SetActive(true);
                 activeCharacter = eric;
                 activeCharacter.name = "Eric";
@@ -84,6 +91,7 @@ public class PlayerManager : MonoBehaviour
             case "2":
                 activeCharacter.SetActive(false);
                 antia.transform.position = new Vector3(activeCharacter.transform.position.x, 0f, activeCharacter.transform.position.z);
+                antia.transform.rotation = Quaternion.Euler(0f, activeCharacter.transform.rotation.y, 0f);
                 antia.SetActive(true);
                 activeCharacter = antia;
                 activeCharacter.name = "Antia";
@@ -91,6 +99,7 @@ public class PlayerManager : MonoBehaviour
             case "3":
                 activeCharacter.SetActive(false);
                 sora.transform.position = new Vector3(activeCharacter.transform.position.x, 0f, activeCharacter.transform.position.z);
+                sora.transform.rotation = Quaternion.Euler(0f, activeCharacter.transform.rotation.y, 0f);
                 sora.SetActive(true);
                 activeCharacter = sora;
                 activeCharacter.name = "Sora";
@@ -98,6 +107,7 @@ public class PlayerManager : MonoBehaviour
             case "4":
                 activeCharacter.SetActive(false);
                 mossi.transform.position = new Vector3(activeCharacter.transform.position.x, 0f, activeCharacter.transform.position.z);
+                mossi.transform.rotation = Quaternion.Euler(0f, activeCharacter.transform.rotation.y, 0f);
                 mossi.SetActive(true);
                 activeCharacter = mossi;
                 activeCharacter.name = "Mossi";

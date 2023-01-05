@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28e2c7c57acb15247a1c46ff7ff615e3, type: 3}
   m_Name: Antia_stats
   m_EditorClassIdentifier: 
-  vida: 10
+  vida: 100
   speed: 0
   attack: 90
   power: 0
