@@ -623,8 +623,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 236045182}
-  - component: {fileID: 236045184}
   - component: {fileID: 236045183}
+  - component: {fileID: 236045185}
   m_Layer: 0
   m_Name: Sora
   m_TagString: Player
@@ -666,7 +666,7 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.24, z: 0}
---- !u!114 &236045184
+--- !u!114 &236045185
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -675,10 +675,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 236045181}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 930bad5c23bb32d4aaa106cd83fa04af, type: 3}
+  m_Script: {fileID: 11500000, guid: 7beb8e791de09c1459f15229e38d689c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 20
+  speed: 8
   smoothTimeMove: 0.1
   smoothTimeLookAtMouse: 20
   accelerationTime: 0.5
@@ -5580,8 +5580,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1835000871}
-  - component: {fileID: 1835000873}
   - component: {fileID: 1835000872}
+  - component: {fileID: 1835000874}
   m_Layer: 0
   m_Name: Mossi
   m_TagString: Player
@@ -5623,7 +5623,7 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.24, z: 0}
---- !u!114 &1835000873
+--- !u!114 &1835000874
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5632,10 +5632,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1835000870}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 930bad5c23bb32d4aaa106cd83fa04af, type: 3}
+  m_Script: {fileID: 11500000, guid: f31362f7a737c914c8bf289ad879eeaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  speed: 3
   smoothTimeMove: 0.1
   smoothTimeLookAtMouse: 20
   accelerationTime: 0.5

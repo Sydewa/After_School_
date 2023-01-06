@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EricCharacterState { Idle, Running, Dying, Attack }
-public class Eric_Movement : MonoBehaviour
+public enum MossiCharacterState { Idle, Running, Dying, Attack }
+public class Mossi_Movement : MonoBehaviour
 {
     private CharacterController controller;
-    private Animator anim;
+    //private Animator anim;
     
     //Variables de movimiento
     [SerializeField]float speed;
@@ -21,12 +21,12 @@ public class Eric_Movement : MonoBehaviour
     float turnSmoothVelocity;
 
     //-----------------------------------------------------------
-    private EricCharacterState _EricState;
+    private MossiCharacterState _MossiState;
 
     void Awake()
     {
         controller = GetComponent<CharacterController>();
-        anim = GetComponentInChildren<Animator>();
+        //anim = GetComponentInChildren<Animator>();
     }
 
     void Update()
@@ -40,29 +40,29 @@ public class Eric_Movement : MonoBehaviour
 
         if(PlayerManager.ericVida <= 0)
         {
-            _EricState = EricCharacterState.Dying;
+            _MossiState = MossiCharacterState.Dying;
         }
         if(Input.GetButton("Fire1"))
         {
-            _EricState = EricCharacterState.Attack;
+            _MossiState = MossiCharacterState.Attack;
         }
-        switch(_EricState)
+        switch(_MossiState)
         {
-            case EricCharacterState.Idle:
-                anim.SetBool("Run", false);
+            case MossiCharacterState.Idle:
+                //anim.SetBool("Run", false);
                 if(move != Vector3.zero)
                 {
-                    _EricState = EricCharacterState.Running;
+                    _MossiState = MossiCharacterState.Running;
                 }
                 if(Input.GetButton("Fire1"))
                 {
-                    _EricState = EricCharacterState.Attack;
+                    _MossiState = MossiCharacterState.Attack;
                 }
             break;
 
-            case EricCharacterState.Running: 
+            case MossiCharacterState.Running: 
                 
-                anim.SetBool("Run", true);
+                //anim.SetBool("Run", true);
                 //Rotacion del personaje
                 float targetAngle = Mathf.Atan2(move.x, move.z) * Mathf.Rad2Deg;
                 float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
@@ -80,16 +80,16 @@ public class Eric_Movement : MonoBehaviour
                 if(move == Vector3.zero)
                 {
                     timePassed = 0;
-                    _EricState = EricCharacterState.Idle;
+                    _MossiState = MossiCharacterState.Idle;
                 }
                 if(Input.GetButton("Fire1"))
                 {
-                    anim.SetBool("Run", false);
-                    _EricState = EricCharacterState.Attack;
+                    //anim.SetBool("Run", false);
+                    _MossiState = MossiCharacterState.Attack;
                 }
             break;
 
-            case EricCharacterState.Attack:
+            case MossiCharacterState.Attack:
                 //Hacer animacion, en esa animacion crear un evento que cree un trigger que detecte si donde ha attackado Eric hay enemigos y danyarles.
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
@@ -100,16 +100,14 @@ public class Eric_Movement : MonoBehaviour
                     Quaternion rotation = Quaternion.LookRotation(direction);
                     transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, rotation.eulerAngles.y, 0f), Time.deltaTime * smoothTimeLookAtMouse);
                 }
-                _EricState = EricCharacterState.Idle;
+                _MossiState = MossiCharacterState.Idle;
             break;
 
-            case EricCharacterState.Dying:
+            case MossiCharacterState.Dying:
             break; 
 
             default:
             break;
         }
     }
-
-
 }

@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EricCharacterState { Idle, Running, Dying, Attack }
-public class Eric_Movement : MonoBehaviour
+public enum SoraCharacterState { Idle, Running, Dying, Attack }
+public class Sora_Movement : MonoBehaviour
 {
     private CharacterController controller;
-    private Animator anim;
+    //private Animator anim;
     
     //Variables de movimiento
     [SerializeField]float speed;
@@ -21,48 +21,48 @@ public class Eric_Movement : MonoBehaviour
     float turnSmoothVelocity;
 
     //-----------------------------------------------------------
-    private EricCharacterState _EricState;
+    private SoraCharacterState _SoraState;
 
     void Awake()
     {
         controller = GetComponent<CharacterController>();
-        anim = GetComponentInChildren<Animator>();
+        //anim = GetComponentInChildren<Animator>();
     }
 
     void Update()
     {
-        EricStates();
+        AntiaStates();
     }
-    
-    public void EricStates()
+
+    public void AntiaStates()
     {
         Vector3 move = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical")).normalized;
 
-        if(PlayerManager.ericVida <= 0)
+        if(PlayerManager.antiaVida <= 0)
         {
-            _EricState = EricCharacterState.Dying;
+            _SoraState = SoraCharacterState.Dying;
         }
         if(Input.GetButton("Fire1"))
         {
-            _EricState = EricCharacterState.Attack;
+            _SoraState = SoraCharacterState.Attack;
         }
-        switch(_EricState)
+        switch(_SoraState)
         {
-            case EricCharacterState.Idle:
-                anim.SetBool("Run", false);
+            case SoraCharacterState.Idle:
+                //anim.SetBool("Run", false);
                 if(move != Vector3.zero)
                 {
-                    _EricState = EricCharacterState.Running;
+                    _SoraState = SoraCharacterState.Running;
                 }
                 if(Input.GetButton("Fire1"))
                 {
-                    _EricState = EricCharacterState.Attack;
+                    _SoraState = SoraCharacterState.Attack;
                 }
             break;
 
-            case EricCharacterState.Running: 
+            case SoraCharacterState.Running: 
                 
-                anim.SetBool("Run", true);
+                //anim.SetBool("Run", true);
                 //Rotacion del personaje
                 float targetAngle = Mathf.Atan2(move.x, move.z) * Mathf.Rad2Deg;
                 float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
@@ -80,16 +80,16 @@ public class Eric_Movement : MonoBehaviour
                 if(move == Vector3.zero)
                 {
                     timePassed = 0;
-                    _EricState = EricCharacterState.Idle;
+                    _SoraState = SoraCharacterState.Idle;
                 }
                 if(Input.GetButton("Fire1"))
                 {
-                    anim.SetBool("Run", false);
-                    _EricState = EricCharacterState.Attack;
+                    //anim.SetBool("Run", false);
+                    _SoraState = SoraCharacterState.Attack;
                 }
             break;
 
-            case EricCharacterState.Attack:
+            case SoraCharacterState.Attack:
                 //Hacer animacion, en esa animacion crear un evento que cree un trigger que detecte si donde ha attackado Eric hay enemigos y danyarles.
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
@@ -100,16 +100,15 @@ public class Eric_Movement : MonoBehaviour
                     Quaternion rotation = Quaternion.LookRotation(direction);
                     transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, rotation.eulerAngles.y, 0f), Time.deltaTime * smoothTimeLookAtMouse);
                 }
-                _EricState = EricCharacterState.Idle;
+                controller.Move(move.normalized * (speed/4.5f) * Time.deltaTime);
+                _SoraState = SoraCharacterState.Idle;
             break;
 
-            case EricCharacterState.Dying:
+            case SoraCharacterState.Dying:
             break; 
 
             default:
             break;
         }
     }
-
-
 }
