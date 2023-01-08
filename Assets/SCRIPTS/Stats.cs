@@ -6,8 +6,14 @@ using UnityEngine;
 public class Stats : ScriptableObject
 {
     public int vida;
-    public int speed;
+    public float speed;
+
+    [Header("Variables attack")]
+    public float attackSpeed;
     public int attack;
+
+    [Header("Variables habilidad")]
+    public float abilityCD;
     public int power;
 
 }

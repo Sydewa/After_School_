@@ -7,9 +7,10 @@ public class Eric_Movement : MonoBehaviour
 {
     private CharacterController controller;
     private Animator anim;
+    [SerializeField]Stats ericStats;
     
     //Variables de movimiento
-    [SerializeField]float speed;
+    //[SerializeField]float speed;
     Vector3 velocity;
     [SerializeField]float smoothTimeMove;
     [SerializeField]float smoothTimeLookAtMouse;
@@ -22,6 +23,9 @@ public class Eric_Movement : MonoBehaviour
 
     //-----------------------------------------------------------
     private EricCharacterState _EricState;
+
+    //Variables ATTACK
+    float _nextAttack;
 
     void Awake()
     {
@@ -42,7 +46,7 @@ public class Eric_Movement : MonoBehaviour
         {
             _EricState = EricCharacterState.Dying;
         }
-        if(Input.GetButton("Fire1"))
+        if(Input.GetButtonDown("Fire1") && Time.time > _nextAttack)
         {
             _EricState = EricCharacterState.Attack;
         }
@@ -53,10 +57,6 @@ public class Eric_Movement : MonoBehaviour
                 if(move != Vector3.zero)
                 {
                     _EricState = EricCharacterState.Running;
-                }
-                if(Input.GetButton("Fire1"))
-                {
-                    _EricState = EricCharacterState.Attack;
                 }
             break;
 
@@ -75,21 +75,18 @@ public class Eric_Movement : MonoBehaviour
 
                 x = Mathf.Lerp(0, 1, acceleration);
 
-                float currentSpeed = Mathf.Lerp(0, speed, x);
+                float currentSpeed = Mathf.Lerp(0, ericStats.speed, x);
                 controller.Move(move.normalized * currentSpeed * Time.deltaTime);
                 if(move == Vector3.zero)
                 {
                     timePassed = 0;
                     _EricState = EricCharacterState.Idle;
                 }
-                if(Input.GetButton("Fire1"))
-                {
-                    anim.SetBool("Run", false);
-                    _EricState = EricCharacterState.Attack;
-                }
             break;
 
             case EricCharacterState.Attack:
+                anim.SetBool("Run", false);
+                //anim.Play("Run_FullCycle 0");
                 //Hacer animacion, en esa animacion crear un evento que cree un trigger que detecte si donde ha attackado Eric hay enemigos y danyarles.
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
@@ -98,9 +95,11 @@ public class Eric_Movement : MonoBehaviour
                 {
                     Vector3 direction = hit.point - transform.position;
                     Quaternion rotation = Quaternion.LookRotation(direction);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, rotation.eulerAngles.y, 0f), Time.deltaTime * smoothTimeLookAtMouse);
+                    transform.rotation = Quaternion.Euler(0f, rotation.eulerAngles.y, 0f);
                 }
+                _nextAttack = Time.time + ericStats.attackSpeed;
                 _EricState = EricCharacterState.Idle;
+                
             break;
 
             case EricCharacterState.Dying:
@@ -110,6 +109,8 @@ public class Eric_Movement : MonoBehaviour
             break;
         }
     }
+
+    //iEnumerator CooldownTimer(float cooldownTime)
 
 
 }

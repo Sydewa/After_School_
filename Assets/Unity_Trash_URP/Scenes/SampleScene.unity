@@ -5395,6 +5395,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08b0e5b7bf02cca42b6ef0086623b6b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  antiaStats: {fileID: 11400000, guid: d9544395b735e54469070d39a83483e9, type: 2}
   speed: 5
   smoothTimeMove: 0.1
   smoothTimeLookAtMouse: 20
@@ -6501,7 +6502,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40d9c4c7925719c4098f19a1fa64f46c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3.5
+  ericStats: {fileID: 11400000, guid: b2740f8874e2e0046a822d34f19c3483, type: 2}
   smoothTimeMove: 0.1
   smoothTimeLookAtMouse: 20
   accelerationTime: 0.5

@@ -7,9 +7,9 @@ public class Antia_Movement : MonoBehaviour
 {
     private CharacterController controller;
     //private Animator anim;
+    [SerializeField]Stats antiaStats;
     
     //Variables de movimiento
-    [SerializeField]float speed;
     Vector3 velocity;
     [SerializeField]float smoothTimeMove;
     [SerializeField]float smoothTimeLookAtMouse;
@@ -75,7 +75,7 @@ public class Antia_Movement : MonoBehaviour
 
                 x = Mathf.Lerp(0, 1, acceleration);
 
-                float currentSpeed = Mathf.Lerp(0, speed, x);
+                float currentSpeed = Mathf.Lerp(0, antiaStats.speed, x);
                 controller.Move(move.normalized * currentSpeed * Time.deltaTime);
                 if(move == Vector3.zero)
                 {
@@ -100,7 +100,7 @@ public class Antia_Movement : MonoBehaviour
                     Quaternion rotation = Quaternion.LookRotation(direction);
                     transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, rotation.eulerAngles.y, 0f), Time.deltaTime * smoothTimeLookAtMouse);
                 }
-                controller.Move(move.normalized * (speed/4.5f) * Time.deltaTime);
+                controller.Move(move.normalized * (antiaStats.speed/4.5f) * Time.deltaTime);
                 _AntiaState = AntiaCharacterState.Idle;
             break;
 

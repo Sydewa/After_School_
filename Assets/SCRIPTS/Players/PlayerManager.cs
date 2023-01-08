@@ -55,19 +55,19 @@ public class PlayerManager : MonoBehaviour
         {
             case "Eric":
                 ericVida -= damageTaken;
-                Debug.Log(ericVida);
+                Debug.Log("Eric:"+ericVida);
             break;
             case "Antia":
                 antiaVida -= damageTaken;
-                Debug.Log(antiaVida);
+                Debug.Log("Antia:"+antiaVida);
             break;
             case "Sora":
                 soraVida -= damageTaken;
-                Debug.Log(soraVida);
+                Debug.Log("Sora:"+soraVida);
             break;
             case "Mossi":
                 mossiVida -= damageTaken;
-                Debug.Log(mossiVida);
+                Debug.Log("Mossi" + mossiVida);
             break;
             default:
             break;
@@ -82,7 +82,7 @@ public class PlayerManager : MonoBehaviour
             //Desactivo char activo, copio su transform y se lo aplico al personaje que quiero. Activo el personaje y lo convierto en el personaje activo.
                 
                 eric.transform.position = new Vector3(activeCharacter.transform.position.x, 0.6f, activeCharacter.transform.position.z);
-                eric.transform.rotation = Quaternion.Euler(0f, activeCharacter.transform.rotation.y, 0f);
+                eric.transform.rotation = Quaternion.Euler(0f, activeCharacter.transform.eulerAngles.y, 0f);
                 activeCharacter.SetActive(false);
                 eric.SetActive(true);
                 activeCharacter = eric;
@@ -90,24 +90,24 @@ public class PlayerManager : MonoBehaviour
             break;
             case "2":
                 activeCharacter.SetActive(false);
-                antia.transform.position = new Vector3(activeCharacter.transform.position.x, 0f, activeCharacter.transform.position.z);
-                antia.transform.rotation = Quaternion.Euler(0f, activeCharacter.transform.rotation.y, 0f);
+                antia.transform.position = new Vector3(activeCharacter.transform.position.x, 1f, activeCharacter.transform.position.z);
+                antia.transform.rotation = Quaternion.Euler(0f, activeCharacter.transform.eulerAngles.y, 0f);
                 antia.SetActive(true);
                 activeCharacter = antia;
                 activeCharacter.name = "Antia";
             break;
             case "3":
                 activeCharacter.SetActive(false);
-                sora.transform.position = new Vector3(activeCharacter.transform.position.x, 0f, activeCharacter.transform.position.z);
-                sora.transform.rotation = Quaternion.Euler(0f, activeCharacter.transform.rotation.y, 0f);
+                sora.transform.position = new Vector3(activeCharacter.transform.position.x, 1f, activeCharacter.transform.position.z);
+                sora.transform.rotation = Quaternion.Euler(0f, activeCharacter.transform.eulerAngles.y, 0f);
                 sora.SetActive(true);
                 activeCharacter = sora;
                 activeCharacter.name = "Sora";
             break;
             case "4":
                 activeCharacter.SetActive(false);
-                mossi.transform.position = new Vector3(activeCharacter.transform.position.x, 0f, activeCharacter.transform.position.z);
-                mossi.transform.rotation = Quaternion.Euler(0f, activeCharacter.transform.rotation.y, 0f);
+                mossi.transform.position = new Vector3(activeCharacter.transform.position.x, 1f, activeCharacter.transform.position.z);
+                mossi.transform.rotation = Quaternion.Euler(0f, activeCharacter.transform.eulerAngles.y, 0f);
                 mossi.SetActive(true);
                 activeCharacter = mossi;
                 activeCharacter.name = "Mossi";

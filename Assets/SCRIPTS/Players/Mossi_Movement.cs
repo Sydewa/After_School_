@@ -31,14 +31,14 @@ public class Mossi_Movement : MonoBehaviour
 
     void Update()
     {
-        EricStates();
+        MossiStates();
     }
     
-    public void EricStates()
+    public void MossiStates()
     {
         Vector3 move = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical")).normalized;
 
-        if(PlayerManager.ericVida <= 0)
+        if(PlayerManager.mossiVida <= 0)
         {
             _MossiState = MossiCharacterState.Dying;
         }

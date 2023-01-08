@@ -9,6 +9,9 @@ ModelImporter:
   - first:
       74: 4781951162920444690
     second: Armature|ArmatureAction
+  - first:
+      74: -8612994791844490777
+    second: Run_FullCycle
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -39,11 +42,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Run
-      takeName: Armature|Action
+      name: Run_FullCycle
+      takeName: Armature|ArmatureAction
       internalID: 0
       firstFrame: 0
-      lastFrame: 17
+      lastFrame: 18.5
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
