@@ -33,6 +33,11 @@ public class Eric_Movement : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
     }
 
+    void Start()
+    {
+        _EricState = EricCharacterState.Idle;
+    }
+
     void Update()
     {
         EricStates();
@@ -40,12 +45,16 @@ public class Eric_Movement : MonoBehaviour
     
     public void EricStates()
     {
+        //Movimiento
         Vector3 move = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical")).normalized;
 
+        //Comprobar vida del personaje, si es 0 o menos de 0 state de Eric a Dying
         if(PlayerManager.ericVida <= 0)
         {
             _EricState = EricCharacterState.Dying;
         }
+        
+        //Si aprietas click izquierdo y el tiempo es mayor que el next attack, que _nextAttack es el tiempo del sistema del ataque anterior + el CD del ataque.
         if(Input.GetButtonDown("Fire1") && Time.time > _nextAttack)
         {
             _EricState = EricCharacterState.Attack;
@@ -61,7 +70,6 @@ public class Eric_Movement : MonoBehaviour
             break;
 
             case EricCharacterState.Running: 
-                
                 anim.SetBool("Run", true);
                 //Rotacion del personaje
                 float targetAngle = Mathf.Atan2(move.x, move.z) * Mathf.Rad2Deg;
@@ -106,6 +114,7 @@ public class Eric_Movement : MonoBehaviour
             break; 
 
             default:
+                _EricState = EricCharacterState.Idle;
             break;
         }
     }
