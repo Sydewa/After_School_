@@ -92,13 +92,10 @@ public class Eric_Movement : MonoBehaviour
                 }
             break;
 
-            case EricCharacterState.Attack:
+            case EricCharacterState.Attack:   
                 anim.SetBool("Run", false);
-                //anim.Play("Run_FullCycle 0");
-                //Hacer animacion, en esa animacion crear un evento que cree un trigger que detecte si donde ha attackado Eric hay enemigos y danyarles.
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
-
                 if (Physics.Raycast(ray, out hit))
                 {
                     Vector3 direction = hit.point - transform.position;
@@ -106,7 +103,13 @@ public class Eric_Movement : MonoBehaviour
                     transform.rotation = Quaternion.Euler(0f, rotation.eulerAngles.y, 0f);
                 }
                 _nextAttack = Time.time + ericStats.attackSpeed;
-                _EricState = EricCharacterState.Idle;
+
+                StartCoroutine(Attack());
+
+                //anim.Play("Run_FullCycle 0");
+                //Hacer animacion, en esa animacion crear un evento que cree un trigger que detecte si donde ha attackado Eric hay enemigos y danyarles.
+                anim.SetBool("Attack", false);
+                
                 
             break;
 
@@ -119,7 +122,12 @@ public class Eric_Movement : MonoBehaviour
         }
     }
 
-    //iEnumerator CooldownTimer(float cooldownTime)
+    private IEnumerator Attack()
+    {
+        anim.SetBool("Attack", true);
+        //Tirar petardo
+        yield return new WaitForSeconds(0.8f);
+    }
 
 
 }
