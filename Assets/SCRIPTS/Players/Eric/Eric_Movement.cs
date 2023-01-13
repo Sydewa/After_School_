@@ -61,18 +61,26 @@ public class Eric_Movement : MonoBehaviour
         {
             _EricState = EricCharacterState.Attack;
         }
+        
+        if(move != Vector3.zero && !isAttacking)
+        {
+            _EricState = EricCharacterState.Running;
+        }
+
         switch(_EricState)
         {
             case EricCharacterState.Idle:
                 anim.SetBool("Run", false);
-                if(move != Vector3.zero && !isAttacking)
+                anim.SetBool("Attack", false);
+                /*if(move != Vector3.zero && !isAttacking)
                 {
                     _EricState = EricCharacterState.Running;
-                }
+                }*/
             break;
 
             case EricCharacterState.Running: 
                 anim.SetBool("Run", true);
+                anim.SetBool("Attack", false);
                 //Rotacion del personaje
                 float targetAngle = Mathf.Atan2(move.x, move.z) * Mathf.Rad2Deg;
                 float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
@@ -94,24 +102,30 @@ public class Eric_Movement : MonoBehaviour
                 }
             break;
 
-            case EricCharacterState.Attack:   
+            case EricCharacterState.Attack:  
                 anim.SetBool("Run", false);
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit))
+                if(!isAttacking)
                 {
-                    Vector3 direction = hit.point - transform.position;
-                    Quaternion rotation = Quaternion.LookRotation(direction);
-                    transform.rotation = Quaternion.Euler(0f, rotation.eulerAngles.y, 0f);
+                    anim.SetTrigger("Attack 0");
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    RaycastHit hit;
+                    if (Physics.Raycast(ray, out hit))
+                    {
+                        Vector3 direction = hit.point - transform.position;
+                        Quaternion rotation = Quaternion.LookRotation(direction);
+                        transform.rotation = Quaternion.Euler(0f, rotation.eulerAngles.y, 0f);
+                    }
                 }
+                isAttacking = true; 
+                
                 _nextAttack = Time.time + ericStats.attackSpeed;
 
                 StartCoroutine(Attack());
-                _EricState = EricCharacterState.Idle;
+                
 
                 //anim.Play("Run_FullCycle 0");
                 //Hacer animacion, en esa animacion crear un evento que cree un trigger que detecte si donde ha attackado Eric hay enemigos y danyarles.
-                anim.SetBool("Attack", false);
+                //anim.SetBool("Attack", false);
                 
                 
                 
@@ -128,13 +142,15 @@ public class Eric_Movement : MonoBehaviour
 
     private IEnumerator Attack()
     {
-        isAttacking = true;
         //anim.SetBool("Attack", true);
-        anim.Play("Eric_BasicAttk");
+        //anim.Play("Eric_BasicAttk");
         //Tirar petardo
         yield return new WaitForSeconds(0.8f);
         isAttacking = false;
     }
 
-
+    public void StartIdle()
+    {   
+        _EricState = EricCharacterState.Idle;
+    }
 }
