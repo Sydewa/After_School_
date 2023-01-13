@@ -27,6 +27,8 @@ public class Eric_Movement : MonoBehaviour
     //Variables ATTACK
     float _nextAttack;
 
+    bool isAttacking = false;
+
     void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -63,7 +65,7 @@ public class Eric_Movement : MonoBehaviour
         {
             case EricCharacterState.Idle:
                 anim.SetBool("Run", false);
-                if(move != Vector3.zero)
+                if(move != Vector3.zero && !isAttacking)
                 {
                     _EricState = EricCharacterState.Running;
                 }
@@ -105,10 +107,12 @@ public class Eric_Movement : MonoBehaviour
                 _nextAttack = Time.time + ericStats.attackSpeed;
 
                 StartCoroutine(Attack());
+                _EricState = EricCharacterState.Idle;
 
                 //anim.Play("Run_FullCycle 0");
                 //Hacer animacion, en esa animacion crear un evento que cree un trigger que detecte si donde ha attackado Eric hay enemigos y danyarles.
                 anim.SetBool("Attack", false);
+                
                 
                 
             break;
@@ -124,9 +128,12 @@ public class Eric_Movement : MonoBehaviour
 
     private IEnumerator Attack()
     {
-        anim.SetBool("Attack", true);
+        isAttacking = true;
+        //anim.SetBool("Attack", true);
+        anim.Play("Eric_BasicAttk");
         //Tirar petardo
         yield return new WaitForSeconds(0.8f);
+        isAttacking = false;
     }
 
 
