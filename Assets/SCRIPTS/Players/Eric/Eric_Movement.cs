@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EricCharacterState { Idle, Running, Dying, Attack }
+public enum EricCharacterState { Idle, Running, Dying, AttackStart, OnAttack, AbilityStart, OnAbility }
 public class Eric_Movement : MonoBehaviour
 {
     private CharacterController controller;
@@ -26,8 +26,15 @@ public class Eric_Movement : MonoBehaviour
 
     //Variables ATTACK
     float _nextAttack;
+    float _attackCancel;
 
     bool isAttacking = false;
+
+    //Variables ABILITY LUPA
+    [SerializeField]AnimationCurve damageCurve;
+    float damageInterval = 0.1f;
+    private float startTime;
+    private float timeSinceLastDamage;
 
     void Awake()
     {
@@ -57,30 +64,33 @@ public class Eric_Movement : MonoBehaviour
         }
         
         //Si aprietas click izquierdo y el tiempo es mayor que el next attack, que _nextAttack es el tiempo del sistema del ataque anterior + el CD del ataque.
-        if(Input.GetButtonDown("Fire1") && Time.time > _nextAttack)
-        {
-            _EricState = EricCharacterState.Attack;
-        }
         
-        if(move != Vector3.zero && !isAttacking)
+        if(Input.GetButtonDown("Fire1") && Time.time > _nextAttack && !isAttacking)
         {
-            _EricState = EricCharacterState.Running;
+            _EricState = EricCharacterState.AttackStart;
+        }
+
+        if(Input.GetButtonDown("Fire2"))
+        {
+            _EricState = EricCharacterState.AbilityStart;
         }
 
         switch(_EricState)
         {
             case EricCharacterState.Idle:
-                anim.SetBool("Run", false);
-                anim.SetBool("Attack", false);
-                /*if(move != Vector3.zero && !isAttacking)
+                //Debug.Log("Idle");
+                anim.SetBool("isRunning", false);
+                //Si se mueve enviar a Running state
+                if(move != Vector3.zero)
                 {
                     _EricState = EricCharacterState.Running;
-                }*/
+                }
             break;
 
             case EricCharacterState.Running: 
-                anim.SetBool("Run", true);
-                anim.SetBool("Attack", false);
+                //Debug.Log("Running");
+                anim.SetBool("isRunning", true);
+
                 //Rotacion del personaje
                 float targetAngle = Mathf.Atan2(move.x, move.z) * Mathf.Rad2Deg;
                 float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
@@ -102,33 +112,85 @@ public class Eric_Movement : MonoBehaviour
                 }
             break;
 
-            case EricCharacterState.Attack:  
-                anim.SetBool("Run", false);
-                if(!isAttacking)
+            case EricCharacterState.AttackStart:  
+                //Debug.Log("AttackStart");
+                anim.SetBool("isRunning", false);
+                
+                //Empieza la animacion y rota el personaje hacia el puntero
+                anim.SetTrigger("Attack 0");
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
                 {
-                    anim.SetTrigger("Attack 0");
-                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    RaycastHit hit;
-                    if (Physics.Raycast(ray, out hit))
-                    {
-                        Vector3 direction = hit.point - transform.position;
-                        Quaternion rotation = Quaternion.LookRotation(direction);
-                        transform.rotation = Quaternion.Euler(0f, rotation.eulerAngles.y, 0f);
-                    }
+                    Vector3 direction = hit.point - transform.position;
+                    Quaternion rotation = Quaternion.LookRotation(direction);
+                    transform.rotation = Quaternion.Euler(0f, rotation.eulerAngles.y, 0f);
                 }
-                isAttacking = true; 
+                //Empieza el timer para el attackCancel y el nextAttack y apartir de ahora estara atacando. Enviar al state OnAttack
+                _attackCancel = Time.time + 0.6f;
+                _nextAttack = _attackCancel + ericStats.attackSpeed;
+                isAttacking = true;
                 
-                _nextAttack = Time.time + ericStats.attackSpeed;
+                _EricState = EricCharacterState.OnAttack;
+            break;
 
-                StartCoroutine(Attack());
+            case EricCharacterState.OnAttack:
+                //Debug.Log("AttackAnim");
+                //Si el tiempo actual es mayor que el tiempo a partir del cual se puede cancelar animacion se acaba la fase de ataque.
+                //Si el tiempo actual es mayor que el tiempo de cancelacion + 1f (que es el tiempo que tarda la animacion entera) enviar a idle
+                //Si cuando se ha acabado el ataque y te mueves enviar a Running state
+                if(Time.time > _attackCancel)
+                {
+                    isAttacking = false;
+                }
+                else if(Time.time > (_attackCancel + 1f))
+                {
+                    _EricState = EricCharacterState.Idle;
+                }
+                
+                if(move != Vector3.zero && Time.time > _attackCancel)
+                {
+                    _EricState = EricCharacterState.Running;
+                }
+            break;
+
+            case EricCharacterState.AbilityStart:
+                startTime = Time.time;
+
+                _EricState = EricCharacterState.OnAbility;
+            break;
+
+            case EricCharacterState.OnAbility:
+
+                //Mientras tengas pulsado el click derecho haz esto, si no enviar a idle   
+                if(Input.GetButton("Fire2"))
+                {
+                    //Rotar lupa y hacer raycast. Calcular danyo exponencial
+                    float elapsedTime = Time.time - startTime;
+                    //Para que las estadisticas extras de los objetos tengan efecto se tienen que anyadir los keyframes de la curva manualemnte
+                    //Primero se anyade el tiempo y luego la variable de (en este caso) danyo
+                    damageCurve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(3f, 220f + (float)ericStats.power));
+                    float damageFromCurve = damageCurve.Evaluate(elapsedTime);
+
+                    int currentDamage = (int)damageFromCurve;
+                    //currentDamage = Mathf.Min(currentDamage, maxDamage);
+
+                    timeSinceLastDamage += Time.deltaTime;
+                    if (timeSinceLastDamage >= damageInterval)
+                    {
+                        timeSinceLastDamage = 0;
+                        //Enviar currentDamage/10 para que asi se envie correctamente el danyo
+                        // Send currentDamage to the enemy here
+                    }
+                    Debug.Log(currentDamage);
+                }
+                else
+                {
+                    _EricState = EricCharacterState.Idle;
+                }
                 
 
-                //anim.Play("Run_FullCycle 0");
-                //Hacer animacion, en esa animacion crear un evento que cree un trigger que detecte si donde ha attackado Eric hay enemigos y danyarles.
-                //anim.SetBool("Attack", false);
-                
-                
-                
+           
             break;
 
             case EricCharacterState.Dying:
@@ -140,17 +202,5 @@ public class Eric_Movement : MonoBehaviour
         }
     }
 
-    private IEnumerator Attack()
-    {
-        //anim.SetBool("Attack", true);
-        //anim.Play("Eric_BasicAttk");
-        //Tirar petardo
-        yield return new WaitForSeconds(0.8f);
-        isAttacking = false;
-    }
-
-    public void StartIdle()
-    {   
-        _EricState = EricCharacterState.Idle;
-    }
+    
 }
