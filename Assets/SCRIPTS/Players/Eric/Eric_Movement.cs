@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public enum EricCharacterState { Idle, Running, Dying, AttackStart, OnAttack, AbilityStart, OnAbility }
 public class Eric_Movement : MonoBehaviour
@@ -35,11 +36,15 @@ public class Eric_Movement : MonoBehaviour
     float damageInterval = 0.1f;
     private float startTime;
     private float timeSinceLastDamage;
+    private float _nextAbility;
+    Eric_LupaScript _lupa;
+    
 
     void Awake()
     {
         controller = GetComponent<CharacterController>();
         anim = GetComponentInChildren<Animator>();
+        _lupa = GetComponentInChildren<Eric_LupaScript>();
     }
 
     void Start()
@@ -70,7 +75,7 @@ public class Eric_Movement : MonoBehaviour
             _EricState = EricCharacterState.AttackStart;
         }
 
-        if(Input.GetButtonDown("Fire2"))
+        if(Input.GetButtonDown("Fire2") && Time.time > _nextAbility)
         {
             _EricState = EricCharacterState.AbilityStart;
         }
@@ -156,25 +161,40 @@ public class Eric_Movement : MonoBehaviour
 
             case EricCharacterState.AbilityStart:
                 startTime = Time.time;
-
+                anim.SetBool("OnAbility", true);
+                StartCoroutine(_lupa.OnLupaStart());
                 _EricState = EricCharacterState.OnAbility;
             break;
 
             case EricCharacterState.OnAbility:
 
                 //Mientras tengas pulsado el click derecho haz esto, si no enviar a idle   
+                anim.SetBool("isRunning", false);
+                
                 if(Input.GetButton("Fire2"))
                 {
-                    //Rotar lupa y hacer raycast. Calcular danyo exponencial
+                    //Rotacion lupa -----------------------------------
+                    _lupa.OnLupaWhile();
+                    Ray rayAbility = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    RaycastHit hitAbility;
+                    if (Physics.Raycast(rayAbility, out hitAbility))
+                    {
+                        Vector3 direction = hitAbility.point - transform.position;
+                        Quaternion rotation = Quaternion.LookRotation(direction);
+                        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, rotation.eulerAngles.y, 0f), Time.deltaTime * smoothTimeLookAtMouse);
+                    }
+                    //------------------------------------------------------
+                    //Calcular danyo exponencial ------------------------------------------------------
                     float elapsedTime = Time.time - startTime;
                     //Para que las estadisticas extras de los objetos tengan efecto se tienen que anyadir los keyframes de la curva manualemnte
                     //Primero se anyade el tiempo y luego la variable de (en este caso) danyo
-                    damageCurve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(3f, 220f + (float)ericStats.power));
+                    damageCurve = new AnimationCurve(new Keyframe(0f, 0f, 0f, 4f, 0f, 0.5f), new Keyframe(3f, 220f + (float)ericStats.power, 0f, 0f, 0f, 0f));
                     float damageFromCurve = damageCurve.Evaluate(elapsedTime);
 
                     int currentDamage = (int)damageFromCurve;
+                    int dmg = (int) Math.Ceiling((double) currentDamage/10);
                     //currentDamage = Mathf.Min(currentDamage, maxDamage);
-
+                    //Este if manda
                     timeSinceLastDamage += Time.deltaTime;
                     if (timeSinceLastDamage >= damageInterval)
                     {
@@ -182,15 +202,18 @@ public class Eric_Movement : MonoBehaviour
                         //Enviar currentDamage/10 para que asi se envie correctamente el danyo
                         // Send currentDamage to the enemy here
                     }
-                    Debug.Log(currentDamage);
+                    //int dmg = (int)(currentDamage/10);
+                    Debug.Log(dmg);
+                    
                 }
                 else
                 {
+                    _nextAbility = Time.time + ericStats.abilityCD;
+                    StartCoroutine(_lupa.OnLupaEnd());
+                    anim.SetBool("OnAbility", false);
                     _EricState = EricCharacterState.Idle;
-                }
-                
 
-           
+                }
             break;
 
             case EricCharacterState.Dying:
