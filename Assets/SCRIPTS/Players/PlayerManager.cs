@@ -29,7 +29,7 @@ public class PlayerManager : MonoBehaviour
     {
         activeCharacter = eric;
         activeCharacter.name = "Eric";
-        eric.transform.position = new Vector3(activeCharacter.transform.position.x, 0.6f, activeCharacter.transform.position.z);
+        eric.transform.position = new Vector3(activeCharacter.transform.position.x, 0.51f, activeCharacter.transform.position.z);
         antia.SetActive(false);
         mossi.SetActive(false);
         sora.SetActive(false);
