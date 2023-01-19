@@ -21,14 +21,20 @@ public class Eric_LupaScript : MonoBehaviour
         float startTime = Time.time;
         float endTime = startTime + animationTime;
         Vector3 startScale = transform.localScale;
-        Vector3 endScale = new Vector3(1.5f,1.5f,1.5f);
-
-        while (Time.time < endTime)
+        Vector3 endScale = new Vector3(1f,1f,1f);
+        if(Input.GetButtonDown("Fire2"))
         {
-            float t = (Time.time - startTime) / animationTime;
-            float curveValue = curve.Evaluate(t);
-            transform.localScale = Vector3.Lerp(startScale, endScale, curveValue);
-            yield return null;
+            while (Time.time < endTime)
+            {
+                float t = (Time.time - startTime) / animationTime;
+                float curveValue = curve.Evaluate(t);
+                transform.localScale = Vector3.Lerp(startScale, endScale, curveValue);
+                yield return null;
+            }
+        }
+        else
+        {
+            StartCoroutine(OnLupaEnd());
         }
         
     }
