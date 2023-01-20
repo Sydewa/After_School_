@@ -16,5 +16,5 @@ MonoBehaviour:
   speed: 3.5
   attackSpeed: 0.1
   attack: 90
-  abilityCD: 0
+  abilityCD: 5
   power: 0

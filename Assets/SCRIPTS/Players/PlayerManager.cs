@@ -80,7 +80,10 @@ public class PlayerManager : MonoBehaviour
         {
             case "1":
             //Desactivo char activo, copio su transform y se lo aplico al personaje que quiero. Activo el personaje y lo convierto en el personaje activo.
-                
+                if(activeCharacter.name == "Eric")
+                {
+                    return;
+                }
                 eric.transform.position = new Vector3(activeCharacter.transform.position.x, 0.6f, activeCharacter.transform.position.z);
                 eric.transform.rotation = Quaternion.Euler(0f, activeCharacter.transform.eulerAngles.y, 0f);
                 activeCharacter.SetActive(false);
@@ -89,6 +92,10 @@ public class PlayerManager : MonoBehaviour
                 activeCharacter.name = "Eric";
             break;
             case "2":
+                if(activeCharacter.name == "Antia")
+                {
+                    return;
+                }
                 activeCharacter.SetActive(false);
                 antia.transform.position = new Vector3(activeCharacter.transform.position.x, 1f, activeCharacter.transform.position.z);
                 antia.transform.rotation = Quaternion.Euler(0f, activeCharacter.transform.eulerAngles.y, 0f);
@@ -97,6 +104,10 @@ public class PlayerManager : MonoBehaviour
                 activeCharacter.name = "Antia";
             break;
             case "3":
+                if(activeCharacter.name == "Sora")
+                {
+                    return;
+                }
                 activeCharacter.SetActive(false);
                 sora.transform.position = new Vector3(activeCharacter.transform.position.x, 1f, activeCharacter.transform.position.z);
                 sora.transform.rotation = Quaternion.Euler(0f, activeCharacter.transform.eulerAngles.y, 0f);
@@ -105,6 +116,10 @@ public class PlayerManager : MonoBehaviour
                 activeCharacter.name = "Sora";
             break;
             case "4":
+                if(activeCharacter.name == "Mossi")
+                {
+                    return;
+                }
                 activeCharacter.SetActive(false);
                 mossi.transform.position = new Vector3(activeCharacter.transform.position.x, 1f, activeCharacter.transform.position.z);
                 mossi.transform.rotation = Quaternion.Euler(0f, activeCharacter.transform.eulerAngles.y, 0f);

@@ -62,25 +62,7 @@ public class Eric_Movement : MonoBehaviour
     
     public void EricStates()
     {
-        /*
-        //Inputs --------------------------------------------------------------------------
-        //Comprobar vida del personaje, si es 0 o menos de 0 state de Eric a Dying
-        if(PlayerManager.ericVida <= 0)
-        {
-            _EricState = EricCharacterState.Dying;
-        }
-        //Si aprietas click izquierdo y el tiempo es mayor que el next attack, que _nextAttack es el tiempo del sistema del ataque anterior + el CD del ataque. 
-        if(Input.GetButtonDown("Fire1") && Time.time > _nextAttack && !isOnAction)
-        {
-            _EricState = EricCharacterState.AttackStart;
-        }
 
-        if(Input.GetButtonDown("Fire2") && Time.time > _nextAbility && !isOnAction)
-        {
-            _EricState = EricCharacterState.AbilityStart;
-        }
-        //-----------------------------------------------------------------------------------
-        */
         CheckInput();
         switch(_EricState)
         {
@@ -149,14 +131,13 @@ public class Eric_Movement : MonoBehaviour
                 if(Input.GetButton("Fire2"))
                 {
                     //Rotacion lupa -----------------------------------
-                    _lupa.OnLupaWhile();
                     RayCast_Rotation(smoothTimeLookAtMouse);
                     AbilityDMG();
                 }
                 else
                 {
                     _nextAbility = Time.time + ericStats.abilityCD;
-                    //StartCoroutine(_lupa.OnLupaEnd());
+                    StartCoroutine(_lupa.OnLupaEnd());
                     anim.SetBool("OnAbility", false);
                     _EricState = EricCharacterState.Idle;
                 }
@@ -253,5 +234,7 @@ public class Eric_Movement : MonoBehaviour
         {
             _EricState = EricCharacterState.AbilityStart;
         }
+
+        //Meter los inputs de menu y tal
     }
 }

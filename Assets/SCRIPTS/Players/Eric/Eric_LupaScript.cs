@@ -32,11 +32,6 @@ public class Eric_LupaScript : MonoBehaviour
                 yield return null;
             }
         }
-        else
-        {
-            StartCoroutine(OnLupaEnd());
-        }
-        
     }
 
     public IEnumerator OnLupaEnd()
@@ -55,19 +50,6 @@ public class Eric_LupaScript : MonoBehaviour
         }
     }
 
-    public void OnLupaWhile()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit))
-        {
-            Vector3 direction = hit.point - transform.position;
-            Quaternion rotation = Quaternion.LookRotation(direction);
-            float xRotation = Mathf.Clamp(rotation.eulerAngles.x, rotationLimit.x, rotationLimit.y);
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(xRotation, rotation.eulerAngles.y, 0f), Time.deltaTime * smoothTimeLookAtMouse);
-        }
-    }
 
     /*void OnDrawGizmos()
     {

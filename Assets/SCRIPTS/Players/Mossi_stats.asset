@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vida: 220
   speed: 0
+  attackSpeed: 0
   attack: 70
+  abilityCD: 12
   power: 20
