@@ -40,7 +40,7 @@ public class Knight_Movement : MonoBehaviour
     float _checkSphereStart;
     float _checkSphereEnd;
 
-    [SerializeField]GameObject attackSphere;
+    //[SerializeField]GameObject attackSphere;
 
 
     //Animacion variables-----------------------
@@ -52,7 +52,7 @@ public class Knight_Movement : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
-        attackSphere.SetActive(false);
+        //attackSphere.SetActive(false);
         
     }
     
@@ -186,7 +186,8 @@ public class Knight_Movement : MonoBehaviour
     {
         if(Time.time > _checkSphereStart && Time.time < _checkSphereEnd)
         {
-            attackSphere.SetActive(true);
+            //attackSphere.SetActive(true);
+            
         }
 
         
@@ -220,8 +221,9 @@ public class Knight_Movement : MonoBehaviour
             if(col.tag == "Player")
             {
                 PlayerManager.CharacterDamaged(_knightStats.attackDMG);
+                charDamaged = true;
             }
-            charDamaged = true;
+            
         }
         
     }

@@ -10,6 +10,7 @@ public class Temporal : MonoBehaviour
         if(col.tag == "Player")
         {
             PlayerManager.CharacterDamaged(damage);
+            gameObject.SetActive(false);
         }
     }
 }
