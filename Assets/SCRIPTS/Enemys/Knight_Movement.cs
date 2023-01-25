@@ -205,15 +205,19 @@ public class Knight_Movement : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
+        //Spawn
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(spawnPosition, patrolRadius);
 
+        //Rango de vision
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, visionRange);
 
+        //Rango de ataque
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
 
+        //Radio en el que ataca
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(attackPosition.position, attackRadius);
     }

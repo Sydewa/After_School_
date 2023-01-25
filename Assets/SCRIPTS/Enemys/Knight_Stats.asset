@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd9d1109fa94c3649b8d07282ef90d69, type: 3}
   m_Name: Knight_Stats
   m_EditorClassIdentifier: 
-  vida: 0
+  vida: 125
   speed: 0
   attackSpeed: 1.5
   attackDMG: 20

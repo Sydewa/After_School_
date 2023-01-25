@@ -13,6 +13,7 @@ public class Eric_Movement : MonoBehaviour
     bool isOnAction;
     
     //Variables de movimiento
+    [Header ("Movimiento")]
     Vector3 velocity = new Vector3(0f, -9.81f, 0f);
     Vector3 move;
     [SerializeField]float smoothTimeMove;
@@ -28,11 +29,18 @@ public class Eric_Movement : MonoBehaviour
     private EricCharacterState _EricState;
 
     //Variables ATTACK
+    [Header ("Attack")]
+    [SerializeField]Transform petardoSpawnPosition;
+    [SerializeField]GameObject petardo;
+    [SerializeField]float petardoForce;
     float _nextAttack;
     float _attackCancel;
 
     //Variables ABILITY LUPA
+    [Header ("Habilidad")]
     [SerializeField]AnimationCurve damageCurve;
+    [SerializeField]Transform abilityPosition;
+    [SerializeField]float smoothTimeRay;
     float damageInterval = 0.1f;
     private float startTime;
     private float timeSinceLastDamage;
@@ -89,10 +97,12 @@ public class Eric_Movement : MonoBehaviour
 
             case EricCharacterState.AttackStart:  
                 //Debug.Log("AttackStart");
+                
                 anim.SetBool("isRunning", false);
                 isOnAction = true;
                 anim.SetTrigger("Attack 0");
                 AttackStart();
+                SpawnPetardo();
                 _EricState = EricCharacterState.OnAttack;
             break;
 
@@ -104,6 +114,7 @@ public class Eric_Movement : MonoBehaviour
                 if(Time.time > _attackCancel)
                 {
                     isOnAction = false;
+                    
                 }
                 else if(Time.time > (_attackCancel + 1f))
                 {
@@ -185,6 +196,13 @@ public class Eric_Movement : MonoBehaviour
         isOnAction = true;
     }
 
+    void SpawnPetardo()
+    {
+        GameObject clone = Instantiate(petardo, petardoSpawnPosition.position, Quaternion.Euler(0f, transform.eulerAngles.y, 0f), null);
+        Rigidbody rb = clone.GetComponent<Rigidbody>();
+        rb.AddForce(transform.forward * petardoForce, ForceMode.Impulse);
+    }
+
     void RayCast_Rotation(float rotationTime)
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -210,12 +228,35 @@ public class Eric_Movement : MonoBehaviour
         //currentDamage = Mathf.Min(currentDamage, maxDamage);
         //Este if manda el dmg de la habilidad cada 0,1 secs a los enemigos
         timeSinceLastDamage += Time.deltaTime;
-        if (timeSinceLastDamage >= damageInterval)
+        
+
+        //---------------------------------------
+        
+        //Creamos un Raycast como el que ya hemos hecho, de la camara hacia donde esta apuntando el raton en la escena, y luego creamos otro que va del centro de la lupa hasta el hit.point del primer  Raycast
+        //Fcking kill me please
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
         {
-            timeSinceLastDamage = 0;
-            //Enviar currentDamage/10 para que asi se envie correctamente el danyo
+
+            Vector3 direction = hit.point - abilityPosition.position;
+            Ray ray2 = new Ray(abilityPosition.position, direction);
+            RaycastHit hit2;
+            if(Physics.Raycast(ray2, out hit2))
+            {
+                if(hit2.collider.CompareTag("Enemy") && timeSinceLastDamage >= damageInterval)
+                {
+                    EnemyDamaged _enemyDamaged = hit.collider.GetComponent<EnemyDamaged>();
+                    _enemyDamaged.OnEnemyDamaged(dmg);
+                    timeSinceLastDamage = 0;
+                    //Debug.Log(dmg);   
+                }
+                Debug.DrawRay(ray2.origin, ray2.direction * hit2.distance, Color.red);
+            }
+            
+            
         }
-        Debug.Log(dmg);
+
     }
     
     void CheckInput()
@@ -237,4 +278,6 @@ public class Eric_Movement : MonoBehaviour
 
         //Meter los inputs de menu y tal
     }
+
+    
 }
