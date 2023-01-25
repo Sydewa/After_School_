@@ -38,7 +38,7 @@ public class Sora_Movement : MonoBehaviour
     {
         Vector3 move = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical")).normalized;
 
-        if(PlayerManager.antiaVida <= 0)
+        if(PlayerManager.soraVida <= 0)
         {
             _SoraState = SoraCharacterState.Dying;
         }

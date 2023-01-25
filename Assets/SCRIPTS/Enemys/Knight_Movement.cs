@@ -34,11 +34,12 @@ public class Knight_Movement : MonoBehaviour
     float elapsedTimeAttack;
     [SerializeField]Vector2 checkSphereTime;
     [SerializeField]float attackRadius;
+    [SerializeField]Transform attackPosition;
+    [SerializeField]float attackSmoothRotation;
     bool charDamaged;
-    float _attackStartTime;
-    float _nextAttack;
-    float _checkSphereStart;
-    float _checkSphereEnd;
+
+
+
 
     //[SerializeField]GameObject attackSphere;
 
@@ -174,30 +175,35 @@ public class Knight_Movement : MonoBehaviour
         charDamaged = false;
         agent.destination = transform.position;
         anim.speed = 1f;
-        _attackStartTime = Time.time;
-        _nextAttack = _attackStartTime + _knightStats.attackSpeed;
-        _checkSphereStart = _attackStartTime + checkSphereTime.x;
-        _checkSphereEnd = _checkSphereStart + checkSphereTime.y;
         anim.SetTrigger("Attack");
-        agent.speed = 0f;
+        //agent.speed = 0f;
     }
 
     void OnAttack()
     {
-        if(Time.time > _checkSphereStart && Time.time < _checkSphereEnd)
+        elapsedTimeAttack += Time.deltaTime;
+        
+        if(elapsedTimeAttack > checkSphereTime.x && elapsedTimeAttack < checkSphereTime.y)
         {
-            //attackSphere.SetActive(true);
+            if(Physics.OverlapSphere(attackPosition.position, attackRadius, LayerMask.GetMask("Player")).Length > 0 && !charDamaged)
+            {
+                PlayerManager.CharacterDamaged(_knightStats.attackDMG);
+                charDamaged = true;
+            }
             
         }
-
+        Vector3 direction = PlayerManager.activeCharacter.transform.position;
+        Quaternion rotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, rotation.eulerAngles.y, 0f), Time.deltaTime * attackSmoothRotation);
         
-        if(Time.time > _nextAttack)
+        if(elapsedTimeAttack > _knightStats.attackSpeed)
         {
+            elapsedTimeAttack = 0;
             _knightState = KnightState.Patrolling;
         }
     }
 
-    void OnDrawGizmos()
+    void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(spawnPosition, patrolRadius);
@@ -209,22 +215,7 @@ public class Knight_Movement : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, attackRange);
 
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, attackRadius);
+        Gizmos.DrawWireSphere(attackPosition.position, attackRadius);
     }
 
-    private void OnTriggerEnter(Collider col) 
-    {
-    
-        if (!charDamaged)
-        {
-            
-            if(col.tag == "Player")
-            {
-                PlayerManager.CharacterDamaged(_knightStats.attackDMG);
-                charDamaged = true;
-            }
-            
-        }
-        
-    }
 }
