@@ -109,7 +109,7 @@ public class PlayerManager : MonoBehaviour
                     return;
                 }
                 activeCharacter.SetActive(false);
-                sora.transform.position = new Vector3(activeCharacter.transform.position.x, 1f, activeCharacter.transform.position.z);
+                sora.transform.position = new Vector3(activeCharacter.transform.position.x, 0f, activeCharacter.transform.position.z);
                 sora.transform.rotation = Quaternion.Euler(0f, activeCharacter.transform.eulerAngles.y, 0f);
                 sora.SetActive(true);
                 activeCharacter = sora;
