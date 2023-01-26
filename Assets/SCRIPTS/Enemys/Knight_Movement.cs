@@ -173,15 +173,16 @@ public class Knight_Movement : MonoBehaviour
     void AttackStart()
     {
         charDamaged = false;
-        agent.destination = transform.position;
+        
         anim.speed = 1f;
         anim.SetTrigger("Attack");
-        //agent.speed = 0f;
+        agent.speed = 0.5f;
     }
 
     void OnAttack()
     {
         elapsedTimeAttack += Time.deltaTime;
+        agent.destination = PlayerManager.activeCharacter.transform.position;
         
         if(elapsedTimeAttack > checkSphereTime.x && elapsedTimeAttack < checkSphereTime.y)
         {
@@ -192,6 +193,7 @@ public class Knight_Movement : MonoBehaviour
             }
             
         }
+        
         Vector3 direction = PlayerManager.activeCharacter.transform.position;
         Quaternion rotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, rotation.eulerAngles.y, 0f), Time.deltaTime * attackSmoothRotation);

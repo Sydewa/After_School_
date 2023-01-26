@@ -97,7 +97,7 @@ public class PlayerManager : MonoBehaviour
                     return;
                 }
                 activeCharacter.SetActive(false);
-                antia.transform.position = new Vector3(activeCharacter.transform.position.x, 1f, activeCharacter.transform.position.z);
+                antia.transform.position = new Vector3(activeCharacter.transform.position.x, 0.69f, activeCharacter.transform.position.z);
                 antia.transform.rotation = Quaternion.Euler(0f, activeCharacter.transform.eulerAngles.y, 0f);
                 antia.SetActive(true);
                 activeCharacter = antia;

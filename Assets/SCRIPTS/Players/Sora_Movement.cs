@@ -10,7 +10,8 @@ public class Sora_Movement : MonoBehaviour
     
     //Variables de movimiento
     [SerializeField]float speed;
-    Vector3 velocity;
+    Vector3 velocity = new Vector3(0f, -9.81f, 0f);
+    Vector3 move;
     [SerializeField]float smoothTimeMove;
     [SerializeField]float smoothTimeLookAtMouse;
     [SerializeField]float accelerationTime;
@@ -32,11 +33,12 @@ public class Sora_Movement : MonoBehaviour
     void Update()
     {
         AntiaStates();
+        controller.Move(velocity * Time.deltaTime);
+        move = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical")).normalized;
     }
 
     public void AntiaStates()
     {
-        Vector3 move = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical")).normalized;
 
         if(PlayerManager.soraVida <= 0)
         {

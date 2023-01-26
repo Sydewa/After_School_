@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public enum EricCharacterState { Idle, Running, Dying, AttackStart, OnAttack, AbilityStart, OnAbility }
 public class Eric_Movement : MonoBehaviour
@@ -32,7 +31,9 @@ public class Eric_Movement : MonoBehaviour
     [Header ("Attack")]
     [SerializeField]Transform petardoSpawnPosition;
     [SerializeField]GameObject petardo;
+    [SerializeField]float petardoSpawnTime;
     [SerializeField]float petardoForce;
+    [SerializeField]float rotationForce;
     float _nextAttack;
     float _attackCancel;
 
@@ -102,7 +103,8 @@ public class Eric_Movement : MonoBehaviour
                 isOnAction = true;
                 anim.SetTrigger("Attack 0");
                 AttackStart();
-                SpawnPetardo();
+                //SpawnPetardo();
+                StartCoroutine(SpawnPetardo2());
                 _EricState = EricCharacterState.OnAttack;
             break;
 
@@ -198,9 +200,20 @@ public class Eric_Movement : MonoBehaviour
 
     void SpawnPetardo()
     {
+        
+    }
+    
+    IEnumerator SpawnPetardo2()
+    {
+        yield return new WaitForSeconds(petardoSpawnTime);
         GameObject clone = Instantiate(petardo, petardoSpawnPosition.position, Quaternion.Euler(0f, transform.eulerAngles.y, 0f), null);
         Rigidbody rb = clone.GetComponent<Rigidbody>();
-        rb.AddForce(transform.forward * petardoForce, ForceMode.Impulse);
+        Vector3 force = transform.forward + Vector3.down/8f;
+        rb.AddForce(force * petardoForce, ForceMode.Impulse);
+
+
+        rb.AddTorque(new Vector3(Random.value, Random.value, Random.value) * rotationForce, ForceMode.Impulse);
+
     }
 
     void RayCast_Rotation(float rotationTime)
@@ -224,7 +237,7 @@ public class Eric_Movement : MonoBehaviour
         float damageFromCurve = damageCurve.Evaluate(elapsedTime);
 
         int currentDamage = (int)damageFromCurve;
-        int dmg = (int) Math.Ceiling((double) currentDamage/10);
+        int dmg = Mathf.CeilToInt((float) currentDamage / 10);
         //currentDamage = Mathf.Min(currentDamage, maxDamage);
         //Este if manda el dmg de la habilidad cada 0,1 secs a los enemigos
         timeSinceLastDamage += Time.deltaTime;
