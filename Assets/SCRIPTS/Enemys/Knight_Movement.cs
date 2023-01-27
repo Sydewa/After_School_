@@ -144,6 +144,31 @@ public class Knight_Movement : MonoBehaviour
         
     }
 
+    /*
+    bool RandomPoint(Vector3 center, float range, out Vector3 point)
+    {
+        Vector3 randomPoint = center + Random.insideUnitSphere * range;
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(randomPoint, out hit, 4, NavMesh.AllAreas))
+        {
+            point = hit.position;
+            return true;
+        }
+
+        point = Vector3.zero;
+        return false;
+
+        //Esto en patrol
+
+        Vector3 randomPosition;
+
+        if(RandomPoint(transform.position, patrolRadius, randomPosition))
+        {
+            agent.destination = randomPosition;
+        }
+
+    }*/
+
     void Chase()
     {
         
