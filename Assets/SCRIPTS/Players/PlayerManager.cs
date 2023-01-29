@@ -21,15 +21,24 @@ public class PlayerManager : MonoBehaviour
     public static int soraVida;
     public static int mossiVida;
 
+    int characterOrder;
+    public HUD_Controller hud_Controller;
+
+    void Awake() 
+    {
+        hud_Controller = GameObject.Find("HealthBars").GetComponent<HUD_Controller>();    
+    }
     void Start()
     {
         Reset();
     }
+
     void Reset()
     {
         activeCharacter = eric;
         activeCharacter.name = "Eric";
         eric.transform.position = new Vector3(activeCharacter.transform.position.x, 0.51f, activeCharacter.transform.position.z);
+        characterOrder = 0;
         antia.SetActive(false);
         mossi.SetActive(false);
         sora.SetActive(false);
@@ -90,6 +99,9 @@ public class PlayerManager : MonoBehaviour
                 eric.SetActive(true);
                 activeCharacter = eric;
                 activeCharacter.name = "Eric";
+
+                characterOrder = 0;
+                hud_Controller.ChangeActiveCharacter(characterOrder);
             break;
             case "2":
                 if(activeCharacter.name == "Antia")
@@ -102,6 +114,9 @@ public class PlayerManager : MonoBehaviour
                 antia.SetActive(true);
                 activeCharacter = antia;
                 activeCharacter.name = "Antia";
+                
+                characterOrder = 1;
+                hud_Controller.ChangeActiveCharacter(characterOrder);
             break;
             case "3":
                 if(activeCharacter.name == "Sora")
@@ -114,6 +129,9 @@ public class PlayerManager : MonoBehaviour
                 sora.SetActive(true);
                 activeCharacter = sora;
                 activeCharacter.name = "Sora";
+
+                characterOrder = 2;
+                hud_Controller.ChangeActiveCharacter(characterOrder);
             break;
             case "4":
                 if(activeCharacter.name == "Mossi")
@@ -126,6 +144,9 @@ public class PlayerManager : MonoBehaviour
                 mossi.SetActive(true);
                 activeCharacter = mossi;
                 activeCharacter.name = "Mossi";
+
+                characterOrder = 3;
+                hud_Controller.ChangeActiveCharacter(characterOrder);
             break;
 
             default:
