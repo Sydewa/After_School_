@@ -24,4 +24,10 @@ public class Knight_AnimationEvents : MonoBehaviour
     {
         charDamaged = false;
     }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(attackPosition.position, attackRadius);
+    }
 }

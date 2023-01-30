@@ -1536,9 +1536,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d107562da653e8d4ebb2c6e9b805bb6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _knightStats: {fileID: 0}
-  attackPosition: {fileID: 0}
-  attackRadius: 0
+  _knightStats: {fileID: 11400000, guid: 9932b105dfa24fe4496cedbd5061009a, type: 2}
+  attackPosition: {fileID: 1690802964}
+  attackRadius: 0.45
 --- !u!1 &401294497 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 549d02a2f89e03d49be80a7a3945f395,
