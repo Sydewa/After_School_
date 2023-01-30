@@ -61,7 +61,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ericStats: {fileID: 11400000, guid: b2740f8874e2e0046a822d34f19c3483, type: 2}
-  explosionRadius: 0.65
+  explosionRadius: 1
 --- !u!54 &3406197800844453830
 Rigidbody:
   m_ObjectHideFlags: 0

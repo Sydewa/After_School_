@@ -11,19 +11,11 @@ public class Eric_Petardo : MonoBehaviour
 
     void Start()
     {
-        /*rb = GetComponent<Rigidbody>();
-        
-        Vector3 mousePos = Input.mousePosition;
-        Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-        Vector3 direction = (worldPos - rb.position).normalized;
-        
-        rb.AddForce(transform.position * impulse, ForceMode.Impulse);
-        //Debug.DrawRay(rb.position, direction * impulse, Color.green);*/
         Debug.Log("Petardo");
     }
     private void OnTriggerEnter(Collider other) 
     {
-        if(other.CompareTag("Ground"))
+        if(other.CompareTag("Ground") || other.CompareTag("Enemy"))
         {
             Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, LayerMask.GetMask("Enemy"));
             if (colliders.Length > 0)

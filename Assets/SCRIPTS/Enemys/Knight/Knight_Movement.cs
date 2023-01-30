@@ -32,11 +32,7 @@ public class Knight_Movement : MonoBehaviour
     //Attack variables------------------------
     [Header ("Attack")]
     float elapsedTimeAttack;
-    [SerializeField]Vector2 checkSphereTime;
-    [SerializeField]float attackRadius;
-    [SerializeField]Transform attackPosition;
     [SerializeField]float attackSmoothRotation;
-    bool charDamaged;
 
 
 
@@ -197,7 +193,6 @@ public class Knight_Movement : MonoBehaviour
 
     void AttackStart()
     {
-        charDamaged = false;
         
         anim.speed = 1f;
         anim.SetTrigger("Attack");
@@ -208,16 +203,6 @@ public class Knight_Movement : MonoBehaviour
     {
         elapsedTimeAttack += Time.deltaTime;
         agent.destination = PlayerManager.activeCharacter.transform.position;
-        
-        if(elapsedTimeAttack > checkSphereTime.x && elapsedTimeAttack < checkSphereTime.y)
-        {
-            if(Physics.OverlapSphere(attackPosition.position, attackRadius, LayerMask.GetMask("Player")).Length > 0 && !charDamaged)
-            {
-                PlayerManager.CharacterDamaged(_knightStats.attackDMG);
-                charDamaged = true;
-            }
-            
-        }
         
         Vector3 direction = PlayerManager.activeCharacter.transform.position;
         Quaternion rotation = Quaternion.LookRotation(direction);
@@ -245,8 +230,8 @@ public class Knight_Movement : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, attackRange);
 
         //Radio en el que ataca
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(attackPosition.position, attackRadius);
+        //Gizmos.color = Color.green;
+        //Gizmos.DrawWireSphere(attackPosition.position, attackRadius);
     }
 
 }

@@ -9,7 +9,7 @@ public class Eric_Movement : MonoBehaviour
     private Animator anim;
     [SerializeField]Stats ericStats;
 
-    bool isOnAction;
+    public bool isOnAction;
     
     //Variables de movimiento
     [Header ("Movimiento")]
@@ -25,17 +25,15 @@ public class Eric_Movement : MonoBehaviour
     float turnSmoothVelocity;
 
     //-----------------------------------------------------------
-    private EricCharacterState _EricState;
+    public EricCharacterState _EricState;
 
     //Variables ATTACK
     [Header ("Attack")]
     [SerializeField]Transform petardoSpawnPosition;
-    [SerializeField]GameObject petardo;
-    [SerializeField]float petardoSpawnTime;
     [SerializeField]float petardoForce;
     [SerializeField]float rotationForce;
-    float _nextAttack;
-    float _attackCancel;
+    public float _nextAttack;
+
 
     //Variables ABILITY LUPA
     [Header ("Habilidad")]
@@ -104,34 +102,12 @@ public class Eric_Movement : MonoBehaviour
                 anim.SetTrigger("Attack 0");
                 AttackStart();
                 //SpawnPetardo();
-                StartCoroutine(SpawnPetardo2());
-                _EricState = EricCharacterState.OnAttack;
             break;
-
             case EricCharacterState.OnAttack:
-                //Debug.Log("AttackAnim");
-                //Si el tiempo actual es mayor que el tiempo a partir del cual se puede cancelar animacion se acaba la fase de ataque.
-                //Si el tiempo actual es mayor que el tiempo de cancelacion + 1f (que es el tiempo que tarda la animacion entera) enviar a idle
-                //Si cuando se ha acabado el ataque y te mueves enviar a Running state
-                if(Time.time > _attackCancel)
-                {
-                    isOnAction = false;
-                    
-                }
-                else if(Time.time > (_attackCancel + 1f))
-                {
-                    _EricState = EricCharacterState.Idle;
-                }
-                
-                if(move != Vector3.zero && Time.time > _attackCancel)
-                {
-                    _EricState = EricCharacterState.Running;
-                }
             break;
 
             case EricCharacterState.AbilityStart:
                 startTime = Time.time;
-                isOnAction = true;
                 anim.SetBool("OnAbility", true);
                 StartCoroutine(_lupa.OnLupaStart());
                 _EricState = EricCharacterState.OnAbility;
@@ -192,28 +168,7 @@ public class Eric_Movement : MonoBehaviour
     void AttackStart()
     {
         RayCast_Rotation(50000f);
-        //Empieza el timer para el attackCancel y el nextAttack y apartir de ahora estara atacando. Enviar al state OnAttack
-        _attackCancel = Time.time + 0.6f;
-        _nextAttack = _attackCancel + ericStats.attackSpeed;
-        isOnAction = true;
-    }
-
-    void SpawnPetardo()
-    {
-        
-    }
-    
-    IEnumerator SpawnPetardo2()
-    {
-        yield return new WaitForSeconds(petardoSpawnTime);
-        GameObject clone = Instantiate(petardo, petardoSpawnPosition.position, Quaternion.Euler(0f, transform.eulerAngles.y, 0f), null);
-        Rigidbody rb = clone.GetComponent<Rigidbody>();
-        Vector3 force = transform.forward + Vector3.down/8f;
-        rb.AddForce(force * petardoForce, ForceMode.Impulse);
-
-
-        rb.AddTorque(new Vector3(Random.value, Random.value, Random.value) * rotationForce, ForceMode.Impulse);
-
+        _EricState = EricCharacterState.OnAttack;
     }
 
     void RayCast_Rotation(float rotationTime)
@@ -247,6 +202,7 @@ public class Eric_Movement : MonoBehaviour
         
         //Creamos un Raycast como el que ya hemos hecho, de la camara hacia donde esta apuntando el raton en la escena, y luego creamos otro que va del centro de la lupa hasta el hit.point del primer  Raycast
         //Fcking kill me please
+        //HACER PARTICULAS O EL RAYO VISIBLE
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
@@ -281,12 +237,18 @@ public class Eric_Movement : MonoBehaviour
         //Si aprietas click izquierdo y el tiempo es mayor que el next attack, que _nextAttack es el tiempo del sistema del ataque anterior + el CD del ataque. 
         if(Input.GetButtonDown("Fire1") && Time.time > _nextAttack && !isOnAction)
         {
+            isOnAction = true;
             _EricState = EricCharacterState.AttackStart;
         }
 
         if(Input.GetButtonDown("Fire2") && Time.time > _nextAbility && !isOnAction)
         {
+            isOnAction = true;
             _EricState = EricCharacterState.AbilityStart;
+        }
+        if(move != Vector3.zero && !isOnAction)
+        {
+            _EricState = EricCharacterState.Running;
         }
 
         //Meter los inputs de menu y tal
