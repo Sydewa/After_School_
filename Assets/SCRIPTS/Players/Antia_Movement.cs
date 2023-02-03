@@ -23,6 +23,12 @@ public class Antia_Movement : MonoBehaviour
     [SerializeField]float turnSmoothTime;
     float turnSmoothVelocity;
 
+    [Header ("Dash")]
+
+    [SerializeField]float dashForce;
+    [SerializeField]float dashDuration;
+    [SerializeField]float dashLength;
+
     //-----------------------------------------------------------
     private AntiaCharacterState _AntiaState;
 
@@ -46,6 +52,7 @@ public class Antia_Movement : MonoBehaviour
         {
             case AntiaCharacterState.Idle:
                 //anim.SetBool("Run", false);
+                isOnAction = false;
                 if(move != Vector3.zero)
                 {
                     _AntiaState = AntiaCharacterState.Running;
@@ -59,22 +66,16 @@ public class Antia_Movement : MonoBehaviour
                 if(move ==  Vector3.zero)
                 {
                     _AntiaState = AntiaCharacterState.Idle;
+                    timePassed = 0f;
                 }
             break;
 
             case AntiaCharacterState.Attack:
-                //Hacer animacion, en esa animacion crear un evento que cree un trigger que detecte si donde ha attackado Eric hay enemigos y danyarles.
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
+                Attack();
+            break;
 
-                if (Physics.Raycast(ray, out hit))
-                {
-                    Vector3 direction = hit.point - transform.position;
-                    Quaternion rotation = Quaternion.LookRotation(direction);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, rotation.eulerAngles.y, 0f), Time.deltaTime * smoothTimeLookAtMouse);
-                }
-                controller.Move(move.normalized * (antiaStats.speed/4.5f) * Time.deltaTime);
-                _AntiaState = AntiaCharacterState.Idle;
+            case AntiaCharacterState.AbilityStart:
+                StartCoroutine(Dash());
             break;
 
             case AntiaCharacterState.Dying:
@@ -100,13 +101,46 @@ public class Antia_Movement : MonoBehaviour
 
         float currentSpeed = Mathf.Lerp(0, antiaStats.speed, x);
         controller.Move(move.normalized * currentSpeed * Time.deltaTime);
-        if(move == Vector3.zero)
-        {
-            timePassed = 0;
-            _AntiaState = AntiaCharacterState.Idle;
-        }
     }
 
+    void Attack()
+    {
+        //Hacer animacion, en esa animacion crear un evento que cree un trigger que detecte si donde ha attackado Eric hay enemigos y danyarles.
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            Vector3 direction = hit.point - transform.position;
+            Quaternion rotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, rotation.eulerAngles.y, 0f), Time.deltaTime * smoothTimeLookAtMouse);
+        }
+        controller.Move(move.normalized * (antiaStats.speed/4.5f) * Time.deltaTime);
+        _AntiaState = AntiaCharacterState.Idle;
+    }
+
+    IEnumerator Dash()
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime <= dashDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            
+            if(move == Vector3.zero)
+            {
+                Vector3 moveDerection= transform.forward*dashLength;
+                controller.Move(moveDerection * dashForce * Time.deltaTime);
+            }
+            else
+            {
+                Vector3 moveDerection= move*dashLength;
+                controller.Move(moveDerection * dashForce * Time.deltaTime);
+            }
+            yield return _AntiaState = AntiaCharacterState.Idle;
+        }
+        
+    }
+    
     void CheckInput()
     {
         
@@ -115,20 +149,16 @@ public class Antia_Movement : MonoBehaviour
             _AntiaState = AntiaCharacterState.Dying;
         }
         //Si aprietas click izquierdo y el tiempo es mayor que el next attack, que _nextAttack es el tiempo del sistema del ataque anterior + el CD del ataque. 
-        if(Input.GetButtonDown("Fire1") && !isOnAction)
+        if(Input.GetButton("Fire1") && !isOnAction)
         {
             isOnAction = true;
             _AntiaState = AntiaCharacterState.Attack;
         }
 
-        if(Input.GetButtonDown("Fire2") && !isOnAction)
+        if(Input.GetButtonDown("Fire2"))
         {
             isOnAction = true;
             _AntiaState = AntiaCharacterState.AbilityStart;
-        }
-        if(move != Vector3.zero && !isOnAction)
-        {
-            _AntiaState = AntiaCharacterState.Running;
         }
 
         //Meter los inputs de menu y tal en otro script
