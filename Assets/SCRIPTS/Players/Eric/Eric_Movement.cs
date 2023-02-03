@@ -103,6 +103,7 @@ public class Eric_Movement : MonoBehaviour
                 AttackStart();
                 //SpawnPetardo();
             break;
+
             case EricCharacterState.OnAttack:
             break;
 
@@ -193,8 +194,7 @@ public class Eric_Movement : MonoBehaviour
 
         int currentDamage = (int)damageFromCurve;
         int dmg = Mathf.CeilToInt((float) currentDamage / 10);
-        //currentDamage = Mathf.Min(currentDamage, maxDamage);
-        //Este if manda el dmg de la habilidad cada 0,1 secs a los enemigos
+
         timeSinceLastDamage += Time.deltaTime;
         
 
@@ -251,7 +251,7 @@ public class Eric_Movement : MonoBehaviour
             _EricState = EricCharacterState.Running;
         }
 
-        //Meter los inputs de menu y tal
+        //Meter los inputs de menu y tal en otro script
     }
 
     

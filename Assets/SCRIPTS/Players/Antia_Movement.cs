@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum AntiaCharacterState { Idle, Running, Dying, Attack }
+public enum AntiaCharacterState { Idle, Running, Dying, Attack, AbilityStart }
 public class Antia_Movement : MonoBehaviour
 {
     private CharacterController controller;
     //private Animator anim;
     [SerializeField]Stats antiaStats;
+
+    bool isOnAction;
     
     //Variables de movimiento
     Vector3 velocity = new Vector3(0f, -9.81f, 0f);
@@ -39,15 +41,7 @@ public class Antia_Movement : MonoBehaviour
 
     public void AntiaStates()
     {
-
-        if(PlayerManager.antiaVida <= 0)
-        {
-            _AntiaState = AntiaCharacterState.Dying;
-        }
-        if(Input.GetButton("Fire1"))
-        {
-            _AntiaState = AntiaCharacterState.Attack;
-        }
+        CheckInput();
         switch(_AntiaState)
         {
             case AntiaCharacterState.Idle:
@@ -56,38 +50,15 @@ public class Antia_Movement : MonoBehaviour
                 {
                     _AntiaState = AntiaCharacterState.Running;
                 }
-                if(Input.GetButton("Fire1"))
-                {
-                    _AntiaState = AntiaCharacterState.Attack;
-                }
             break;
 
             case AntiaCharacterState.Running: 
                 
                 //anim.SetBool("Run", true);
-                //Rotacion del personaje
-                float targetAngle = Mathf.Atan2(move.x, move.z) * Mathf.Rad2Deg;
-                float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-                transform.rotation = Quaternion.Euler(0, angle, 0);
-                
-                //Movimiento
-                float x = 0;
-                timePassed += Time.deltaTime;
-                float acceleration = timePassed / accelerationTime;
-
-                x = Mathf.Lerp(0, 1, acceleration);
-
-                float currentSpeed = Mathf.Lerp(0, antiaStats.speed, x);
-                controller.Move(move.normalized * currentSpeed * Time.deltaTime);
-                if(move == Vector3.zero)
+                Running();
+                if(move ==  Vector3.zero)
                 {
-                    timePassed = 0;
                     _AntiaState = AntiaCharacterState.Idle;
-                }
-                if(Input.GetButton("Fire1"))
-                {
-                    //anim.SetBool("Run", false);
-                    _AntiaState = AntiaCharacterState.Attack;
                 }
             break;
 
@@ -112,5 +83,55 @@ public class Antia_Movement : MonoBehaviour
             default:
             break;
         }
+    }
+
+    void Running()
+    {
+        float targetAngle = Mathf.Atan2(move.x, move.z) * Mathf.Rad2Deg;
+        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+        transform.rotation = Quaternion.Euler(0, angle, 0);
+                
+        //Movimiento
+        float x = 0;
+        timePassed += Time.deltaTime;
+        float acceleration = timePassed / accelerationTime;
+
+        x = Mathf.Lerp(0, 1, acceleration);
+
+        float currentSpeed = Mathf.Lerp(0, antiaStats.speed, x);
+        controller.Move(move.normalized * currentSpeed * Time.deltaTime);
+        if(move == Vector3.zero)
+        {
+            timePassed = 0;
+            _AntiaState = AntiaCharacterState.Idle;
+        }
+    }
+
+    void CheckInput()
+    {
+        
+        if(PlayerManager.ericVida <= 0)
+        {
+            _AntiaState = AntiaCharacterState.Dying;
+        }
+        //Si aprietas click izquierdo y el tiempo es mayor que el next attack, que _nextAttack es el tiempo del sistema del ataque anterior + el CD del ataque. 
+        if(Input.GetButtonDown("Fire1") && !isOnAction)
+        {
+            isOnAction = true;
+            _AntiaState = AntiaCharacterState.Attack;
+        }
+
+        if(Input.GetButtonDown("Fire2") && !isOnAction)
+        {
+            isOnAction = true;
+            _AntiaState = AntiaCharacterState.AbilityStart;
+        }
+        if(move != Vector3.zero && !isOnAction)
+        {
+            _AntiaState = AntiaCharacterState.Running;
+        }
+
+        //Meter los inputs de menu y tal en otro script
+        
     }
 }

@@ -928,13 +928,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 1.76
-  m_Radius: 0.4
+  m_Height: 1.17
+  m_Radius: 0.57
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.24, z: 0}
+  m_Center: {x: 0, y: 0.08, z: 0}
 --- !u!114 &236045185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -972,7 +972,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: b0d5eaf689a5448429c13d656ec168bf,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.33
+      value: 0.67
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b0d5eaf689a5448429c13d656ec168bf,
         type: 3}
@@ -1053,7 +1053,7 @@ GameObject:
   - component: {fileID: 262445065}
   - component: {fileID: 262445064}
   m_Layer: 5
-  m_Name: Exclamacion
+  m_Name: ExclamacionSora
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1100,11 +1100,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 6c5f7d79455d5674a914274f2f1ee811, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 1
   m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillMethod: 1
+  m_FillAmount: 0.71
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -1219,7 +1219,7 @@ GameObject:
   - component: {fileID: 290412113}
   - component: {fileID: 290412112}
   m_Layer: 5
-  m_Name: Exclamacion
+  m_Name: ExclamacionEric
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1266,11 +1266,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 6c5f7d79455d5674a914274f2f1ee811, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 1
   m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillMethod: 1
+  m_FillAmount: 0.513
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -4312,7 +4312,7 @@ GameObject:
   - component: {fileID: 586510051}
   - component: {fileID: 586510050}
   m_Layer: 5
-  m_Name: Exclamacion
+  m_Name: ExclamacionMossi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4359,11 +4359,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 6c5f7d79455d5674a914274f2f1ee811, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 1
   m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillMethod: 1
+  m_FillAmount: 0.53
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -4495,7 +4495,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh42792
+  m_Name: pb_Mesh28408
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -5272,7 +5272,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh42446
+  m_Name: pb_Mesh28046
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -5798,6 +5798,60 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: be4d104d0d559cb4fa900fbbff8dbef7, type: 3}
+--- !u!1 &863856283
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 863856284}
+  - component: {fileID: 863856285}
+  m_Layer: 5
+  m_Name: ExclamacionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &863856284
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 863856283}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1490748214}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &863856285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 863856283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e24673be26eb524692645addbabb201, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  masks:
+  - {fileID: 290412112}
+  - {fileID: 2138405226}
+  - {fileID: 262445064}
+  - {fileID: 586510050}
 --- !u!1001 &864775058
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6934,7 +6988,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh42348
+  m_Name: pb_Mesh27948
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -7881,7 +7935,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 41eace3007836f2488801504297ebb07,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.7
+      value: -0.488
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 41eace3007836f2488801504297ebb07,
         type: 3}
@@ -8053,7 +8107,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 5c6f155cbd876444c8c6932c6bf67714,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5c6f155cbd876444c8c6932c6bf67714,
         type: 3}
@@ -8063,7 +8117,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 5c6f155cbd876444c8c6932c6bf67714,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.184
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5c6f155cbd876444c8c6932c6bf67714,
         type: 3}
@@ -8118,7 +8172,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh42174
+  m_Name: pb_Mesh27760
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -8741,7 +8795,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1375272563}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -2.439, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8764,10 +8818,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc78649238d7894bae258e30ee3f8c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eric: {fileID: 2056266271}
-  antia: {fileID: 1777710811}
-  mossi: {fileID: 1835000870}
-  sora: {fileID: 236045181}
+  characters:
+  - {fileID: 2056266271}
+  - {fileID: 1777710811}
+  - {fileID: 236045181}
+  - {fileID: 1835000870}
   ericStats: {fileID: 11400000, guid: b2740f8874e2e0046a822d34f19c3483, type: 2}
   antiaStats: {fileID: 11400000, guid: d9544395b735e54469070d39a83483e9, type: 2}
   soraStats: {fileID: 11400000, guid: f3433f39688ca684590e04b7e84ddc84, type: 2}
@@ -8989,6 +9044,7 @@ RectTransform:
   - {fileID: 1250812269}
   - {fileID: 788986664}
   - {fileID: 1015983015}
+  - {fileID: 863856284}
   m_Father: {fileID: 1872180669}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9902,13 +9958,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 1.76
-  m_Radius: 0.4
+  m_Height: 1.17
+  m_Radius: 0.57
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.24, z: 0}
+  m_Center: {x: 0, y: 0.08, z: 0}
 --- !u!114 &1777710814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10154,13 +10210,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 1.58
-  m_Radius: 0.26
+  m_Height: 1.17
+  m_Radius: 0.57
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.09, z: -0.12}
+  m_Center: {x: 0, y: 0.08, z: 0}
 --- !u!114 &1835000874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10265,7 +10321,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh42404
+  m_Name: pb_Mesh28004
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -10469,7 +10525,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh42856
+  m_Name: pb_Mesh28472
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -11246,7 +11302,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh42302
+  m_Name: pb_Mesh27890
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -13942,7 +13998,7 @@ GameObject:
   - component: {fileID: 2138405227}
   - component: {fileID: 2138405226}
   m_Layer: 5
-  m_Name: Exclamacion
+  m_Name: ExclamacionAntia
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13989,11 +14045,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 6c5f7d79455d5674a914274f2f1ee811, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 1
   m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillMethod: 1
+  m_FillAmount: 0.535
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0

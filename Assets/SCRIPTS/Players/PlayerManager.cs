@@ -6,10 +6,7 @@ public class PlayerManager : MonoBehaviour
 {
     public static GameObject activeCharacter;
 
-    [SerializeField]GameObject eric;
-    [SerializeField]GameObject antia;
-    [SerializeField]GameObject mossi;
-    [SerializeField]GameObject sora;
+    [SerializeField]GameObject[] characters;
 
     //Stats personajes
     public Stats ericStats;
@@ -24,6 +21,10 @@ public class PlayerManager : MonoBehaviour
     int characterOrder;
     public HUD_Controller hud_Controller;
 
+    //Character Swap variables
+    [SerializeField]public static float charSwapTime = 2f;
+    bool canChange;
+
     void Awake() 
     {
         hud_Controller = GameObject.Find("HealthBars").GetComponent<HUD_Controller>();    
@@ -35,13 +36,15 @@ public class PlayerManager : MonoBehaviour
 
     void Reset()
     {
-        activeCharacter = eric;
-        activeCharacter.name = "Eric";
-        eric.transform.position = new Vector3(activeCharacter.transform.position.x, 0.51f, activeCharacter.transform.position.z);
+        activeCharacter = characters[0];
+        activeCharacter.name = characters[0].name.ToString();
+        characters[0].transform.position = new Vector3(activeCharacter.transform.position.x, activeCharacter.transform.position.y, activeCharacter.transform.position.z);
         characterOrder = 0;
-        antia.SetActive(false);
-        mossi.SetActive(false);
-        sora.SetActive(false);
+        foreach(GameObject character in characters)
+        {
+            character.SetActive(false);
+        }
+        activeCharacter.SetActive(true);
 
         //Setear las variables
         ericVida = ericStats.vida;
@@ -51,11 +54,18 @@ public class PlayerManager : MonoBehaviour
         soraVida = soraStats.vida;
 
         mossiVida = mossiStats.vida;
+
+        //-----
+        canChange = true;
     }
     
     void Update() 
     {
-        SwitchCharacter();
+        if(canChange)
+        {
+            SwitchCharacter();
+        }
+        
     }
 
     public static void CharacterDamaged(int damageTaken)
@@ -89,69 +99,50 @@ public class PlayerManager : MonoBehaviour
         {
             case "1":
             //Desactivo char activo, copio su transform y se lo aplico al personaje que quiero. Activo el personaje y lo convierto en el personaje activo.
-                if(activeCharacter.name == "Eric")
-                {
-                    return;
-                }
-                eric.transform.position = new Vector3(activeCharacter.transform.position.x, 0.6f, activeCharacter.transform.position.z);
-                eric.transform.rotation = Quaternion.Euler(0f, activeCharacter.transform.eulerAngles.y, 0f);
-                activeCharacter.SetActive(false);
-                eric.SetActive(true);
-                activeCharacter = eric;
-                activeCharacter.name = "Eric";
-
                 characterOrder = 0;
-                hud_Controller.ChangeActiveCharacter(characterOrder);
+                CharacterSwap(characterOrder);
             break;
             case "2":
-                if(activeCharacter.name == "Antia")
-                {
-                    return;
-                }
-                activeCharacter.SetActive(false);
-                antia.transform.position = new Vector3(activeCharacter.transform.position.x, 0.69f, activeCharacter.transform.position.z);
-                antia.transform.rotation = Quaternion.Euler(0f, activeCharacter.transform.eulerAngles.y, 0f);
-                antia.SetActive(true);
-                activeCharacter = antia;
-                activeCharacter.name = "Antia";
-                
                 characterOrder = 1;
-                hud_Controller.ChangeActiveCharacter(characterOrder);
+                CharacterSwap(characterOrder);
             break;
             case "3":
-                if(activeCharacter.name == "Sora")
-                {
-                    return;
-                }
-                activeCharacter.SetActive(false);
-                sora.transform.position = new Vector3(activeCharacter.transform.position.x, 0f, activeCharacter.transform.position.z);
-                sora.transform.rotation = Quaternion.Euler(0f, activeCharacter.transform.eulerAngles.y, 0f);
-                sora.SetActive(true);
-                activeCharacter = sora;
-                activeCharacter.name = "Sora";
-
                 characterOrder = 2;
-                hud_Controller.ChangeActiveCharacter(characterOrder);
+                CharacterSwap(characterOrder);
             break;
             case "4":
-                if(activeCharacter.name == "Mossi")
-                {
-                    return;
-                }
-                activeCharacter.SetActive(false);
-                mossi.transform.position = new Vector3(activeCharacter.transform.position.x, 1f, activeCharacter.transform.position.z);
-                mossi.transform.rotation = Quaternion.Euler(0f, activeCharacter.transform.eulerAngles.y, 0f);
-                mossi.SetActive(true);
-                activeCharacter = mossi;
-                activeCharacter.name = "Mossi";
-
                 characterOrder = 3;
-                hud_Controller.ChangeActiveCharacter(characterOrder);
+                CharacterSwap(characterOrder);
             break;
 
             default:
             break;
         }
+    }
+
+    IEnumerator CharSwapCD()
+    {
+        canChange = false;
+        yield return new WaitForSeconds(charSwapTime);
+        canChange = true;
+    }
+
+    void CharacterSwap(int i)
+    {
+        if(activeCharacter.name == characters[i].name)
+        {
+            return;
+        }
+        characters[i].transform.position = new Vector3(activeCharacter.transform.position.x, characters[i].transform.position.y, activeCharacter.transform.position.z);
+        characters[i].transform.rotation = Quaternion.Euler(0f, activeCharacter.transform.eulerAngles.y, 0f);
+        activeCharacter.SetActive(false);
+        characters[i].SetActive(true);
+        activeCharacter = characters[i];
+        activeCharacter.name = characters[i].name.ToString();
+
+        hud_Controller.ChangeActiveCharacter(i);
+        StartCoroutine(CharSwapCD());
+        CharChange_CoolDown._charChange_CoolDown.StartCoroutine("StartTimer");
     }
 
 }
