@@ -204,10 +204,14 @@ public class Knight_Movement : MonoBehaviour
         elapsedTimeAttack += Time.deltaTime;
         agent.destination = PlayerManager.activeCharacter.transform.position;
         
-        Vector3 direction = PlayerManager.activeCharacter.transform.position;
-        Quaternion rotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, rotation.eulerAngles.y, 0f), Time.deltaTime * attackSmoothRotation);
         
+        Vector3 direction = PlayerManager.activeCharacter.transform.position - transform.position;
+        if (direction.magnitude > 0.1f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * attackSmoothRotation);
+        }
+
         if(elapsedTimeAttack > _knightStats.attackSpeed)
         {
             elapsedTimeAttack = 0;

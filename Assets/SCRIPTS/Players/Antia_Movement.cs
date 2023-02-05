@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum AntiaCharacterState { Idle, Running, Dying, Attack, AbilityStart }
+public enum AntiaCharacterState { Idle, Running, Dying, Attack, AbilityStart, Reload }
 public class Antia_Movement : MonoBehaviour
 {
     private CharacterController controller;
@@ -23,6 +23,21 @@ public class Antia_Movement : MonoBehaviour
     [SerializeField]float turnSmoothTime;
     float turnSmoothVelocity;
 
+    [Header ("Attack")]
+
+    [SerializeField]float reloadTime;
+    [SerializeField]float maxShootingTime;
+    float waterTankAmount;
+    [SerializeField]float maxWaterTankAmount;
+    [SerializeField]AnimationCurve waterLength;
+    [SerializeField]AnimationCurve waterIconCurve;
+    [SerializeField]MunicionAntia _municionAntia;
+    bool isReloaded;
+    float shootingTime;
+    float elapsedTimeReload;
+    public GameObject cube;
+
+
     [Header ("Dash")]
 
     [SerializeField]float dashForce;
@@ -35,6 +50,7 @@ public class Antia_Movement : MonoBehaviour
     void Awake()
     {
         controller = GetComponent<CharacterController>();
+        isReloaded = true;
         //anim = GetComponentInChildren<Animator>();
     }
 
@@ -74,6 +90,11 @@ public class Antia_Movement : MonoBehaviour
                 Attack();
             break;
 
+            case AntiaCharacterState.Reload:
+                StartCoroutine(TriggerReload());
+                _AntiaState = AntiaCharacterState.Idle;
+            break;
+
             case AntiaCharacterState.AbilityStart:
                 StartCoroutine(Dash());
             break;
@@ -105,18 +126,68 @@ public class Antia_Movement : MonoBehaviour
 
     void Attack()
     {
-        //Hacer animacion, en esa animacion crear un evento que cree un trigger que detecte si donde ha attackado Eric hay enemigos y danyarles.
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit))
+        if(Input.GetButton("Fire1"))
         {
-            Vector3 direction = hit.point - transform.position;
-            Quaternion rotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, rotation.eulerAngles.y, 0f), Time.deltaTime * smoothTimeLookAtMouse);
+            //Miramos al puntero
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                Vector3 direction = hit.point - transform.position;
+                Quaternion rotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, rotation.eulerAngles.y, 0f), Time.deltaTime * smoothTimeLookAtMouse);
+            }
+            //Nos movemos lentamente
+            controller.Move(move.normalized * (antiaStats.speed/4.5f) * Time.deltaTime);
+
+            //-------------------------------------------
+            ShootingLogic();
+
         }
-        controller.Move(move.normalized * (antiaStats.speed/4.5f) * Time.deltaTime);
-        _AntiaState = AntiaCharacterState.Idle;
+        else
+        {
+            cube.transform.localScale = new Vector3(0f, 0f, 0f);
+            _AntiaState = AntiaCharacterState.Idle;
+        }
+    }
+
+    void ShootingLogic()
+    {
+        shootingTime += Time.deltaTime;
+        float rayLength = waterLength.Evaluate(shootingTime);
+        float currentTankAmount = waterIconCurve.Evaluate((maxShootingTime - shootingTime)/2);
+        waterTankAmount = currentTankAmount;
+        _municionAntia.MunicionDisplay(waterTankAmount);
+
+        if(shootingTime >= maxShootingTime)
+        {
+            _AntiaState = AntiaCharacterState.Reload;
+        }
+        cube.transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, rayLength);
+        Ray ray = new Ray(transform.position, transform.forward);
+        RaycastHit hit;
+        if(Physics.Raycast(ray, out hit, rayLength))
+        {
+            //Mirar si toca enemigo, calcular danyo y enviarselo al enemigo
+        }
+    }
+
+    IEnumerator TriggerReload()
+    {
+        isReloaded = false;
+        shootingTime = 0f;
+        while(elapsedTimeReload < reloadTime)
+        {
+            elapsedTimeReload += Time.deltaTime;
+            float currentTankAmount = waterIconCurve.Evaluate(elapsedTimeReload);
+            waterTankAmount = currentTankAmount;
+            _municionAntia.MunicionDisplay(waterTankAmount);
+            yield return null;
+        }
+        elapsedTimeReload = 0f;
+        isReloaded = true;
     }
 
     IEnumerator Dash()
@@ -149,7 +220,7 @@ public class Antia_Movement : MonoBehaviour
             _AntiaState = AntiaCharacterState.Dying;
         }
         //Si aprietas click izquierdo y el tiempo es mayor que el next attack, que _nextAttack es el tiempo del sistema del ataque anterior + el CD del ataque. 
-        if(Input.GetButton("Fire1") && !isOnAction)
+        if(Input.GetButton("Fire1") && !isOnAction && isReloaded)
         {
             isOnAction = true;
             _AntiaState = AntiaCharacterState.Attack;
