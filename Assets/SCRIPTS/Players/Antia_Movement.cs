@@ -35,8 +35,7 @@ public class Antia_Movement : MonoBehaviour
     bool isReloaded;
     float shootingTime;
     float elapsedTimeReload;
-    public BoxCollider cube;
-    public Transform endPoint;
+    public GameObject cube;
 
 
     [Header ("Dash")]
@@ -166,16 +165,15 @@ public class Antia_Movement : MonoBehaviour
         {
             _AntiaState = AntiaCharacterState.Reload;
         }
-        cube.transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, rayLength);
+        cube.transform.localScale = new Vector3(0.1f, 0.1f, rayLength);
         
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
         if(Physics.Raycast(ray, out hit, rayLength))
         {
             //Mirar si toca enemigo, calcular danyo y enviarselo al enemigo
-            endPoint.position = hit.point;
-            float distance = Vector3.Distance(transform.position, hit.point);
-            cube.center = new Vector3(0f, 0f, distance);            
+            
+                      
         }
     }
 

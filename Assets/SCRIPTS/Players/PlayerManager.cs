@@ -133,7 +133,7 @@ public class PlayerManager : MonoBehaviour
         {
             return;
         }
-        characters[i].transform.position = new Vector3(activeCharacter.transform.position.x, characters[i].transform.position.y, activeCharacter.transform.position.z);
+        characters[i].transform.position = new Vector3(activeCharacter.transform.position.x, activeCharacter.transform.position.y, activeCharacter.transform.position.z);
         characters[i].transform.rotation = Quaternion.Euler(0f, activeCharacter.transform.eulerAngles.y, 0f);
         activeCharacter.SetActive(false);
         characters[i].SetActive(true);

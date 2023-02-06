@@ -24,6 +24,12 @@ public class Sora_Movement : MonoBehaviour
     [SerializeField]float attackRadius;
     [SerializeField]LayerMask enemyLayer;
     [SerializeField]float pushForce;
+    float elapsedTimeAttack;
+
+    [Header ("Ability")]
+    [SerializeField]float abilityRadius;
+    [SerializeField]float abilityPushForce;
+    float _nextAbility;
 
     //Variables Smooth rotacion
     [SerializeField]float turnSmoothTime;
@@ -82,6 +88,7 @@ public class Sora_Movement : MonoBehaviour
             break;
 
             case SoraCharacterState.Ability:
+                Ability();
             break;
 
             case SoraCharacterState.Dying:
@@ -142,29 +149,59 @@ public class Sora_Movement : MonoBehaviour
     void ShootingLogic()
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, attackRadius, enemyLayer);
-        Debug.Log("Shoot");
-        //iterate through each collider
+        //Debug.Log("Shoot");
+        elapsedTimeAttack += Time.deltaTime;
+        if(elapsedTimeAttack >= soraStats.attackSpeed)
+        {
+            foreach (Collider collider in colliders)
+            {
+                //get the direction from the character to the enemy
+                Vector3 direction = (collider.transform.position - transform.position).normalized;
+
+                //calculate the dot product of the direction and the forward vector of the character
+                float dot = Vector3.Dot(direction, transform.forward);
+
+                //if the dot product is within the angle, the enemy is within the cone of attack
+                if (dot > Mathf.Cos(attackAngle / 2f * Mathf.Deg2Rad))
+                {
+                    //do something to the enemy, such as damaging it
+                    //Debug.Log("Enemy in range: " + collider.gameObject.name);
+                    EnemyDamaged _enemyDamaged = collider.GetComponent<EnemyDamaged>();
+                    float distance = Vector3.Distance(transform.position, collider.transform.position) + 1f;
+                    if(_enemyDamaged != null)
+                    {
+                        _enemyDamaged.OnEnemyDamaged(Mathf.CeilToInt(soraStats.attack/distance));
+                        _enemyDamaged.OnEnemyPushed(pushForce/distance, direction);
+                        Debug.Log(Mathf.CeilToInt(soraStats.attack/distance));
+                    }
+                }
+            }
+            elapsedTimeAttack = 0f;
+        }
+        
+    }
+
+    void Ability()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, abilityRadius, enemyLayer);
         foreach (Collider collider in colliders)
         {
             //get the direction from the character to the enemy
-            Vector2 direction = (collider.transform.position - transform.position).normalized;
-
-            //calculate the dot product of the direction and the forward vector of the character
-            float dot = Vector2.Dot(direction, transform.forward);
-
-            //if the dot product is within the angle, the enemy is within the cone of attack
-            if (dot > Mathf.Cos(attackAngle / 2f * Mathf.Deg2Rad))
+            Vector3 direction = (collider.transform.position - transform.position).normalized;
+            //do something to the enemy, such as damaging it
+            EnemyDamaged _enemyDamaged = collider.GetComponent<EnemyDamaged>();
+            float distance = Vector3.Distance(transform.position, collider.transform.position) + 1f;
+            if(_enemyDamaged != null)
             {
-                //do something to the enemy, such as damaging it
-                Debug.Log("Enemy in range: " + collider.gameObject.name);
-                EnemyDamaged _enemyDamaged = collider.GetComponent<EnemyDamaged>();
-                if(_enemyDamaged != null)
-                {
-                    //_enemyDamaged.OnEnemyDamaged(soraStats.attack);
-                    _enemyDamaged.OnEnemyPushed(pushForce, direction);
-                }
+                _enemyDamaged.OnEnemyDamaged(Mathf.CeilToInt((soraStats.power + soraStats.attack)/distance));
+                _enemyDamaged.OnEnemyPushed(abilityPushForce * abilityRadius/distance, direction);
+                Debug.Log(Mathf.CeilToInt((soraStats.power + soraStats.attack)/distance));
             }
+            
         }
+        _nextAbility = Time.time + soraStats.abilityCD;
+        _SoraState = SoraCharacterState.Idle;
+        isOnAction = false;
     }
 
 
@@ -184,7 +221,7 @@ public class Sora_Movement : MonoBehaviour
             _SoraState = SoraCharacterState.Attack;
         }
 
-        if(Input.GetButtonDown("Fire2") && !isDead)
+        if(Input.GetButtonDown("Fire2") && !isDead && Time.time > _nextAbility)
         {
             isOnAction = true;
             _SoraState = SoraCharacterState.Ability;
@@ -212,5 +249,8 @@ public class Sora_Movement : MonoBehaviour
     void OnDrawGizmosSelected()
     {
         VisualizeAttack();
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position,abilityRadius);
     }
 }
