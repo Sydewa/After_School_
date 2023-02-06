@@ -6,7 +6,8 @@ using UnityEngine;
 public class StatsEnemy : ScriptableObject
 {
     public int vida;
-    public float speed;
+    public float patrollingSpeed;
+    public float chasingSpeed;
 
     [Header("Variables attack")]
     public float attackSpeed;

@@ -18,7 +18,6 @@ public class Knight_Movement : MonoBehaviour
     //Patrol variables ----------------
     [Header ("Patrolling")]
 
-    [SerializeField]float patrollingSpeed;
     Vector3 spawnPosition;
     [SerializeField]float patrolRadius;
     float elapsedTimePatrolling;
@@ -26,8 +25,8 @@ public class Knight_Movement : MonoBehaviour
 
 
     //Chasing variables------------------------
-    [Header ("Chasing")]
-    [SerializeField]float chasingSpeed;
+    //[Header ("Chasing")]
+
 
     //Attack variables------------------------
     [Header ("Attack")]
@@ -115,7 +114,7 @@ public class Knight_Movement : MonoBehaviour
 
     void Patrol()
     {
-        agent.speed = patrollingSpeed;
+        agent.speed = _knightStats.patrollingSpeed;
         anim.SetBool("isRunning", true);
         anim.speed = 1f;
         //Mathf.Lerp(anim.speed, agent.speed, smoothTimeWalk * Time.deltaTime);
@@ -169,7 +168,7 @@ public class Knight_Movement : MonoBehaviour
     {
         
         agent.destination = PlayerManager.activeCharacter.transform.position;
-        agent.speed = chasingSpeed;
+        agent.speed = _knightStats.chasingSpeed;
         anim.SetBool("isRunning", true);
         anim.speed = Mathf.Lerp(anim.speed, agent.velocity.magnitude/1.3f, smoothTimeWalk * agent.acceleration);
 
@@ -196,7 +195,7 @@ public class Knight_Movement : MonoBehaviour
         
         anim.speed = 1f;
         anim.SetTrigger("Attack");
-        agent.speed = 0.5f;
+        agent.speed = 0f;
     }
 
     void OnAttack()

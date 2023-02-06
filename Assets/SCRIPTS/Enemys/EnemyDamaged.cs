@@ -6,10 +6,12 @@ public class EnemyDamaged : MonoBehaviour
 {
     [SerializeField]StatsEnemy _stats;
     int enemyHealth;
+    Rigidbody rb;
 
     void Awake()
     {
         enemyHealth = _stats.vida;
+        rb = GetComponent<Rigidbody>();
     }
     
     public void OnEnemyDamaged(int dmgTaken)
@@ -21,5 +23,10 @@ public class EnemyDamaged : MonoBehaviour
             //Hacer cosas
             Destroy(this.gameObject);
         }
+    }
+
+    public void OnEnemyPushed(float pushForce, Vector3 direction)
+    {
+        rb.AddForce(direction * pushForce, ForceMode.Impulse);
     }
 }

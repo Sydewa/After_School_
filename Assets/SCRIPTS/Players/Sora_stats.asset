@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Sora_stats
   m_EditorClassIdentifier: 
   vida: 150
-  speed: 0
-  attackSpeed: 0
+  speed: 5.8
+  attackSpeed: 0.5
   attack: 20
   abilityCD: 10
   power: 20

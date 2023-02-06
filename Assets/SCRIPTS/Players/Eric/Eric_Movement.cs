@@ -230,23 +230,26 @@ public class Eric_Movement : MonoBehaviour
     
     void CheckInput()
     {
+        bool isDead = false;
         if(PlayerManager.ericVida <= 0)
         {
+            isDead = true;
             _EricState = EricCharacterState.Dying;
+            
         }
         //Si aprietas click izquierdo y el tiempo es mayor que el next attack, que _nextAttack es el tiempo del sistema del ataque anterior + el CD del ataque. 
-        if(Input.GetButtonDown("Fire1") && Time.time > _nextAttack && !isOnAction)
+        if(Input.GetButtonDown("Fire1") && Time.time > _nextAttack && !isOnAction && !isDead)
         {
             isOnAction = true;
             _EricState = EricCharacterState.AttackStart;
         }
 
-        if(Input.GetButtonDown("Fire2") && Time.time > _nextAbility && !isOnAction)
+        if(Input.GetButtonDown("Fire2") && Time.time > _nextAbility && !isOnAction && !isDead)
         {
             isOnAction = true;
             _EricState = EricCharacterState.AbilityStart;
         }
-        if(move != Vector3.zero && !isOnAction)
+        if(move != Vector3.zero && !isOnAction && !isDead)
         {
             _EricState = EricCharacterState.Running;
         }

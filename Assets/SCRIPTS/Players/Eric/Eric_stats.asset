@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Eric_stats
   m_EditorClassIdentifier: 
   vida: 125
-  speed: 5
+  speed: 4.2
   attackSpeed: 0.5
   attack: 20
   abilityCD: 2

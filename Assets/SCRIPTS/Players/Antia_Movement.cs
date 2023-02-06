@@ -35,7 +35,8 @@ public class Antia_Movement : MonoBehaviour
     bool isReloaded;
     float shootingTime;
     float elapsedTimeReload;
-    public GameObject cube;
+    public BoxCollider cube;
+    public Transform endPoint;
 
 
     [Header ("Dash")]
@@ -166,11 +167,15 @@ public class Antia_Movement : MonoBehaviour
             _AntiaState = AntiaCharacterState.Reload;
         }
         cube.transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, rayLength);
+        
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
         if(Physics.Raycast(ray, out hit, rayLength))
         {
             //Mirar si toca enemigo, calcular danyo y enviarselo al enemigo
+            endPoint.position = hit.point;
+            float distance = Vector3.Distance(transform.position, hit.point);
+            cube.center = new Vector3(0f, 0f, distance);            
         }
     }
 
@@ -214,19 +219,20 @@ public class Antia_Movement : MonoBehaviour
     
     void CheckInput()
     {
-        
+        bool isDead = false;
         if(PlayerManager.ericVida <= 0)
         {
+            isDead = true;
             _AntiaState = AntiaCharacterState.Dying;
         }
         //Si aprietas click izquierdo y el tiempo es mayor que el next attack, que _nextAttack es el tiempo del sistema del ataque anterior + el CD del ataque. 
-        if(Input.GetButton("Fire1") && !isOnAction && isReloaded)
+        if(Input.GetButton("Fire1") && !isOnAction && isReloaded && !isDead)
         {
             isOnAction = true;
             _AntiaState = AntiaCharacterState.Attack;
         }
 
-        if(Input.GetButtonDown("Fire2"))
+        if(Input.GetButtonDown("Fire2") && !isDead)
         {
             isOnAction = true;
             _AntiaState = AntiaCharacterState.AbilityStart;
