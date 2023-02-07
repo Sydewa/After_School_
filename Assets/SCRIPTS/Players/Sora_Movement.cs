@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum SoraCharacterState { Idle, Running, Dying, Attack, Ability }
+public enum SoraCharacterState { Idle, Running, Dying, Attack, Ability, Ultimate }
 public class Sora_Movement : MonoBehaviour
 {
     private CharacterController controller;
@@ -28,6 +28,12 @@ public class Sora_Movement : MonoBehaviour
     [Header ("Ability")]
     [SerializeField]float abilityRadius;
     float _nextAbility;
+
+    [Header ("Ultimate")]
+    [SerializeField]float ultimateDuration;
+    Vector3 ultimatePosition;
+    float elapsedTimeUltimate;
+    float elapsedTimeUltimatePush;
 
     //Variables Smooth rotacion
     [SerializeField]float turnSmoothTime;
@@ -87,6 +93,12 @@ public class Sora_Movement : MonoBehaviour
 
             case SoraCharacterState.Ability:
                 Ability();
+            break;
+
+            case SoraCharacterState.Ultimate:
+                ultimatePosition = transform.position;
+                StartCoroutine(Ultimate());
+                _SoraState = SoraCharacterState.Idle;
             break;
 
             case SoraCharacterState.Dying:
@@ -154,13 +166,10 @@ public class Sora_Movement : MonoBehaviour
             foreach (Collider collider in colliders)
             {
                 //get the direction from the character to the enemy
-                Vector3 direction = (collider.transform.position - transform.position).normalized;
-
-                //calculate the dot product of the direction and the forward vector of the character
-                float dot = Vector3.Dot(direction, transform.forward);
+                Vector3 direction = (collider.transform.position - ultimatePosition).normalized;
 
                 //if the dot product is within the angle, the enemy is within the cone of attack
-                if (dot > Mathf.Cos(attackAngle / 2f * Mathf.Deg2Rad))
+                if (Physics.CheckSphere(ultimatePosition, attackRadius))
                 {
                     //do something to the enemy, such as damaging it
                     //Debug.Log("Enemy in range: " + collider.gameObject.name);
@@ -202,6 +211,37 @@ public class Sora_Movement : MonoBehaviour
         isOnAction = false;
     }
 
+    IEnumerator Ultimate()
+    {
+        Collider[] colliders = Physics.OverlapSphere(ultimatePosition, abilityRadius, enemyLayer);
+        
+        while(elapsedTimeUltimate < ultimateDuration)
+        {
+            elapsedTimeUltimate += Time.deltaTime;
+            elapsedTimeUltimatePush += Time.deltaTime;
+            foreach (Collider collider in colliders)
+            {
+                //get the direction from the character to the enemy
+                Vector3 direction = (transform.position-collider.transform.position).normalized;
+                //do something to the enemy, such as damaging it
+                EnemyDamaged _enemyDamaged = collider.GetComponent<EnemyDamaged>();
+                float distance = Vector3.Distance(transform.position, collider.transform.position) + 1f;
+                if(_enemyDamaged != null && elapsedTimeUltimatePush > soraStats.attackSpeed)
+                {
+                    elapsedTimeUltimatePush = 0f;
+                    //_enemyDamaged.OnEnemyDamaged(Mathf.CeilToInt((soraStats.power + soraStats.attack)/distance));
+                    _enemyDamaged.OnEnemyPushed(soraStats.pushForce2 * abilityRadius, direction);
+                    //Debug.Log(Mathf.CeilToInt((soraStats.power + soraStats.attack)/distance));
+                }
+                
+            }
+            yield return null;
+        }
+        
+        //_nextAbility = Time.time + soraStats.abilityCD;
+        //_SoraState = SoraCharacterState.Idle;
+        //isOnAction = false;
+    }
 
     void CheckInput()
     {
@@ -223,6 +263,14 @@ public class Sora_Movement : MonoBehaviour
         {
             isOnAction = true;
             _SoraState = SoraCharacterState.Ability;
+        }
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            elapsedTimeUltimate = 0f;
+            elapsedTimeUltimatePush = 0f;
+            
+            _SoraState = SoraCharacterState.Ultimate;
         }
 
         //Meter los inputs de menu y tal en otro script

@@ -1149,6 +1149,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   abilityRadius: 4.5
+  ultimateDuration: 5
   turnSmoothTime: 0.1
 --- !u!1001 &248990243
 PrefabInstance:
