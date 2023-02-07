@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Antia_stats
   m_EditorClassIdentifier: 
   vida: 100
-  speed: 3.5
+  speed: 3.8
+  pushForce: 0
+  pushForce2: 0
   attackSpeed: 0.1
   attack: 90
-  abilityCD: 5
+  abilityCD: 1.5
   power: 0

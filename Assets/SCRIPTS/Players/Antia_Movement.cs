@@ -43,6 +43,7 @@ public class Antia_Movement : MonoBehaviour
     [SerializeField]float dashForce;
     [SerializeField]float dashDuration;
     [SerializeField]float dashLength;
+    float _nextAbility;
 
     //-----------------------------------------------------------
     private AntiaCharacterState _AntiaState;
@@ -191,11 +192,13 @@ public class Antia_Movement : MonoBehaviour
         }
         elapsedTimeReload = 0f;
         isReloaded = true;
+        
     }
 
     IEnumerator Dash()
     {
         float elapsedTime = 0f;
+        _nextAbility = Time.time + antiaStats.abilityCD;
         while (elapsedTime <= dashDuration)
         {
             elapsedTime += Time.deltaTime;
@@ -212,7 +215,7 @@ public class Antia_Movement : MonoBehaviour
             }
             yield return _AntiaState = AntiaCharacterState.Idle;
         }
-        
+        isOnAction = false;
     }
     
     void CheckInput()
@@ -230,7 +233,7 @@ public class Antia_Movement : MonoBehaviour
             _AntiaState = AntiaCharacterState.Attack;
         }
 
-        if(Input.GetButtonDown("Fire2") && !isDead)
+        if(Input.GetButtonDown("Fire2") && !isDead && Time.time > _nextAbility)
         {
             isOnAction = true;
             _AntiaState = AntiaCharacterState.AbilityStart;

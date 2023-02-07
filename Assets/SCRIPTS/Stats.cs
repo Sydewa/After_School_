@@ -8,6 +8,9 @@ public class Stats : ScriptableObject
     public int vida;
     public float speed;
 
+    public float pushForce;
+    public float pushForce2;
+
     [Header("Variables attack")]
     public float attackSpeed;
     public int attack;

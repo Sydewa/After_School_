@@ -15,10 +15,14 @@ public class HUD_Controller : MonoBehaviour
 
     [SerializeField]float animationDuration;
 
+    void Awake()
+    {
+        UpdateHealthBars();
+    }
     private void Start()
     {
         currentCharacter = 0;
-        UpdateHealthBars();
+        //UpdateHealthBars();
     }
 
     private void UpdateHealthBars()

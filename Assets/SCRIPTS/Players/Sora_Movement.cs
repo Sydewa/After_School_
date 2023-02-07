@@ -23,12 +23,10 @@ public class Sora_Movement : MonoBehaviour
     [SerializeField][Range(0,360)]float attackAngle;
     [SerializeField]float attackRadius;
     [SerializeField]LayerMask enemyLayer;
-    [SerializeField]float pushForce;
     float elapsedTimeAttack;
 
     [Header ("Ability")]
     [SerializeField]float abilityRadius;
-    [SerializeField]float abilityPushForce;
     float _nextAbility;
 
     //Variables Smooth rotacion
@@ -171,7 +169,7 @@ public class Sora_Movement : MonoBehaviour
                     if(_enemyDamaged != null)
                     {
                         _enemyDamaged.OnEnemyDamaged(Mathf.CeilToInt(soraStats.attack/distance));
-                        _enemyDamaged.OnEnemyPushed(pushForce/distance, direction);
+                        _enemyDamaged.OnEnemyPushed(soraStats.pushForce/distance, direction);
                         Debug.Log(Mathf.CeilToInt(soraStats.attack/distance));
                     }
                 }
@@ -194,7 +192,7 @@ public class Sora_Movement : MonoBehaviour
             if(_enemyDamaged != null)
             {
                 _enemyDamaged.OnEnemyDamaged(Mathf.CeilToInt((soraStats.power + soraStats.attack)/distance));
-                _enemyDamaged.OnEnemyPushed(abilityPushForce * abilityRadius/distance, direction);
+                _enemyDamaged.OnEnemyPushed(soraStats.pushForce2 * abilityRadius/distance, direction);
                 Debug.Log(Mathf.CeilToInt((soraStats.power + soraStats.attack)/distance));
             }
             
