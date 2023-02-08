@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28e2c7c57acb15247a1c46ff7ff615e3, type: 3}
   m_Name: Sora_stats
   m_EditorClassIdentifier: 
-  vida: 150
+  vida: 5000
   speed: 5.8
-  pushForce: 12
-  pushForce2: 10
+  pushForce: 40
+  pushForce2: 50
   attackSpeed: 0.5
   attack: 20
   abilityCD: 5

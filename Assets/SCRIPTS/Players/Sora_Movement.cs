@@ -158,18 +158,19 @@ public class Sora_Movement : MonoBehaviour
 
     void ShootingLogic()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, attackRadius, enemyLayer);
+        
         //Debug.Log("Shoot");
         elapsedTimeAttack += Time.deltaTime;
         if(elapsedTimeAttack >= soraStats.attackSpeed)
         {
+            Collider[] colliders = Physics.OverlapSphere(transform.position, attackRadius, enemyLayer);
             foreach (Collider collider in colliders)
             {
                 //get the direction from the character to the enemy
-                Vector3 direction = (collider.transform.position - ultimatePosition).normalized;
+                Vector3 direction = (collider.transform.position - transform.position).normalized;
 
-                //if the dot product is within the angle, the enemy is within the cone of attack
-                if (Physics.CheckSphere(ultimatePosition, attackRadius))
+                float dot = Vector3.Dot(direction, transform.forward);
+                if (dot > Mathf.Cos(attackAngle / 2f * Mathf.Deg2Rad))
                 {
                     //do something to the enemy, such as damaging it
                     //Debug.Log("Enemy in range: " + collider.gameObject.name);
@@ -213,16 +214,15 @@ public class Sora_Movement : MonoBehaviour
 
     IEnumerator Ultimate()
     {
-        Collider[] colliders = Physics.OverlapSphere(ultimatePosition, abilityRadius, enemyLayer);
-        
         while(elapsedTimeUltimate < ultimateDuration)
         {
+            Collider[] colliders = Physics.OverlapSphere(ultimatePosition, abilityRadius, enemyLayer);
             elapsedTimeUltimate += Time.deltaTime;
             elapsedTimeUltimatePush += Time.deltaTime;
             foreach (Collider collider in colliders)
             {
                 //get the direction from the character to the enemy
-                Vector3 direction = (transform.position-collider.transform.position).normalized;
+                Vector3 direction = (ultimatePosition-collider.transform.position).normalized;
                 //do something to the enemy, such as damaging it
                 EnemyDamaged _enemyDamaged = collider.GetComponent<EnemyDamaged>();
                 float distance = Vector3.Distance(transform.position, collider.transform.position) + 1f;
@@ -230,7 +230,7 @@ public class Sora_Movement : MonoBehaviour
                 {
                     elapsedTimeUltimatePush = 0f;
                     //_enemyDamaged.OnEnemyDamaged(Mathf.CeilToInt((soraStats.power + soraStats.attack)/distance));
-                    _enemyDamaged.OnEnemyPushed(soraStats.pushForce2 * abilityRadius, direction);
+                    _enemyDamaged.OnEnemyPushed((soraStats.pushForce2 * abilityRadius)/distance, direction);
                     //Debug.Log(Mathf.CeilToInt((soraStats.power + soraStats.attack)/distance));
                 }
                 

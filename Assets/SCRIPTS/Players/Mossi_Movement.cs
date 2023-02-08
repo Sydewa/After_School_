@@ -28,8 +28,11 @@ public class Mossi_Movement : MonoBehaviour
     [Header ("Attack")]
 
     float elapsedTimeAttack;
+    float elapsedTimeAttack2;
+    float clampedElapsedTime;
     [SerializeField]AnimationCurve attackDuration; 
-    [SerializeField]Vector2 dashInterval;
+    [SerializeField]Vector2 dashSpeed;
+    [SerializeField]Vector2 dashTime;
 
     //-----------------------------------------------------------
     private MossiCharacterState _MossiState;
@@ -118,6 +121,7 @@ public class Mossi_Movement : MonoBehaviour
         if(Input.GetButton("Fire1"))
         {
             elapsedTimeAttack += Time.deltaTime * 5f;
+            elapsedTimeAttack2 += Time.deltaTime;
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -132,19 +136,22 @@ public class Mossi_Movement : MonoBehaviour
         }
         else
         {
+            clampedElapsedTime = Mathf.Lerp(dashTime.x, dashTime.y, elapsedTimeAttack2);
             _MossiState = MossiCharacterState.OnAttack;
         }
     }
 
     void OnAttack()
     {
-        float time = attackDuration.Evaluate(Mathf.Clamp(elapsedTimeAttack, 0f, 1f));
-        elapsedTimeAttack -= Time.deltaTime * 5f;
-        controller.Move(transform.forward * (mossiStats.speed * Mathf.Clamp(elapsedTimeAttack, dashInterval.x, dashInterval.y)) * Time.deltaTime);
+        //float time = attackDuration.Evaluate(Mathf.Clamp(elapsedTimeAttack, 0f, 1f));
+        clampedElapsedTime -= Time.deltaTime;
+        float dashForce = Mathf.Lerp(dashSpeed.x, dashSpeed.y, clampedElapsedTime);
+        controller.Move(transform.forward * (mossiStats.speed * dashForce * clampedElapsedTime) * Time.deltaTime);
 
-        if(time <= 0f)
+        if(clampedElapsedTime <= 0f)
         {
             elapsedTimeAttack = 1.5f;
+            elapsedTimeAttack2 = 0f;
             _MossiState = MossiCharacterState.Idle;
         }
     }
