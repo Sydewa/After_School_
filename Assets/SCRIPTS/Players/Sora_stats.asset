@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28e2c7c57acb15247a1c46ff7ff615e3, type: 3}
   m_Name: Sora_stats
   m_EditorClassIdentifier: 
-  vida: 5000
+  vida: 150
   speed: 5.8
   pushForce: 40
   pushForce2: 50

@@ -11161,8 +11161,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  dashSpeed: {x: 3, y: 9}
-  dashTime: {x: 0.01, y: 1}
+  dashSpeed: {x: 12, y: 12}
+  dashTime: {x: 0.08, y: 0.7}
+  attackHitBox: {fileID: 0}
+  attackRadius: 0
 --- !u!1 &1857192042
 GameObject:
   m_ObjectHideFlags: 0

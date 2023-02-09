@@ -33,6 +33,9 @@ public class Mossi_Movement : MonoBehaviour
     [SerializeField]AnimationCurve attackDuration; 
     [SerializeField]Vector2 dashSpeed;
     [SerializeField]Vector2 dashTime;
+    [SerializeField]Transform attackHitBox;
+    [SerializeField]float attackRadius;
+    [SerializeField]LayerMask enemyLayer;
 
     //-----------------------------------------------------------
     private MossiCharacterState _MossiState;
@@ -148,10 +151,28 @@ public class Mossi_Movement : MonoBehaviour
         float dashForce = Mathf.Lerp(dashSpeed.x, dashSpeed.y, clampedElapsedTime);
         controller.Move(transform.forward * (mossiStats.speed * dashForce * clampedElapsedTime) * Time.deltaTime);
 
+        Collider[] colliders = Physics.OverlapSphere(attackHitBox.position, attackRadius, enemyLayer);
+        foreach (Collider collider in colliders)
+        {
+            //get the direction from the character to the enemy
+            Vector3 direction = (collider.transform.position - transform.position).normalized;
+            //do something to the enemy, such as damaging it
+            EnemyDamaged _enemyDamaged = collider.GetComponent<EnemyDamaged>();
+            float distance = Vector3.Distance(transform.position, collider.transform.position) + 1f;
+            if(_enemyDamaged != null)
+            {
+                //_enemyDamaged.OnEnemyDamaged(Mathf.CeilToInt((soraStats.power + soraStats.attack)/distance));
+                //_enemyDamaged.OnEnemyPushed(soraStats.pushForce2 * abilityRadius/distance, direction);
+                //Debug.Log(Mathf.CeilToInt((soraStats.power + soraStats.attack)/distance));
+            }
+            
+        }
+
         if(clampedElapsedTime <= 0f)
         {
             elapsedTimeAttack = 1.5f;
             elapsedTimeAttack2 = 0f;
+            isOnAction = false;
             _MossiState = MossiCharacterState.Idle;
         }
     }
@@ -159,7 +180,7 @@ public class Mossi_Movement : MonoBehaviour
     void CheckInput()
     {
         bool isDead = false;
-        if(PlayerManager.ericVida <= 0)
+        if(PlayerManager.mossiVida <= 0)
         {
             isDead = true;
             _MossiState = MossiCharacterState.Dying;
@@ -178,5 +199,11 @@ public class Mossi_Movement : MonoBehaviour
         }
 
         //Meter los inputs de menu y tal en otro script
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(attackHitBox.position, attackRadius);
     }
 }

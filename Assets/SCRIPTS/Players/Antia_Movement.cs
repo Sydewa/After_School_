@@ -221,7 +221,7 @@ public class Antia_Movement : MonoBehaviour
     void CheckInput()
     {
         bool isDead = false;
-        if(PlayerManager.ericVida <= 0)
+        if(PlayerManager.antiaVida <= 0)
         {
             isDead = true;
             _AntiaState = AntiaCharacterState.Dying;
