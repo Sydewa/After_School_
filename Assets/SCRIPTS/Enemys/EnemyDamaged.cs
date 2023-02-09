@@ -8,6 +8,7 @@ public class EnemyDamaged : MonoBehaviour
     int enemyHealth;
     Rigidbody rb;
     [SerializeField]float timeToReenableKinematic;
+    bool isKinematicDisabled = false;
 
     void Awake()
     {
@@ -28,14 +29,19 @@ public class EnemyDamaged : MonoBehaviour
 
     public void OnEnemyPushed(float pushForce, Vector3 direction)
     {
-        rb.isKinematic = false;
-        rb.AddForce(direction * pushForce, ForceMode.Impulse);
-        StartCoroutine(EnableKinematicAfterTime(timeToReenableKinematic));
+        if (!isKinematicDisabled)
+        {
+            rb.isKinematic = false;
+            isKinematicDisabled = true;
+            rb.AddForce(direction * pushForce, ForceMode.Impulse);
+            StartCoroutine(EnableKinematicAfterTime(timeToReenableKinematic));
+        }
     }
 
     private IEnumerator EnableKinematicAfterTime(float time)
     {
         yield return new WaitForSeconds(time);
         rb.isKinematic = true;
-    }
+        isKinematicDisabled = false;
+}
 }

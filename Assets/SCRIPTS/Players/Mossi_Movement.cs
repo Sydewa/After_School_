@@ -36,6 +36,7 @@ public class Mossi_Movement : MonoBehaviour
     [SerializeField]Transform attackHitBox;
     [SerializeField]float attackRadius;
     [SerializeField]LayerMask enemyLayer;
+    List<int> hitEnemies = new List<int>();
 
     //-----------------------------------------------------------
     private MossiCharacterState _MossiState;
@@ -150,29 +151,33 @@ public class Mossi_Movement : MonoBehaviour
         clampedElapsedTime -= Time.deltaTime;
         float dashForce = Mathf.Lerp(dashSpeed.x, dashSpeed.y, clampedElapsedTime);
         controller.Move(transform.forward * (mossiStats.speed * dashForce * clampedElapsedTime) * Time.deltaTime);
-
         Collider[] colliders = Physics.OverlapSphere(attackHitBox.position, attackRadius, enemyLayer);
         foreach (Collider collider in colliders)
         {
-            //get the direction from the character to the enemy
-            Vector3 direction = (collider.transform.position - transform.position).normalized;
-            //do something to the enemy, such as damaging it
-            EnemyDamaged _enemyDamaged = collider.GetComponent<EnemyDamaged>();
-            float distance = Vector3.Distance(transform.position, collider.transform.position) + 1f;
-            if(_enemyDamaged != null)
+            int enemyID = collider.GetInstanceID();
+
+            if(!hitEnemies.Contains(enemyID))
             {
-                //_enemyDamaged.OnEnemyDamaged(Mathf.CeilToInt((soraStats.power + soraStats.attack)/distance));
-                //_enemyDamaged.OnEnemyPushed(soraStats.pushForce2 * abilityRadius/distance, direction);
-                //Debug.Log(Mathf.CeilToInt((soraStats.power + soraStats.attack)/distance));
+                Vector3 direction = (collider.transform.position - transform.position).normalized;
+                EnemyDamaged _enemyDamaged = collider.GetComponent<EnemyDamaged>();
+                float dashDMG = Mathf.Lerp(25f, (mossiStats.attack) + 80f, elapsedTimeAttack2/2f);
+                Debug.Log(dashDMG);
+                if(_enemyDamaged != null)
+                {
+                    _enemyDamaged.OnEnemyDamaged(Mathf.CeilToInt((dashDMG)));
+                    _enemyDamaged.OnEnemyPushed(mossiStats.pushForce * dashDMG, direction);
+                }
+                hitEnemies.Add(enemyID);
             }
             
         }
-
+        
         if(clampedElapsedTime <= 0f)
         {
             elapsedTimeAttack = 1.5f;
             elapsedTimeAttack2 = 0f;
             isOnAction = false;
+            hitEnemies.Clear();
             _MossiState = MossiCharacterState.Idle;
         }
     }

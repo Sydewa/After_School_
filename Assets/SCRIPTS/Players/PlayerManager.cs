@@ -74,19 +74,19 @@ public class PlayerManager : MonoBehaviour
         {
             case "Eric":
                 ericVida -= damageTaken;
-                Debug.Log("Eric:"+ericVida);
+                //Debug.Log("Eric:"+ericVida);
             break;
             case "Antia":
                 antiaVida -= damageTaken;
-                Debug.Log("Antia:"+antiaVida);
+                //Debug.Log("Antia:"+antiaVida);
             break;
             case "Sora":
                 soraVida -= damageTaken;
-                Debug.Log("Sora:"+soraVida);
+                //Debug.Log("Sora:"+soraVida);
             break;
             case "Mossi":
                 mossiVida -= damageTaken;
-                Debug.Log("Mossi" + mossiVida);
+                //Debug.Log("Mossi" + mossiVida);
             break;
             default:
             break;

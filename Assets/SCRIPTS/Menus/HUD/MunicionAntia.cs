@@ -8,13 +8,13 @@ public class MunicionAntia : MonoBehaviour
     [SerializeField]Image mask;
     void Start()
     {
-        MunicionDisplay(100f);
+        MunicionDisplay(50f);
     }
 
     // Update is called once per frame
     public void MunicionDisplay(float currentAmount)
     {
-        float fillAmount = currentAmount/100;
+        float fillAmount = currentAmount/50f;
         mask.fillAmount = fillAmount;
     }
 }

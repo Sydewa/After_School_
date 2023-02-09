@@ -26,16 +26,15 @@ public class Antia_Movement : MonoBehaviour
     [Header ("Attack")]
 
     [SerializeField]float reloadTime;
-    [SerializeField]float maxShootingTime;
-    float waterTankAmount;
-    [SerializeField]float maxWaterTankAmount;
-    [SerializeField]AnimationCurve waterLength;
+    [SerializeField]float waterTankAmount;
     [SerializeField]AnimationCurve waterIconCurve;
     [SerializeField]MunicionAntia _municionAntia;
     bool isReloaded;
     float shootingTime;
+    [SerializeField]float timeBetweenBullets;
+    [SerializeField]GameObject prefabBullet;
+    [SerializeField]Transform bulletSpawn;
     float elapsedTimeReload;
-    public GameObject cube;
 
 
     [Header ("Dash")]
@@ -149,7 +148,6 @@ public class Antia_Movement : MonoBehaviour
         }
         else
         {
-            cube.transform.localScale = new Vector3(0f, 0f, 0f);
             _AntiaState = AntiaCharacterState.Idle;
         }
     }
@@ -157,24 +155,17 @@ public class Antia_Movement : MonoBehaviour
     void ShootingLogic()
     {
         shootingTime += Time.deltaTime;
-        float rayLength = waterLength.Evaluate(shootingTime);
-        float currentTankAmount = waterIconCurve.Evaluate((maxShootingTime - shootingTime)/2);
-        waterTankAmount = currentTankAmount;
+        if(shootingTime > timeBetweenBullets)
+        {
+            Instantiate(prefabBullet, bulletSpawn);
+            waterTankAmount--;
+            shootingTime = 0f;
+        }
         _municionAntia.MunicionDisplay(waterTankAmount);
 
-        if(shootingTime >= maxShootingTime)
+        if(waterTankAmount <= 0f)
         {
             _AntiaState = AntiaCharacterState.Reload;
-        }
-        cube.transform.localScale = new Vector3(0.1f, 0.1f, rayLength);
-        
-        Ray ray = new Ray(transform.position, transform.forward);
-        RaycastHit hit;
-        if(Physics.Raycast(ray, out hit, rayLength))
-        {
-            //Mirar si toca enemigo, calcular danyo y enviarselo al enemigo
-            
-                      
         }
     }
 
