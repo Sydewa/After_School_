@@ -15,7 +15,7 @@ public class Eric_Petardo : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other) 
     {
-        if(other.CompareTag("Ground") || other.CompareTag("Enemy"))
+        if(other.CompareTag("Ground"))
         {
             Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, LayerMask.GetMask("Enemy"));
             if (colliders.Length > 0)

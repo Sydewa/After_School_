@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vida: 100
   speed: 3.8
-  pushForce: 0
+  pushForce: 15
   pushForce2: 0
   attackSpeed: 0.1
   attack: 90

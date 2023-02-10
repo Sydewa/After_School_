@@ -10,7 +10,7 @@ public class Sora_Movement : MonoBehaviour
     //private Animator anim;
     
     //Variables de movimiento
-    Vector3 velocity = new Vector3(0f, -9.81f, 0f);
+    [SerializeField]Vector3 velocity = new Vector3(0f, -9.81f, 0f);
     Vector3 move;
     [SerializeField]float smoothTimeMove;
     [SerializeField]float smoothTimeLookAtMouse;

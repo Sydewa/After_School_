@@ -12,7 +12,7 @@ public class Antia_Movement : MonoBehaviour
     bool isOnAction;
     
     //Variables de movimiento
-    Vector3 velocity = new Vector3(0f, -9.81f, 0f);
+    [SerializeField]Vector3 velocity = new Vector3(0f, -9.81f, 0f);
     Vector3 move;
     [SerializeField]float smoothTimeMove;
     [SerializeField]float smoothTimeLookAtMouse;
@@ -25,16 +25,14 @@ public class Antia_Movement : MonoBehaviour
 
     [Header ("Attack")]
 
-    [SerializeField]float reloadTime;
-    [SerializeField]float waterTankAmount;
-    [SerializeField]AnimationCurve waterIconCurve;
+    public float waterTankAmount;
     [SerializeField]MunicionAntia _municionAntia;
-    bool isReloaded;
     float shootingTime;
     [SerializeField]float timeBetweenBullets;
     [SerializeField]GameObject prefabBullet;
     [SerializeField]Transform bulletSpawn;
-    float elapsedTimeReload;
+    public bool isReloaded;
+    AntiaReload reload;
 
 
     [Header ("Dash")]
@@ -50,8 +48,9 @@ public class Antia_Movement : MonoBehaviour
     void Awake()
     {
         controller = GetComponent<CharacterController>();
-        isReloaded = true;
         //anim = GetComponentInChildren<Animator>();
+        reload = GetComponentInParent<AntiaReload>();
+        isReloaded = true;
     }
 
     void Update()
@@ -91,7 +90,7 @@ public class Antia_Movement : MonoBehaviour
             break;
 
             case AntiaCharacterState.Reload:
-                StartCoroutine(TriggerReload());
+                StartCoroutine(reload.TriggerReload());
                 _AntiaState = AntiaCharacterState.Idle;
             break;
 
@@ -157,7 +156,9 @@ public class Antia_Movement : MonoBehaviour
         shootingTime += Time.deltaTime;
         if(shootingTime > timeBetweenBullets)
         {
-            Instantiate(prefabBullet, bulletSpawn);
+            GameObject clone = Instantiate(prefabBullet, bulletSpawn.position, Quaternion.Euler(0f, transform.eulerAngles.y, 0f), null);
+            Rigidbody rb = clone.GetComponent<Rigidbody>();
+            rb.AddForce(transform.forward * antiaStats.pushForce, ForceMode.Impulse);
             waterTankAmount--;
             shootingTime = 0f;
         }
@@ -165,14 +166,13 @@ public class Antia_Movement : MonoBehaviour
 
         if(waterTankAmount <= 0f)
         {
+            isReloaded = false;
             _AntiaState = AntiaCharacterState.Reload;
         }
     }
 
-    IEnumerator TriggerReload()
+    /*IEnumerator TriggerReload()
     {
-        isReloaded = false;
-        shootingTime = 0f;
         while(elapsedTimeReload < reloadTime)
         {
             elapsedTimeReload += Time.deltaTime;
@@ -182,9 +182,7 @@ public class Antia_Movement : MonoBehaviour
             yield return null;
         }
         elapsedTimeReload = 0f;
-        isReloaded = true;
-        
-    }
+    }*/
 
     IEnumerator Dash()
     {

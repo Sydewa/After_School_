@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 3121408222001084129}
   m_Layer: 8
   m_Name: Knight_Enemy
-  m_TagString: Enemy
+  m_TagString: Terrestre
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
