@@ -213,7 +213,7 @@ public class Eric_Movement : MonoBehaviour
             RaycastHit hit2;
             if(Physics.Raycast(ray2, out hit2))
             {
-                if(hit2.collider.CompareTag("Enemy") && timeSinceLastDamage >= damageInterval)
+                if(hit2.collider.gameObject.layer == LayerMask.NameToLayer("Enemy") && timeSinceLastDamage >= damageInterval)
                 {
                     EnemyDamaged _enemyDamaged = hit.collider.GetComponent<EnemyDamaged>();
                     _enemyDamaged.OnEnemyDamaged(dmg);
