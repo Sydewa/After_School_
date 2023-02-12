@@ -36,8 +36,10 @@ public class EricStateManager : MonoBehaviour, IStateManager
     
         //Variables de ataque
         bool isAttackPressed;
-        bool attackEnd;
+        public float _nextAttack;
 
+    //Script referente para hacer los evento de animacion
+    
 #endregion
 
     void Awake() 
@@ -46,6 +48,9 @@ public class EricStateManager : MonoBehaviour, IStateManager
         Animator = GetComponentInChildren<Animator>();
         CharacterController = GetComponent<CharacterController>();
         PlayerInput = new PlayerInput();
+
+        //Otras variables que por si acaso ponemos en el awake
+        
 
         // enable controls and set player inputs
         EnableControls();
@@ -56,6 +61,7 @@ public class EricStateManager : MonoBehaviour, IStateManager
         PlayerInput.CharacterControls.Attack.started += onAttackInput;
         PlayerInput.CharacterControls.Attack.canceled += onAttackInput;
     }
+    
 #region "Input functions"
     void onMovementInput(InputAction.CallbackContext context)
     {
@@ -90,10 +96,11 @@ public class EricStateManager : MonoBehaviour, IStateManager
     
     void StateMachine()
     {
-        /*if(isAttackPressed)
+        if(isAttackPressed && Time.time > _nextAttack)
         {
+            _nextAttack = Time.time + AttackSpeed;
             SwitchState(AttackState);
-        }*/
+        }
         
         switch (currentState.GetType().Name)
         {
@@ -114,7 +121,9 @@ public class EricStateManager : MonoBehaviour, IStateManager
             case "AttackState":
 
             break;
+
             default:
+                //Intentar no poner nada en default, da problemas cuando se esta cambiando de estado
             break;
         }
     }
