@@ -6,8 +6,8 @@ public class EricStateManager : MonoBehaviour, IStateManager
 {
     //Componentes importantes del personaje
     BaseState currentState;
-    Animator animator;
-    CharacterController characterController;
+    public Animator Animator { get; set;}
+    public CharacterController CharacterController { get; set; }
 
     //Variables personaje
     public EricStats ericStats;
@@ -25,11 +25,12 @@ public class EricStateManager : MonoBehaviour, IStateManager
     public RunningState RunningState = new RunningState();
     public EricAttackState AttackState = new EricAttackState();
 
-
+    //Variables temporales de input
+    
     void Awake() 
     {
-        animator = GetComponent<Animator>();
-        characterController = GetComponent<CharacterController>();
+        Animator = GetComponent<Animator>();
+        CharacterController = GetComponent<CharacterController>();
     }
 
     void Start()
@@ -41,6 +42,7 @@ public class EricStateManager : MonoBehaviour, IStateManager
     void Update()
     {
         currentState.UpdateState(this);
+        
     }
 
     public void SwitchState(BaseState state)
