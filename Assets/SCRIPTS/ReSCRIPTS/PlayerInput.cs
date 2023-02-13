@@ -53,6 +53,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ultimate"",
+                    ""type"": ""Button"",
+                    ""id"": ""d51be1c9-30f7-4197-a811-8ff7d8c4c721"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -132,6 +141,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""Ability"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2412f3c2-1776-411f-ac67-c114d99dc3f3"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ultimate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -143,6 +163,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_CharacterControls_Move = m_CharacterControls.FindAction("Move", throwIfNotFound: true);
         m_CharacterControls_Attack = m_CharacterControls.FindAction("Attack", throwIfNotFound: true);
         m_CharacterControls_Ability = m_CharacterControls.FindAction("Ability", throwIfNotFound: true);
+        m_CharacterControls_Ultimate = m_CharacterControls.FindAction("Ultimate", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -205,6 +226,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterControls_Move;
     private readonly InputAction m_CharacterControls_Attack;
     private readonly InputAction m_CharacterControls_Ability;
+    private readonly InputAction m_CharacterControls_Ultimate;
     public struct CharacterControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -212,6 +234,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_CharacterControls_Move;
         public InputAction @Attack => m_Wrapper.m_CharacterControls_Attack;
         public InputAction @Ability => m_Wrapper.m_CharacterControls_Ability;
+        public InputAction @Ultimate => m_Wrapper.m_CharacterControls_Ultimate;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -230,6 +253,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Ability.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnAbility;
                 @Ability.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnAbility;
                 @Ability.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnAbility;
+                @Ultimate.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnUltimate;
+                @Ultimate.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnUltimate;
+                @Ultimate.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnUltimate;
             }
             m_Wrapper.m_CharacterControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -243,6 +269,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Ability.started += instance.OnAbility;
                 @Ability.performed += instance.OnAbility;
                 @Ability.canceled += instance.OnAbility;
+                @Ultimate.started += instance.OnUltimate;
+                @Ultimate.performed += instance.OnUltimate;
+                @Ultimate.canceled += instance.OnUltimate;
             }
         }
     }
@@ -252,5 +281,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnAbility(InputAction.CallbackContext context);
+        void OnUltimate(InputAction.CallbackContext context);
     }
 }

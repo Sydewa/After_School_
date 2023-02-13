@@ -223,10 +223,10 @@ AnimatorStateMachine:
     m_Position: {x: 470, y: 290, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6434682968727669645}
-    m_Position: {x: 470, y: -100, z: 0}
+    m_Position: {x: 490, y: -100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6763673989008075251}
-    m_Position: {x: 160, y: -20, z: 0}
+    m_Position: {x: 150, y: -20, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: -4922464951670068633}
@@ -253,19 +253,19 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: OnAbility
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Attack
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -314,7 +314,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Run_FullCycle
-  m_Speed: 1
+  m_Speed: 1.25
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -4586951478261626391}
@@ -387,7 +387,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.21776736
+  m_TransitionDuration: 0.07276738
   m_TransitionOffset: 0
   m_ExitTime: 0.86603767
   m_HasExitTime: 0

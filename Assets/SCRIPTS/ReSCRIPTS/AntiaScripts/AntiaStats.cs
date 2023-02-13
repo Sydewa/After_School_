@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EricStats : MonoBehaviour
+public class AntiaStats : MonoBehaviour
 {
     public int Health;
     public float Speed;

@@ -6,11 +6,17 @@ public class EricAnimationEvents : MonoBehaviour
 {
     //Referencia al state manager para acceder a sus variables
     EricStateManager _stateManager;
-
     [SerializeField]GameObject petardo;
+
+    [Header ("Attack")]
+
     [SerializeField]Transform petardoSpawnPosition;
     [SerializeField]float petardoForce;
     [SerializeField]float rotationForce;
+
+    [Header ("Ultimate")]
+
+    [SerializeField]float ultimateForce;
 
     void Awake()
     {

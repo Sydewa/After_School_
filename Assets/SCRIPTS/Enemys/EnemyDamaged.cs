@@ -23,7 +23,7 @@ public class EnemyDamaged : MonoBehaviour
     public void OnEnemyDamaged(int dmgTaken)
     {
         enemyHealth -= dmgTaken;
-        Debug.Log("VidaKnight: "+ enemyHealth);
+        //Debug.Log("VidaKnight: "+ enemyHealth);
         if(enemyHealth < 0)
         {
             //Hacer cosas

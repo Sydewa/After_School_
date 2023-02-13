@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class EricStateManager : MonoBehaviour, IStateManager
+public class AntiaStateManager : MonoBehaviour, IStateManager
 {
 #region "Variables"
     //Componentes importantes del personaje
@@ -15,25 +15,25 @@ public class EricStateManager : MonoBehaviour, IStateManager
     public GameObject Character { get{ return this.gameObject; } }
 
     //Variables personaje
-    public EricStats ericStats;
+    public AntiaStats antiaStats;
 
     //Para añadir más variables se debe cambiar el IStateManager y añadir la variable a EriStats para tenerlo asi todo bonito
-    public int Health { get { return ericStats.Health; } set { ericStats.Health = value; } }
-    public float Speed { get { return ericStats.Speed; } set { ericStats.Speed = value; } }
-    public int Attack { get { return ericStats.Attack; } set { ericStats.Attack = value; } }
-    public int Power { get { return ericStats.Power; } set { ericStats.Power = value; } }
-    public float AttackSpeed { get { return ericStats.AttackSpeed; } set { ericStats.AttackSpeed = value; } }
+    public int Health { get { return antiaStats.Health; } set { antiaStats.Health = value; } }
+    public float Speed { get { return antiaStats.Speed; } set { antiaStats.Speed = value; } }
+    public int Attack { get { return antiaStats.Attack; } set { antiaStats.Attack = value; } }
+    public int Power { get { return antiaStats.Power; } set { antiaStats.Power = value; } }
+    public float AttackSpeed { get { return antiaStats.AttackSpeed; } set { antiaStats.AttackSpeed = value; } }
 
     //Habilidades
-    public Ability basicAbility { get { return ericStats.basicAbility; } }
-    public Ability ultimateAbility { get { return ericStats.ultimateAbility; } }
+    public Ability basicAbility { get { return antiaStats.basicAbility; } }
+    public Ability ultimateAbility { get { return antiaStats.ultimateAbility; } }
 
     //Aqui estan todos los estados que hay, el Idle y el Running se comparten
     public IdleState IdleState = new IdleState();
     public RunningState RunningState = new RunningState();
-    public EricAttackState AttackState = new EricAttackState();
-    public EricAbilityState AbilityState = new EricAbilityState();
-    public EricUltimateState UltimateState = new EricUltimateState();
+    public AntiaAttackState AttackState = new AntiaAttackState();
+    public AntiaAbilityState AbilityState = new AntiaAbilityState();
+    public AntiaUltimateState UltimateState = new AntiaUltimateState();
 
     //Variables temporales de input
     public Vector2 CurrentMovementInput { get; set; }
@@ -171,11 +171,11 @@ public class EricStateManager : MonoBehaviour, IStateManager
                 }
             break;
 
-            case "EricAttackState":
+            case "AntiaAttackState":
 
             break;
 
-            case "EricAbilityState":
+            case "AntiaAbilityState":
                 //Debug.Log("Ability state");
                 if(isAbilityPressed && basicAbility.IsAbilityReady())
                 {
@@ -189,7 +189,7 @@ public class EricStateManager : MonoBehaviour, IStateManager
                 }
             break;
 
-            case "EricUltimateState":
+            case "AntiaUltimateState":
                 Debug.Log("Ultimate");
                 ultimateAbility.PutOnCooldown();
             break;
@@ -242,3 +242,4 @@ public class EricStateManager : MonoBehaviour, IStateManager
         }
     }
 }
+

@@ -18,10 +18,14 @@ public interface IStateManager
     int Attack { get; set; }
     int Power { get; set; }
     float AttackSpeed { get; set; }
-    float AbilityCD { get; set; }
+
+    //Habilidades
+    Ability basicAbility { get; }
+    Ability ultimateAbility { get;}
 
     //Funciones necesarias
     void SwitchState(BaseState state);
     void ExitState();
+    void GoIdle();
     
 }

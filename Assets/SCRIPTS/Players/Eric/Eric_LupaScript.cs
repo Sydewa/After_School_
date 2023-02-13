@@ -8,6 +8,7 @@ public class Eric_LupaScript : MonoBehaviour
     [SerializeField]float animationTime;
     [SerializeField]float smoothTimeLookAtMouse;
     [SerializeField]Vector2 rotationLimit;
+    public Transform abilityPosition;
     
     void Awake()
     {
@@ -22,16 +23,15 @@ public class Eric_LupaScript : MonoBehaviour
         float endTime = startTime + animationTime;
         Vector3 startScale = transform.localScale;
         Vector3 endScale = new Vector3(1f,1f,1f);
-        if(Input.GetButtonDown("Fire2"))
+        
+        while (Time.time < endTime)
         {
-            while (Time.time < endTime)
-            {
-                float t = (Time.time - startTime) / animationTime;
-                float curveValue = curve.Evaluate(t);
-                transform.localScale = Vector3.Lerp(startScale, endScale, curveValue);
-                yield return null;
-            }
+            float t = (Time.time - startTime) / animationTime;
+            float curveValue = curve.Evaluate(t);
+            transform.localScale = Vector3.Lerp(startScale, endScale, curveValue);
+            yield return null;
         }
+        
     }
 
     public IEnumerator OnLupaEnd()
