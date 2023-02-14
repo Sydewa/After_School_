@@ -62,6 +62,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchCharacter"",
+                    ""type"": ""Value"",
+                    ""id"": ""9d1f3375-eebc-4ebe-b5e9-e3eaaf8d465d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -152,6 +161,50 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""Ultimate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bd0ff0c6-255b-494c-ac9e-c40964e9a4db"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchCharacter"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ddc6390e-9100-44b0-bece-9cc972448473"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchCharacter"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d6eeb097-d304-471f-95be-f56562463cb8"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchCharacter"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a1e51f6e-e0f0-4cf8-983e-fa92d4d26f21"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchCharacter"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -164,6 +217,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_CharacterControls_Attack = m_CharacterControls.FindAction("Attack", throwIfNotFound: true);
         m_CharacterControls_Ability = m_CharacterControls.FindAction("Ability", throwIfNotFound: true);
         m_CharacterControls_Ultimate = m_CharacterControls.FindAction("Ultimate", throwIfNotFound: true);
+        m_CharacterControls_SwitchCharacter = m_CharacterControls.FindAction("SwitchCharacter", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -227,6 +281,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterControls_Attack;
     private readonly InputAction m_CharacterControls_Ability;
     private readonly InputAction m_CharacterControls_Ultimate;
+    private readonly InputAction m_CharacterControls_SwitchCharacter;
     public struct CharacterControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -235,6 +290,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Attack => m_Wrapper.m_CharacterControls_Attack;
         public InputAction @Ability => m_Wrapper.m_CharacterControls_Ability;
         public InputAction @Ultimate => m_Wrapper.m_CharacterControls_Ultimate;
+        public InputAction @SwitchCharacter => m_Wrapper.m_CharacterControls_SwitchCharacter;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -256,6 +312,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Ultimate.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnUltimate;
                 @Ultimate.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnUltimate;
                 @Ultimate.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnUltimate;
+                @SwitchCharacter.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnSwitchCharacter;
+                @SwitchCharacter.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnSwitchCharacter;
+                @SwitchCharacter.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnSwitchCharacter;
             }
             m_Wrapper.m_CharacterControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -272,6 +331,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Ultimate.started += instance.OnUltimate;
                 @Ultimate.performed += instance.OnUltimate;
                 @Ultimate.canceled += instance.OnUltimate;
+                @SwitchCharacter.started += instance.OnSwitchCharacter;
+                @SwitchCharacter.performed += instance.OnSwitchCharacter;
+                @SwitchCharacter.canceled += instance.OnSwitchCharacter;
             }
         }
     }
@@ -282,5 +344,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnAttack(InputAction.CallbackContext context);
         void OnAbility(InputAction.CallbackContext context);
         void OnUltimate(InputAction.CallbackContext context);
+        void OnSwitchCharacter(InputAction.CallbackContext context);
     }
 }

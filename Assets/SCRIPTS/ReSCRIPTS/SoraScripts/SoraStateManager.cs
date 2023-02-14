@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class AntiaStateManager : MonoBehaviour, IStateManager
+public class SoraStateManager : MonoBehaviour, IStateManager
 {
 #region "Variables"
     //Componentes importantes del personaje
@@ -15,25 +15,25 @@ public class AntiaStateManager : MonoBehaviour, IStateManager
     public GameObject Character { get{ return this.gameObject; } }
 
     //Variables personaje
-    public AntiaStats antiaStats;
+    public SoraStats soraStats;
 
     //Para añadir más variables se debe cambiar el IStateManager y añadir la variable a EriStats para tenerlo asi todo bonito
-    public int Health { get { return antiaStats.Health; } set { antiaStats.Health = value; } }
-    public float Speed { get { return antiaStats.Speed; } set { antiaStats.Speed = value; } }
-    public int Attack { get { return antiaStats.Attack; } set { antiaStats.Attack = value; } }
-    public int Power { get { return antiaStats.Power; } set { antiaStats.Power = value; } }
-    public float AttackSpeed { get { return antiaStats.AttackSpeed; } set { antiaStats.AttackSpeed = value; } }
+    public int Health { get { return soraStats.Health; } set { soraStats.Health = value; } }
+    public float Speed { get { return soraStats.Speed; } set { soraStats.Speed = value; } }
+    public int Attack { get { return soraStats.Attack; } set { soraStats.Attack = value; } }
+    public int Power { get { return soraStats.Power; } set { soraStats.Power = value; } }
+    public float AttackSpeed { get { return soraStats.AttackSpeed; } set { soraStats.AttackSpeed = value; } }
 
     //Habilidades
-    public Ability basicAbility { get { return antiaStats.basicAbility; } }
-    public Ability ultimateAbility { get { return antiaStats.ultimateAbility; } }
+    public Ability basicAbility { get { return soraStats.basicAbility; } }
+    public Ability ultimateAbility { get { return soraStats.ultimateAbility; } }
 
     //Aqui estan todos los estados que hay, el Idle y el Running se comparten
     public IdleState IdleState = new IdleState();
     public RunningState RunningState = new RunningState();
-    public AntiaAttackState AttackState = new AntiaAttackState();
-    public AntiaAbilityState AbilityState = new AntiaAbilityState();
-    public AntiaUltimateState UltimateState = new AntiaUltimateState();
+    public SoraAttackState AttackState = new SoraAttackState();
+    public SoraAbilityState AbilityState = new SoraAbilityState();
+    public SoraUltimateState UltimateState = new SoraUltimateState();
 
     //Variables temporales de input
     public Vector2 CurrentMovementInput { get; set; }
@@ -170,11 +170,11 @@ public class AntiaStateManager : MonoBehaviour, IStateManager
                 }
             break;
 
-            case "AntiaAttackState":
+            case "SoraAttackState":
 
             break;
 
-            case "AntiaAbilityState":
+            case "SoraAbilityState":
                 //Debug.Log("Ability state");
                 if(isAbilityPressed && basicAbility.IsAbilityReady())
                 {
@@ -188,7 +188,7 @@ public class AntiaStateManager : MonoBehaviour, IStateManager
                 }
             break;
 
-            case "AntiaUltimateState":
+            case "SoraUltimateState":
                 Debug.Log("Ultimate");
                 ultimateAbility.PutOnCooldown();
             break;
@@ -241,4 +241,3 @@ public class AntiaStateManager : MonoBehaviour, IStateManager
         }
     }
 }
-

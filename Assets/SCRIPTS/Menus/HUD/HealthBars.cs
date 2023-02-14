@@ -18,7 +18,7 @@ public class HealthBars : MonoBehaviour
     void Update()
     {
         GetCurrentFill();
-        currentHealth = PlayerManager.ericVida;
+        //currentHealth = PlayerManager.ericVida;
     }
 
     void GetCurrentFill()

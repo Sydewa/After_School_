@@ -230,7 +230,7 @@ public class Eric_Movement : MonoBehaviour
     
     void CheckInput()
     {
-        bool isDead = false;
+        /*bool isDead = false;
         if(PlayerManager.ericVida <= 0)
         {
             isDead = true;
@@ -253,7 +253,7 @@ public class Eric_Movement : MonoBehaviour
         {
             _EricState = EricCharacterState.Running;
         }
-
+        */
         //Meter los inputs de menu y tal en otro script
     }
 

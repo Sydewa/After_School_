@@ -112,10 +112,11 @@ public class EricStateManager : MonoBehaviour, IStateManager
 
     void Update()
     {
-        currentState.UpdateState(this);
-
         // Anyadimos la state machine que nos cambiará de estado
         StateMachine();
+
+        //Updateamos el state
+        currentState.UpdateState(this);
 
         //Le anyadimos gravedad al personaje
         ApplyGravity();

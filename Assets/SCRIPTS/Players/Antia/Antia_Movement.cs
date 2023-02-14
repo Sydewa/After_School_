@@ -209,7 +209,8 @@ public class Antia_Movement : MonoBehaviour
     
     void CheckInput()
     {
-        bool isDead = false;
+        isOnAction = false;
+        /*bool isDead = false;
         if(PlayerManager.antiaVida <= 0)
         {
             isDead = true;
@@ -229,6 +230,6 @@ public class Antia_Movement : MonoBehaviour
         }
 
         //Meter los inputs de menu y tal en otro script
-        
+        */
     }
 }

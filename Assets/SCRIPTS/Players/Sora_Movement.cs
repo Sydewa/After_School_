@@ -245,7 +245,7 @@ public class Sora_Movement : MonoBehaviour
 
     void CheckInput()
     {
-        bool isDead = false;
+        /*bool isDead = false;
         if(PlayerManager.soraVida <= 0)
         {
             isDead = true;
@@ -272,7 +272,7 @@ public class Sora_Movement : MonoBehaviour
             
             _SoraState = SoraCharacterState.Ultimate;
         }
-
+        */
         //Meter los inputs de menu y tal en otro script
     }
 

@@ -184,6 +184,7 @@ public class Mossi_Movement : MonoBehaviour
 
     void CheckInput()
     {
+        /*
         bool isDead = false;
         if(PlayerManager.mossiVida <= 0)
         {
@@ -197,11 +198,12 @@ public class Mossi_Movement : MonoBehaviour
             _MossiState = MossiCharacterState.AttackStart;
         }
 
-        if(Input.GetButtonDown("Fire2") && !isDead && !isOnAction /*&& Time.time > _nextAbility*/)
+        if(Input.GetButtonDown("Fire2") && !isDead && !isOnAction /*&& Time.time > _nextAbility)
         {
             isOnAction = true;
             _MossiState = MossiCharacterState.Ability;
         }
+        */
 
         //Meter los inputs de menu y tal en otro script
     }

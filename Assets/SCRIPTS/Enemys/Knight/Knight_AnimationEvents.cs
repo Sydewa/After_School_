@@ -15,7 +15,7 @@ public class Knight_AnimationEvents : MonoBehaviour
     {
         if(Physics.OverlapSphere(attackPosition.position, attackRadius, LayerMask.GetMask("Player")).Length > 0 && !charDamaged)
         {
-            PlayerManager.CharacterDamaged(_knightStats.attackDMG);
+            //PlayerManager.CharacterDamaged(_knightStats.attackDMG);
             charDamaged = true;
         }
     }
