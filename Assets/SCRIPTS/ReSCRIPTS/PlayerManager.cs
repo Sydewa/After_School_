@@ -5,17 +5,18 @@ using UnityEngine.InputSystem;
 
 public class PlayerManager : MonoBehaviour
 {
+    //public static PlayerManager Instance;
+
     //Variables importantes
     PlayerInput PlayerInput;
-
     public static GameObject activeCharacter;
-
     [SerializeField]GameObject[] characters;
 
     //Stats personajes
 
     //Variables de input
-    int characterSwitchInput;
+    int characterOrder;
+    string buttonName;
     //public HUD_Controller hud_Controller;
 
     //Character Swap variables
@@ -24,34 +25,60 @@ public class PlayerManager : MonoBehaviour
 
     void Awake() 
     {
+        /*
+#region Singelton
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else if(Instance != this)
+        {
+            Destroy(this);
+        }
+        DontDestroyOnLoad(this);
+#endregion
+        */
         //hud_Controller = GameObject.Find("HealthBars").GetComponent<HUD_Controller>();
         PlayerInput = new PlayerInput();
-
+        OnEnable();
+        Reset();
         //Setea los player inputs
-        PlayerInput.CharacterControls.Move.started += onCharacterSwitchInput;
-        PlayerInput.CharacterControls.Move.canceled += onCharacterSwitchInput;
-        PlayerInput.CharacterControls.Move.performed += onCharacterSwitchInput;    
+        PlayerInput.CharacterControls.SwitchCharacter.started += onCharacterSwitchInput;
+        PlayerInput.CharacterControls.SwitchCharacter.canceled += onCharacterSwitchInput;
+        //PlayerInput.CharacterControls.Move.performed += onCharacterSwitchInput;    
     }
 
 #region "Input functions"
+    void OnEnable()
+    {
+        PlayerInput.CharacterControls.Enable();
+    }
+
+    void OnDisable()
+    {
+        PlayerInput.CharacterControls.Disable();
+    }
+
     void onCharacterSwitchInput(InputAction.CallbackContext context)
     {
-        characterSwitchInput = context.ReadValue<int>();
+        if (context.phase == InputActionPhase.Started)
+        {
+            buttonName = context.control.displayName;
+        }
+        else
+        {
+            buttonName = null;
+        }
     }
 
 #endregion
-
-    void Start()
-    {
-        Reset();
-    }
 
     void Reset()
     {
         activeCharacter = characters[0];
         activeCharacter.name = characters[0].name.ToString();
         characters[0].transform.position = new Vector3(activeCharacter.transform.position.x, activeCharacter.transform.position.y, activeCharacter.transform.position.z);
-        characterSwitchInput = 0;
+        characterOrder = 0;
         foreach(GameObject character in characters)
         {
             character.SetActive(false);
@@ -68,29 +95,30 @@ public class PlayerManager : MonoBehaviour
         {
             SwitchCharacter();
         }
-        
+        //Debug.Log(buttonName);
     }
     
     void SwitchCharacter()
     {
-        switch (characterSwitchInput)
+        
+        switch (buttonName)
         {
-            case 1:
+            case "1":
             //Desactivo char activo, copio su transform y se lo aplico al personaje que quiero. Activo el personaje y lo convierto en el personaje activo.
-                characterSwitchInput = 0;
-                CharacterSwap(characterSwitchInput);
+                characterOrder = 0;
+                CharacterSwap(characterOrder);
             break;
-            case 2:
-                characterSwitchInput = 1;
-                CharacterSwap(characterSwitchInput);
+            case "2":
+                characterOrder = 1;
+                CharacterSwap(characterOrder);
             break;
-            case 3:
-                characterSwitchInput = 2;
-                CharacterSwap(characterSwitchInput);
+            case "3":
+                characterOrder = 2;
+                CharacterSwap(characterOrder);
             break;
-            case 4:
-                characterSwitchInput = 3;
-                CharacterSwap(characterSwitchInput);
+            case "4":
+                characterOrder = 3;
+                CharacterSwap(characterOrder);
             break;
 
             default:
@@ -107,6 +135,7 @@ public class PlayerManager : MonoBehaviour
 
     void CharacterSwap(int i)
     {
+        //Debug.Log("Character swap");
         if(activeCharacter.name == characters[i].name)
         {
             return;

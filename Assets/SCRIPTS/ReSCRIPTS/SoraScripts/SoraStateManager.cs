@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 public class SoraStateManager : MonoBehaviour, IStateManager
 {
 #region "Variables"
+    public static SoraStateManager Instance;
+
     //Componentes importantes del personaje
     BaseState currentState;
     public Animator Animator { get; set;}
@@ -42,6 +44,12 @@ public class SoraStateManager : MonoBehaviour, IStateManager
         //Variables de ataque
         bool isAttackPressed;
             //public float _nextAttack;
+        
+        public float AttackAngle { get { return soraStats.attackAngle; } set { soraStats.attackAngle = value; } }
+        public float AttackRadius { get { return soraStats.attackRadius; } set { soraStats.attackRadius = value; } }
+        public LayerMask EnemyLayer { get { return soraStats.enemyLayer; } set { soraStats.enemyLayer = value; } }
+        public float PushForce { get { return soraStats.pushForce; } set { soraStats.pushForce = value; } }
+        public float PushForceAbility { get { return soraStats.pushForceAbility; } set { soraStats.pushForceAbility = value; } }
 
         //Variables de ability
         bool isAbilityPressed;
@@ -55,6 +63,17 @@ public class SoraStateManager : MonoBehaviour, IStateManager
 
     void Awake() 
     {
+#region Singelton
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else if(Instance != this)
+        {
+            Destroy(this);
+        }
+        DontDestroyOnLoad(this);
+#endregion
         //set animator, character controller and player input
         Animator = GetComponentInChildren<Animator>();
         CharacterController = GetComponent<CharacterController>();
@@ -171,16 +190,15 @@ public class SoraStateManager : MonoBehaviour, IStateManager
             break;
 
             case "SoraAttackState":
-
+                if(!isAttackPressed)
+                {
+                    GoIdle();
+                }
             break;
 
             case "SoraAbilityState":
                 //Debug.Log("Ability state");
-                if(isAbilityPressed && basicAbility.IsAbilityReady())
-                {
-                    return;
-                }
-                else
+                if(basicAbility.IsAbilityReady())
                 {
                     basicAbility.PutOnCooldown();
                     GoIdle();
@@ -240,4 +258,30 @@ public class SoraStateManager : MonoBehaviour, IStateManager
             CharacterController.SimpleMove(new Vector3(0f,-9.81f,0f));
         }
     }
+
+#region Gizmos
+    void VisualizeAttack()
+    {
+        Vector3 forward = transform.TransformDirection(Vector3.forward);
+        Vector3 right = transform.TransformDirection(Vector3.right);
+        Vector3 left = transform.TransformDirection(Vector3.left);
+
+        Vector3 leftAttackLimit = Quaternion.AngleAxis(-AttackAngle, Vector3.up) * (-forward);
+        Vector3 rightAttackLimit = Quaternion.AngleAxis(AttackAngle, Vector3.up) * (-forward);
+
+        Vector3 leftAttackEnd = transform.position + leftAttackLimit * AttackRadius;
+        Vector3 rightAttackEnd = transform.position + rightAttackLimit * AttackRadius;
+
+        Debug.DrawLine(transform.position, leftAttackEnd, Color.red);
+        Debug.DrawLine(transform.position, rightAttackEnd, Color.red);
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        VisualizeAttack();
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, AttackRadius);
+    }
+#endregion
 }

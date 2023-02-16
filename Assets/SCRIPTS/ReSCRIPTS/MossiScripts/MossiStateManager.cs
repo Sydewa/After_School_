@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 public class MossiStateManager : MonoBehaviour, IStateManager
 {
 #region "Variables"
+    public static MossiStateManager Instance;
+
     //Componentes importantes del personaje
     BaseState currentState;
     public Animator Animator { get; set;}
@@ -34,6 +36,7 @@ public class MossiStateManager : MonoBehaviour, IStateManager
     public MossiAttackState AttackState = new MossiAttackState();
     public MossiAbilityState AbilityState = new MossiAbilityState();
     public MossiUltimateState UltimateState = new MossiUltimateState();
+    public MossiAttackDashState AttackDashState = new MossiAttackDashState();
 
     //Variables temporales de input
     public Vector2 CurrentMovementInput { get; set; }
@@ -41,7 +44,15 @@ public class MossiStateManager : MonoBehaviour, IStateManager
     
         //Variables de ataque
         bool isAttackPressed;
-        public float _nextAttack;
+        public float elapsedTimeAttack;
+        public float elapsedTimeAttack2;
+        public Vector2 DashTime { get { return mossiStats.DashTime; } set { mossiStats.DashTime = value; } }
+        public Vector2 DashSpeed { get { return mossiStats.DashSpeed; } set { mossiStats.DashSpeed = value; } }
+        public float PushForce { get { return mossiStats.PushForce; } set { mossiStats.PushForce = value; } }
+        public Transform AttackHitBox { get { return mossiStats.AttackHitBox; } set { mossiStats.AttackHitBox = value; } }
+        public float AttackRadius { get { return mossiStats.AttackRadius; } set { mossiStats.AttackRadius = value; } }
+        public LayerMask EnemyLayer { get { return mossiStats.EnemyLayer; } set { mossiStats.EnemyLayer = value; } }
+        
 
         //Variables de ability
         bool isAbilityPressed;
@@ -55,6 +66,17 @@ public class MossiStateManager : MonoBehaviour, IStateManager
 
     void Awake() 
     {
+#region Singelton
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else if(Instance != this)
+        {
+            Destroy(this);
+        }
+        DontDestroyOnLoad(this);
+#endregion
         //set animator, character controller and player input
         Animator = GetComponentInChildren<Animator>();
         CharacterController = GetComponent<CharacterController>();
@@ -136,9 +158,8 @@ public class MossiStateManager : MonoBehaviour, IStateManager
                 {
                     SwitchState(RunningState);
                 }
-                if(isAttackPressed && Time.time > _nextAttack)
+                if(isAttackPressed)
                 {
-                    _nextAttack = Time.time + AttackSpeed;
                     SwitchState(AttackState);
                 }
                 if(isAbilityPressed && basicAbility.IsAbilityReady())
@@ -157,9 +178,8 @@ public class MossiStateManager : MonoBehaviour, IStateManager
                 {
                     SwitchState(IdleState);
                 }
-                if(isAttackPressed && Time.time > _nextAttack)
+                if(isAttackPressed)
                 {
-                    _nextAttack = Time.time + AttackSpeed;
                     SwitchState(AttackState);
                 }
                 if(isAbilityPressed && basicAbility.IsAbilityReady())
@@ -173,7 +193,14 @@ public class MossiStateManager : MonoBehaviour, IStateManager
             break;
 
             case "MossiAttackState":
+                if(!isAttackPressed)
+                {
+                    SwitchState(AttackDashState);
+                }
+            break;
 
+            case "MossiAttackDashState":
+                
             break;
 
             case "MossiAbilityState":
@@ -242,4 +269,12 @@ public class MossiStateManager : MonoBehaviour, IStateManager
             CharacterController.SimpleMove(new Vector3(0f,-9.81f,0f));
         }
     }
+
+#region Gizmos
+    void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(AttackHitBox.position, AttackRadius);
+        }
+#endregion
 }

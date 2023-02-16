@@ -6,6 +6,9 @@ using UnityEngine.InputSystem;
 public class AntiaStateManager : MonoBehaviour, IStateManager
 {
 #region "Variables"
+
+    public static AntiaStateManager Instance;
+
     //Componentes importantes del personaje
     BaseState currentState;
     public Animator Animator { get; set;}
@@ -34,6 +37,7 @@ public class AntiaStateManager : MonoBehaviour, IStateManager
     public AntiaAttackState AttackState = new AntiaAttackState();
     public AntiaAbilityState AbilityState = new AntiaAbilityState();
     public AntiaUltimateState UltimateState = new AntiaUltimateState();
+    public AntiaReloadState ReloadState = new AntiaReloadState();
 
     //Variables temporales de input
     public Vector2 CurrentMovementInput { get; set; }
@@ -42,6 +46,10 @@ public class AntiaStateManager : MonoBehaviour, IStateManager
         //Variables de ataque
         bool isAttackPressed;
             //public float _nextAttack;
+        public int maxWaterAmount;
+        public int currentWaterAmount;
+        public AntiaAmunitionManager amunitionManager;
+        public bool isReloading;
 
         //Variables de ability
         bool isAbilityPressed;
@@ -55,13 +63,26 @@ public class AntiaStateManager : MonoBehaviour, IStateManager
 
     void Awake() 
     {
+#region Singelton
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else if(Instance != this)
+        {
+            Destroy(this);
+        }
+        DontDestroyOnLoad(this);
+#endregion
+        
         //set animator, character controller and player input
         Animator = GetComponentInChildren<Animator>();
         CharacterController = GetComponent<CharacterController>();
         PlayerInput = new PlayerInput();
+        amunitionManager = GetComponentInParent<AntiaAmunitionManager>();
 
         //Otras variables que por si acaso ponemos en el awake
-        
+        currentWaterAmount = maxWaterAmount;
 
         // enable controls and set player inputs
         EnableControls();
@@ -134,7 +155,7 @@ public class AntiaStateManager : MonoBehaviour, IStateManager
                 //En idle puede cambiar a running, attack o ability
                 if(CurrentMovement != Vector3.zero)
                 {
-                    SwitchState(RunningState);
+                    RunningOrReloading();
                 }
                 if(isAttackPressed)
                 {
@@ -171,6 +192,17 @@ public class AntiaStateManager : MonoBehaviour, IStateManager
             break;
 
             case "AntiaAttackState":
+                if(!isAttackPressed)
+                {
+                    GoIdle();
+                }
+
+                if(currentWaterAmount <= 0)
+                {
+                    isReloading = true;
+                    //Triggear la animacion?
+                    SwitchState(IdleState);
+                }
 
             break;
 
@@ -193,6 +225,9 @@ public class AntiaStateManager : MonoBehaviour, IStateManager
                 ultimateAbility.PutOnCooldown();
             break;
 
+            case "AntiaReloadState":
+
+            break;
             default:
                 //Intentar no poner nada en default, da problemas cuando se esta cambiando de estado
             break;
@@ -209,6 +244,18 @@ public class AntiaStateManager : MonoBehaviour, IStateManager
     public void GoIdle()
     {
         SwitchState(IdleState);
+    }
+
+    public void RunningOrReloading()
+    {
+        if(isReloading)
+        {
+            SwitchState(ReloadState);
+        }
+        else
+        {
+            SwitchState(RunningState);
+        }
     }
 
     public void ExitState()

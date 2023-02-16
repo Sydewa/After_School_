@@ -65,7 +65,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""SwitchCharacter"",
-                    ""type"": ""Value"",
+                    ""type"": ""Button"",
                     ""id"": ""9d1f3375-eebc-4ebe-b5e9-e3eaaf8d465d"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",

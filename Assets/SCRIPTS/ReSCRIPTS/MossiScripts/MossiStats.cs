@@ -10,6 +10,14 @@ public class MossiStats : MonoBehaviour
     public int Power;
     public float AttackSpeed;
 
+    [Header ("Attack")]
+    public Vector2 DashTime;
+    public Vector2 DashSpeed;
+    public float PushForce;
+    public Transform AttackHitBox;
+    public float AttackRadius;
+    public LayerMask EnemyLayer;
+
     public Ability basicAbility;
     public Ability ultimateAbility;
 }
