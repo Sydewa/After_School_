@@ -5252,9 +5252,12 @@ MonoBehaviour:
   Speed: 3.8
   Attack: 90
   Power: 0
-  AttackSpeed: 0.1
+  AttackSpeed: 0.05
   basicAbility: {fileID: 11400000, guid: f531d0b846a6e1645a39e1c27126950a, type: 2}
   ultimateAbility: {fileID: 11400000, guid: b4c8d39cc4581f1459f0b2855d95e57c, type: 2}
+  dashDuration: 0.3
+  dashForce: 3
+  dashLength: 3.15
 --- !u!114 &566091014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5268,7 +5271,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   antiaStats: {fileID: 566091013}
-  maxWaterAmount: 50
+  maxWaterAmount: 100
   currentWaterAmount: 0
   amunitionManager: {fileID: 0}
   isReloading: 0
@@ -15002,10 +15005,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd3972dc49078974ba4e6e3fbc025504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletSpawnInterval: 0.1
   bullet: {fileID: 5520503725660751996, guid: fe0e7f06d68cb444ca4a43878d7d7b27, type: 3}
   spawnBulletPosition: {fileID: 1882743140}
-  pushForce: 10
+  pushForce: 18
+  reloadInterval: 0.015
 --- !u!1 &1876071663
 GameObject:
   m_ObjectHideFlags: 0

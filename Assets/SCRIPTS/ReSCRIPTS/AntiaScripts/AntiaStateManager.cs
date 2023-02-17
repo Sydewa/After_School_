@@ -53,6 +53,9 @@ public class AntiaStateManager : MonoBehaviour, IStateManager
 
         //Variables de ability
         bool isAbilityPressed;
+        public float DashDuration { get { return antiaStats.dashDuration; } set { antiaStats.dashDuration = value; } }
+        public float DashForce { get { return antiaStats.dashForce; } set { antiaStats.dashForce = value; } }
+        public float DashLength { get { return antiaStats.dashLength; } set { antiaStats.dashLength = value; } }
 
         //Variables de la ultimate
         bool isUltimatePressed;
@@ -155,9 +158,9 @@ public class AntiaStateManager : MonoBehaviour, IStateManager
                 //En idle puede cambiar a running, attack o ability
                 if(CurrentMovement != Vector3.zero)
                 {
-                    RunningOrReloading();
+                    SwitchState(RunningState);
                 }
-                if(isAttackPressed)
+                if(isAttackPressed && !isReloading)
                 {
                     SwitchState(AttackState);
                 }
@@ -177,7 +180,7 @@ public class AntiaStateManager : MonoBehaviour, IStateManager
                 {
                     SwitchState(IdleState);
                 }
-                if(isAttackPressed)
+                if(isAttackPressed && !isReloading)
                 {
                     SwitchState(AttackState);
                 }
@@ -192,42 +195,44 @@ public class AntiaStateManager : MonoBehaviour, IStateManager
             break;
 
             case "AntiaAttackState":
+                if(currentWaterAmount <= 0)
+                {
+                    amunitionManager.Reload();
+                    //Triggear la animacion?
+                    SwitchState(IdleState);
+                }
+                
+                if(isAbilityPressed && basicAbility.IsAbilityReady())
+                {
+                    SwitchState(AbilityState);
+                }
+
                 if(!isAttackPressed)
                 {
                     GoIdle();
                 }
-
-                if(currentWaterAmount <= 0)
-                {
-                    isReloading = true;
-                    //Triggear la animacion?
-                    SwitchState(IdleState);
-                }
-
             break;
 
             case "AntiaAbilityState":
-                //Debug.Log("Ability state");
-                if(isAbilityPressed && basicAbility.IsAbilityReady())
-                {
-                    return;
-                }
-                else
-                {
-                    basicAbility.PutOnCooldown();
-                    GoIdle();
-                    //Debug.Log("Going Idle");
-                }
+                basicAbility.PutOnCooldown();
             break;
 
             case "AntiaUltimateState":
                 Debug.Log("Ultimate");
                 ultimateAbility.PutOnCooldown();
             break;
-
+            /*
             case "AntiaReloadState":
-
+                if(CurrentMovement == Vector3.zero)
+                {
+                    SwitchState(IdleState);
+                }
+                if(isAbilityPressed && basicAbility.IsAbilityReady())
+                {
+                    SwitchState(AbilityState);
+                }
             break;
+            */
             default:
                 //Intentar no poner nada en default, da problemas cuando se esta cambiando de estado
             break;

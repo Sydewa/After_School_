@@ -33,7 +33,7 @@ public class BulletAntia : MonoBehaviour
                 EnemyDamaged _enemyDamaged = colliders[i].GetComponent<EnemyDamaged>();
                 if(_enemyDamaged != null)
                 {
-                    _enemyDamaged.OnEnemyDamaged(Mathf.CeilToInt((40f + antiaStats.attack/2)/5f));
+                    _enemyDamaged.OnEnemyDamaged(Mathf.CeilToInt((40f + antiaStats.attack/2)/5f)/2);
                     _enemyDamaged.OnEnemySlow();
                 }
             }

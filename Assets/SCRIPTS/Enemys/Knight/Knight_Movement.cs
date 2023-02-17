@@ -32,12 +32,7 @@ public class Knight_Movement : MonoBehaviour
     [Header ("Attack")]
     float elapsedTimeAttack;
     [SerializeField]float attackSmoothRotation;
-
-
-
-
     //[SerializeField]GameObject attackSphere;
-
 
     //Animacion variables-----------------------
     [Header ("Otros")]

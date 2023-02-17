@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class EricStateManager : MonoBehaviour, IStateManager
 {
 #region "Variables"
+    public static EricStateManager Instance;
     //Componentes importantes del personaje
     BaseState currentState;
     public Animator Animator { get; set;}
@@ -55,6 +56,17 @@ public class EricStateManager : MonoBehaviour, IStateManager
 
     void Awake() 
     {
+#region Singelton
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else if(Instance != this)
+        {
+            Destroy(this);
+        }
+        DontDestroyOnLoad(this);
+#endregion
         //set animator, character controller and player input
         Animator = GetComponentInChildren<Animator>();
         CharacterController = GetComponent<CharacterController>();

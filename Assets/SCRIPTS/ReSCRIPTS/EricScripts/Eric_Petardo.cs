@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class Eric_Petardo : MonoBehaviour
 {
-    [SerializeField]Stats _ericStats;
     [SerializeField]float explosionRadius;
     Rigidbody rb;
     //[SerializeField]float impulse;
 
     void Start()
     {
-        Debug.Log("Petardo");
+        //Debug.Log("Petardo");
     }
     private void OnTriggerEnter(Collider other) 
     {
@@ -25,7 +24,8 @@ public class Eric_Petardo : MonoBehaviour
                     EnemyDamaged _enemyDamaged = colliders[i].GetComponent<EnemyDamaged>();
                     if(_enemyDamaged != null)
                     {
-                        _enemyDamaged.OnEnemyDamaged(_ericStats.attack);
+                        _enemyDamaged.OnEnemyDamaged(Mathf.CeilToInt(EricStateManager.Instance.Attack + (EricStateManager.Instance.Power * 0.2f)));
+                        Debug.Log(Mathf.CeilToInt(EricStateManager.Instance.Attack + (EricStateManager.Instance.Power * 0.15f)));
                     }
                 }
             }

@@ -12,4 +12,9 @@ public class AntiaStats : MonoBehaviour
 
     public Ability basicAbility;
     public Ability ultimateAbility;
+
+    [Header ("Otras variables")]
+    public float dashDuration;
+    public float dashForce;
+    public float dashLength;
 }
