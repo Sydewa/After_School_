@@ -17,3 +17,13 @@ MonoBehaviour:
   chasingSpeed: 3
   attackSpeed: 1.5
   attackDMG: 20
+  Health: 125
+  Attack: 20
+  AttackSpeed: 1.5
+  SlowResistance: 0
+  PatrollingSpeed: 1.5
+  PatrollingRadius: 5
+  PatrolWaitingInterval: {x: 2, y: 8}
+  VisionRange: 6
+  ChasingSpeed: 3
+  AttackRadius: 1.44

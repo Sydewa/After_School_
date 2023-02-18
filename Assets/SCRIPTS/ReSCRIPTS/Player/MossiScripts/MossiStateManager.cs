@@ -18,6 +18,7 @@ public class MossiStateManager : MonoBehaviour, IStateManager
 
     //Variables personaje
     public MossiStats mossiStats;
+    public int CurrentHealth;
 
     //Para añadir más variables se debe cambiar el IStateManager y añadir la variable a EriStats para tenerlo asi todo bonito
     public int Health { get { return mossiStats.Health; } set { mossiStats.Health = value; } }
@@ -83,7 +84,7 @@ public class MossiStateManager : MonoBehaviour, IStateManager
         PlayerInput = new PlayerInput();
 
         //Otras variables que por si acaso ponemos en el awake
-        
+        CurrentHealth = Health;
 
         // enable controls and set player inputs
         EnableControls();
@@ -134,6 +135,11 @@ public class MossiStateManager : MonoBehaviour, IStateManager
 
     void Update()
     {
+        //Comprobamos que no este muerto
+        if(CurrentHealth <= 0)
+        {
+            //Cambiar a estado muerto
+        }
         // Anyadimos la state machine que nos cambiará de estado
         StateMachine();
 

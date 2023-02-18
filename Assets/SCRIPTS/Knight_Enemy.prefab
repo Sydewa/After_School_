@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stats: {fileID: 11400000, guid: 9932b105dfa24fe4496cedbd5061009a, type: 2}
-  timeToReenableKinematic: 0.8
+  timeToReenableKinematic: 1
 --- !u!114 &3121408222001084130
 MonoBehaviour:
   m_ObjectHideFlags: 0

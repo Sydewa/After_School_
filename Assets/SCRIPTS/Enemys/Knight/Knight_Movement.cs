@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public enum KnightState { Patrolling , Dying, Chase, AttackStart, OnAttack }
 public class Knight_Movement : MonoBehaviour
 {
+    
     KnightState _knightState;
     NavMeshAgent agent;
     Animator anim;

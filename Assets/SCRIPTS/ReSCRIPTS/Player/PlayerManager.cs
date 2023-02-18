@@ -42,10 +42,10 @@ public class PlayerManager : MonoBehaviour
         PlayerInput = new PlayerInput();
         OnEnable();
         Reset();
+
         //Setea los player inputs
         PlayerInput.CharacterControls.SwitchCharacter.started += onCharacterSwitchInput;
-        PlayerInput.CharacterControls.SwitchCharacter.canceled += onCharacterSwitchInput;
-        //PlayerInput.CharacterControls.Move.performed += onCharacterSwitchInput;    
+        PlayerInput.CharacterControls.SwitchCharacter.canceled += onCharacterSwitchInput;  
     }
 
 #region "Input functions"
@@ -104,19 +104,34 @@ public class PlayerManager : MonoBehaviour
         switch (buttonName)
         {
             case "1":
-            //Desactivo char activo, copio su transform y se lo aplico al personaje que quiero. Activo el personaje y lo convierto en el personaje activo.
                 characterOrder = 0;
+                if(EricStateManager.Instance.CurrentHealth <= 0)
+                {
+                    return;
+                }
                 CharacterSwap(characterOrder);
             break;
             case "2":
+                if(AntiaStateManager.Instance.CurrentHealth <= 0)
+                {
+                    return;
+                }
                 characterOrder = 1;
                 CharacterSwap(characterOrder);
             break;
             case "3":
+                if(SoraStateManager.Instance.CurrentHealth <= 0)
+                {
+                    return;
+                }
                 characterOrder = 2;
                 CharacterSwap(characterOrder);
             break;
             case "4":
+                if(MossiStateManager.Instance.CurrentHealth <= 0)
+                {
+                    return;
+                }
                 characterOrder = 3;
                 CharacterSwap(characterOrder);
             break;
@@ -149,7 +164,7 @@ public class PlayerManager : MonoBehaviour
 
         //hud_Controller.ChangeActiveCharacter(i);
         StartCoroutine(CharSwapCD());
-        CharChange_CoolDown._charChange_CoolDown.StartCoroutine("StartTimer");
+        //CharChange_CoolDown._charChange_CoolDown.StartCoroutine("StartTimer");
     }
 
 }

@@ -10,12 +10,20 @@ public class Knight_AnimationEvents : MonoBehaviour
     bool charDamaged;
     [SerializeField] Transform attackPosition;
     [SerializeField]float attackRadius;
+
+    KnightStateManager knight;
     
+    void Awake()
+    {
+        knight = GetComponentInParent<KnightStateManager>();
+    }
+
     void CheckSphere()
     {
         if(Physics.OverlapSphere(attackPosition.position, attackRadius, LayerMask.GetMask("Player")).Length > 0 && !charDamaged)
         {
-            //PlayerManager.CharacterDamaged(_knightStats.attackDMG);
+            PlayerDamaged.CharacterDamaged(knight.Stats.Attack);
+            //DealDamage
             charDamaged = true;
         }
     }
@@ -23,6 +31,11 @@ public class Knight_AnimationEvents : MonoBehaviour
     void ResetCharDamaged()
     {
         charDamaged = false;
+    }
+
+    void GoIdle()
+    {
+        knight.GoIdle();
     }
 
     void OnDrawGizmosSelected()

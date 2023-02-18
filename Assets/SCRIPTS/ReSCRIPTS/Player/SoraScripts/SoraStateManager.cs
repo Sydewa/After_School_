@@ -18,6 +18,7 @@ public class SoraStateManager : MonoBehaviour, IStateManager
 
     //Variables personaje
     public SoraStats soraStats;
+    public int CurrentHealth;
 
     //Para añadir más variables se debe cambiar el IStateManager y añadir la variable a EriStats para tenerlo asi todo bonito
     public int Health { get { return soraStats.Health; } set { soraStats.Health = value; } }
@@ -80,7 +81,7 @@ public class SoraStateManager : MonoBehaviour, IStateManager
         PlayerInput = new PlayerInput();
 
         //Otras variables que por si acaso ponemos en el awake
-        
+        CurrentHealth = Health;
 
         // enable controls and set player inputs
         EnableControls();
@@ -131,6 +132,11 @@ public class SoraStateManager : MonoBehaviour, IStateManager
 
     void Update()
     {
+        //Comprobamos que no este muerto
+        if(CurrentHealth <= 0)
+        {
+            //Cambiar a estado muerto
+        }
         // Anyadimos la state machine que nos cambiará de estado
         StateMachine();
 

@@ -19,6 +19,7 @@ public class AntiaStateManager : MonoBehaviour, IStateManager
 
     //Variables personaje
     public AntiaStats antiaStats;
+    public int CurrentHealth;
 
     //Para añadir más variables se debe cambiar el IStateManager y añadir la variable a EriStats para tenerlo asi todo bonito
     public int Health { get { return antiaStats.Health; } set { antiaStats.Health = value; } }
@@ -86,7 +87,7 @@ public class AntiaStateManager : MonoBehaviour, IStateManager
 
         //Otras variables que por si acaso ponemos en el awake
         currentWaterAmount = maxWaterAmount;
-
+        CurrentHealth = Health;
         // enable controls and set player inputs
         EnableControls();
         PlayerInput.CharacterControls.Move.started += onMovementInput;
@@ -136,6 +137,11 @@ public class AntiaStateManager : MonoBehaviour, IStateManager
 
     void Update()
     {
+        //Comprobamos que no este muerto
+        if(CurrentHealth <= 0)
+        {
+            //Cambiar a estado muerto
+        }
         // Anyadimos la state machine que nos cambiará de estado
         StateMachine();
 
