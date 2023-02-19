@@ -20,6 +20,7 @@ public class KnightStateManager : MonoBehaviour, IEnemyStateManager
     public PatrollingState PatrollingState = new PatrollingState();
     public ChasingState ChasingState = new ChasingState();
     public AttackState AttackState = new AttackState();
+    public StunnedState StunnedState = new StunnedState();
 
     void Awake()
     {
@@ -70,6 +71,9 @@ public class KnightStateManager : MonoBehaviour, IEnemyStateManager
                 }
             break;
 
+            case "StunnedState":
+            break;
+
             default:
             break;
         }
@@ -95,6 +99,11 @@ public class KnightStateManager : MonoBehaviour, IEnemyStateManager
     public void GoChase()
     {
         SwitchState(ChasingState);
+    }
+
+    public void GoStunned()
+    {
+        SwitchState(StunnedState);
     }
 #endregion
 

@@ -12,15 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd9d1109fa94c3649b8d07282ef90d69, type: 3}
   m_Name: Knight_Stats
   m_EditorClassIdentifier: 
-  vida: 125
-  patrollingSpeed: 1
-  chasingSpeed: 3
-  attackSpeed: 1.5
-  attackDMG: 20
   Health: 125
   Attack: 20
   AttackSpeed: 1.5
-  SlowResistance: 0
+  SlowResistance: 1
   PatrollingSpeed: 1.5
   PatrollingRadius: 5
   PatrolWaitingInterval: {x: 2, y: 8}

@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public enum KnightState { Patrolling , Dying, Chase, AttackStart, OnAttack }
 public class Knight_Movement : MonoBehaviour
 {
-    
+  /*  
     KnightState _knightState;
     NavMeshAgent agent;
     Animator anim;
@@ -158,7 +158,7 @@ public class Knight_Movement : MonoBehaviour
             agent.destination = randomPosition;
         }
 
-    }*/
+    }
 
     void Chase()
     {
@@ -232,5 +232,5 @@ public class Knight_Movement : MonoBehaviour
         //Gizmos.color = Color.green;
         //Gizmos.DrawWireSphere(attackPosition.position, attackRadius);
     }
-
+*/
 }

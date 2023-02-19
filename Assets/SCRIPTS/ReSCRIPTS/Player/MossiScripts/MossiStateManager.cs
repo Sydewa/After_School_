@@ -57,6 +57,7 @@ public class MossiStateManager : MonoBehaviour, IStateManager
 
         //Variables de ability
         bool isAbilityPressed;
+        public float StunnedTime;
 
         //Variables de la ultimate
         bool isUltimatePressed;
@@ -211,17 +212,7 @@ public class MossiStateManager : MonoBehaviour, IStateManager
             break;
 
             case "MossiAbilityState":
-                //Debug.Log("Ability state");
-                if(isAbilityPressed && basicAbility.IsAbilityReady())
-                {
-                    return;
-                }
-                else
-                {
-                    basicAbility.PutOnCooldown();
-                    GoIdle();
-                    //Debug.Log("Going Idle");
-                }
+                basicAbility.PutOnCooldown();
             break;
 
             case "MossiUltimateState":
@@ -280,8 +271,8 @@ public class MossiStateManager : MonoBehaviour, IStateManager
 #region Gizmos
     void OnDrawGizmosSelected()
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(AttackHitBox.position, AttackRadius);
+            //Gizmos.color = Color.red;
+            //Gizmos.DrawWireSphere(AttackHitBox.position, AttackRadius);
         }
 #endregion
 }

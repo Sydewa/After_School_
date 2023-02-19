@@ -15,7 +15,7 @@ public class EnemyDamaged : MonoBehaviour
 
     void Awake()
     {
-        enemyHealth = _stats.vida;
+        enemyHealth = _stats.Health;
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
     }
@@ -37,9 +37,22 @@ public class EnemyDamaged : MonoBehaviour
         {
             rb.isKinematic = false;
             isKinematicDisabled = true;
-            rb.AddForce(direction * pushForce, ForceMode.Impulse);
+            rb.AddForce((direction * pushForce)/_stats.SlowResistance, ForceMode.Impulse);
             StartCoroutine(EnableKinematicAfterTime(timeToReenableKinematic));
         }
+    }
+
+    public void OnEnemyStunned(float stunnedTime)
+    {
+        Debug.Log("Stunned");
+        gameObject.SendMessage("GoStunned");
+        StartCoroutine(DisableMovement(stunnedTime));
+    }
+
+    private IEnumerator DisableMovement(float stunnedTime)
+    {
+        yield return new WaitForSeconds(stunnedTime);
+        gameObject.SendMessage("GoChase");
     }
 
     private IEnumerator EnableKinematicAfterTime(float time)
@@ -56,10 +69,11 @@ public class EnemyDamaged : MonoBehaviour
 
     public IEnumerator OnEnemySlowed()
     {
+        float currentSpeed = agent.speed;
         while(elapsedTime < 0.5f)
         {
             elapsedTime += Time.deltaTime;
-            agent.speed = 1f;
+            currentSpeed = currentSpeed/3f;
             yield return null;
         }
         elapsedTime = 0f;
