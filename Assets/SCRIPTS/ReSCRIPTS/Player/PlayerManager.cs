@@ -104,11 +104,11 @@ public class PlayerManager : MonoBehaviour
         switch (buttonName)
         {
             case "1":
-                characterOrder = 0;
                 if(EricStateManager.Instance.CurrentHealth <= 0)
                 {
                     return;
                 }
+                characterOrder = 0;
                 CharacterSwap(characterOrder);
             break;
             case "2":
@@ -162,7 +162,7 @@ public class PlayerManager : MonoBehaviour
         activeCharacter = characters[i];
         activeCharacter.name = characters[i].name.ToString();
 
-        //hud_Controller.ChangeActiveCharacter(i);
+        HUDManager.Instance.ChangeActiveCharacter(i);
         StartCoroutine(CharSwapCD());
         //CharChange_CoolDown._charChange_CoolDown.StartCoroutine("StartTimer");
     }

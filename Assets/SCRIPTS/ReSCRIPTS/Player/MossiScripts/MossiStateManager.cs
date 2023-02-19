@@ -6,8 +6,8 @@ using UnityEngine.InputSystem;
 public class MossiStateManager : MonoBehaviour, IStateManager
 {
 #region "Variables"
-    public static MossiStateManager Instance;
 
+    public static MossiStateManager Instance;
     //Componentes importantes del personaje
     BaseState currentState;
     public Animator Animator { get; set;}
@@ -131,6 +131,7 @@ public class MossiStateManager : MonoBehaviour, IStateManager
     {
         currentState = IdleState;
         currentState.EnterState(this);
+
     }
 
     void Update()
