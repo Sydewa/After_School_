@@ -19,7 +19,7 @@ public class HealthBar_Sora : MonoBehaviour
     void Update()
     {
         GetCurrentFill();
-        currentHealth = PlayerManager.soraVida;
+        //currentHealth = PlayerManager.soraVida;
     }
 
     void GetCurrentFill()

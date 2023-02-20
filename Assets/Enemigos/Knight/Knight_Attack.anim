@@ -9871,11 +9871,18 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.75
+  - time: 0.7916667
     functionName: ResetCharDamaged
     data: 
     objectReferenceParameter: {fileID: 11500000, guid: d107562da653e8d4ebb2c6e9b805bb6d,
       type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.375
+    functionName: GoIdle
+    data: 
+    objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

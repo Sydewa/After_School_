@@ -19,7 +19,7 @@ public class HealthBar_Antia : MonoBehaviour
     void Update()
     {
         GetCurrentFill();
-        currentHealth = PlayerManager.antiaVida;
+        //currentHealth = PlayerManager.antiaVida;
     }
 
     void GetCurrentFill()

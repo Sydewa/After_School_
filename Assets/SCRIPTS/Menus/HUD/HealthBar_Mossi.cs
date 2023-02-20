@@ -12,19 +12,19 @@ public class HealthBar_Mossi : MonoBehaviour
     [SerializeField]Image mask;
     void Start()
     {
-        maxHealth = mossiStats.vida;
+        //maxHealth = mossiStats.vida;
     }
 
     // Update is called once per frame
     void Update()
     {
         GetCurrentFill();
-        currentHealth = PlayerManager.mossiVida;
+        //currentHealth = PlayerManager.mossiVida;
     }
 
     void GetCurrentFill()
     {
-        float fillAmount = (float)currentHealth / (float)maxHealth;
-        mask.fillAmount = fillAmount;
+        //float fillAmount = (float)currentHealth / (float)maxHealth;
+        //mask.fillAmount = fillAmount;
     }
 }
