@@ -7,6 +7,7 @@ public class MossiAnimationEvents : MonoBehaviour
     public Transform spawnPosition;
     public GameObject rootsPrefab;
     public float rootsVelocity;
+    public float rootsTime;
     public AnimationCurve rootsAnimation;
     float elapsedTime;
 
@@ -33,18 +34,18 @@ public class MossiAnimationEvents : MonoBehaviour
     IEnumerator RootsCoroutine()
     {
         // Calculate starting and ending positions of the roots animation
-        Vector3 startPos = transform.position + Vector3.up * 0.1f; // Offset slightly above character's feet
-        Vector3 endPos = transform.position + transform.forward * 2f; // Move 2 units in the direction the character is facing
+        Vector3 startPos = transform.position + MossiStateManager.Instance.Character.transform.forward * 0.1f; // Offset slightly above character's feet
+        Vector3 endPos = transform.position + MossiStateManager.Instance.Character.transform.forward * rootsVelocity; // Move 2 units in the direction the character is facing
 
         // Instantiate roots prefab at starting position
         GameObject clone = Instantiate(rootsPrefab, startPos, Quaternion.Euler(0f, transform.eulerAngles.y, 0f));
 
         // Move roots animation from starting position to ending position over time
         float elapsedTime = 0f;
-        while (elapsedTime < rootsVelocity)
+        while (elapsedTime < rootsTime)
         {
             elapsedTime += Time.deltaTime;
-            float t = elapsedTime / rootsVelocity;
+            float t = elapsedTime / rootsTime;
             clone.transform.position = Vector3.Lerp(startPos, endPos, rootsAnimation.Evaluate(t));
             yield return null;
         }

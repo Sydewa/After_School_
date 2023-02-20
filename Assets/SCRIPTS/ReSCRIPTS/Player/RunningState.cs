@@ -17,6 +17,7 @@ public class RunningState : BaseState
     
     public override void UpdateState(IStateManager character)
     {
+        character.Animator.SetBool("isRunning", true);
         //Rotacion del personaje
         float targetAngle = Mathf.Atan2(character.CurrentMovement.x, character.CurrentMovement.z) * Mathf.Rad2Deg;
         float angle = Mathf.SmoothDampAngle(character.Character.transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
