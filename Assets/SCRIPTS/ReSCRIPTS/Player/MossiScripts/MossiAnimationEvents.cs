@@ -9,11 +9,11 @@ public class MossiAnimationEvents : MonoBehaviour
     public float rootsVelocity;
     public float rootsTime;
     public AnimationCurve rootsAnimation;
-    float elapsedTime;
+    //float elapsedTime;
 
     void SpawnRoots()
     {
-        elapsedTime = 0f;
+        //elapsedTime = 0f;
         StartCoroutine(RootsCoroutine());
     }
     

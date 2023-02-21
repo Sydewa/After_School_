@@ -32,7 +32,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""type"": ""Value"",
                     ""id"": ""8510f318-799c-4bdc-a146-01b788acddf7"",
                     ""expectedControlType"": ""Vector2"",
-                    ""processors"": ""NormalizeVector2"",
+                    ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 },
@@ -207,6 +207,54 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""InventoryControls"",
+            ""id"": ""596e9cb1-11fa-4f8e-a8d2-0bbc80b5713b"",
+            ""actions"": [
+                {
+                    ""name"": ""OpenClose"",
+                    ""type"": ""Button"",
+                    ""id"": ""6f5679dc-eca4-4ff2-9750-3ce384490fed"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseInteract"",
+                    ""type"": ""Button"",
+                    ""id"": ""e57bff89-4e6d-474f-80b8-7ef6c57feff7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""678f77f5-0355-49e5-9631-05628f4ffaeb"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenClose"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2c04890d-3084-46c4-907a-168fd1a29394"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseInteract"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -218,6 +266,10 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_CharacterControls_Ability = m_CharacterControls.FindAction("Ability", throwIfNotFound: true);
         m_CharacterControls_Ultimate = m_CharacterControls.FindAction("Ultimate", throwIfNotFound: true);
         m_CharacterControls_SwitchCharacter = m_CharacterControls.FindAction("SwitchCharacter", throwIfNotFound: true);
+        // InventoryControls
+        m_InventoryControls = asset.FindActionMap("InventoryControls", throwIfNotFound: true);
+        m_InventoryControls_OpenClose = m_InventoryControls.FindAction("OpenClose", throwIfNotFound: true);
+        m_InventoryControls_MouseInteract = m_InventoryControls.FindAction("MouseInteract", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -338,6 +390,47 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         }
     }
     public CharacterControlsActions @CharacterControls => new CharacterControlsActions(this);
+
+    // InventoryControls
+    private readonly InputActionMap m_InventoryControls;
+    private IInventoryControlsActions m_InventoryControlsActionsCallbackInterface;
+    private readonly InputAction m_InventoryControls_OpenClose;
+    private readonly InputAction m_InventoryControls_MouseInteract;
+    public struct InventoryControlsActions
+    {
+        private @PlayerInput m_Wrapper;
+        public InventoryControlsActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @OpenClose => m_Wrapper.m_InventoryControls_OpenClose;
+        public InputAction @MouseInteract => m_Wrapper.m_InventoryControls_MouseInteract;
+        public InputActionMap Get() { return m_Wrapper.m_InventoryControls; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(InventoryControlsActions set) { return set.Get(); }
+        public void SetCallbacks(IInventoryControlsActions instance)
+        {
+            if (m_Wrapper.m_InventoryControlsActionsCallbackInterface != null)
+            {
+                @OpenClose.started -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnOpenClose;
+                @OpenClose.performed -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnOpenClose;
+                @OpenClose.canceled -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnOpenClose;
+                @MouseInteract.started -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnMouseInteract;
+                @MouseInteract.performed -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnMouseInteract;
+                @MouseInteract.canceled -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnMouseInteract;
+            }
+            m_Wrapper.m_InventoryControlsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @OpenClose.started += instance.OnOpenClose;
+                @OpenClose.performed += instance.OnOpenClose;
+                @OpenClose.canceled += instance.OnOpenClose;
+                @MouseInteract.started += instance.OnMouseInteract;
+                @MouseInteract.performed += instance.OnMouseInteract;
+                @MouseInteract.canceled += instance.OnMouseInteract;
+            }
+        }
+    }
+    public InventoryControlsActions @InventoryControls => new InventoryControlsActions(this);
     public interface ICharacterControlsActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -345,5 +438,10 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnAbility(InputAction.CallbackContext context);
         void OnUltimate(InputAction.CallbackContext context);
         void OnSwitchCharacter(InputAction.CallbackContext context);
+    }
+    public interface IInventoryControlsActions
+    {
+        void OnOpenClose(InputAction.CallbackContext context);
+        void OnMouseInteract(InputAction.CallbackContext context);
     }
 }

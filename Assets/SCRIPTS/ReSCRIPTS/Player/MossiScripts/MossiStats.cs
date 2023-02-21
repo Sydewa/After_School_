@@ -18,6 +18,9 @@ public class MossiStats : MonoBehaviour
     public float AttackRadius;
     public LayerMask EnemyLayer;
 
+    [Header ("Ability")]
+    public float StunnedTime;
+
     public Ability basicAbility;
     public Ability ultimateAbility;
 }

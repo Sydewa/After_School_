@@ -57,7 +57,7 @@ public class MossiStateManager : MonoBehaviour, IStateManager
 
         //Variables de ability
         bool isAbilityPressed;
-        public float StunnedTime;
+        public float StunnedTime { get { return mossiStats.StunnedTime; } set { mossiStats.StunnedTime = value; } }
 
         //Variables de la ultimate
         bool isUltimatePressed;

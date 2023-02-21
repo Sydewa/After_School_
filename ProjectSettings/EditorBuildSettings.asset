@@ -6,9 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Unity_Trash_URP/Scenes/Escenas_Prueba/SampleScene.unity
+    path: Assets/Unity_Trash_URP/Scenes/MenuPrincipal.unity
+    guid: 8eccdf0bd9de6ac4d97bf52f29b5e4fc
+  - enabled: 1
+    path: Assets/Unity_Trash_URP/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 0
-    path: Assets/Unity_Trash_URP/Scenes/Escenas_Prueba/GreyBox.unity
-    guid: 22e7e569e39c0c545a69767d7a266894
   m_configObjects: {}

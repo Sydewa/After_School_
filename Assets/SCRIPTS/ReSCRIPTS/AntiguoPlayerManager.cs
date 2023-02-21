@@ -19,7 +19,7 @@ public class AntiguoPlayerManager : MonoBehaviour
     public static int mossiVida;
 
     int characterOrder;
-    public HUD_Controller hud_Controller;
+    //public HUD_Controller hud_Controller;
 
     //Character Swap variables
     [SerializeField]public static float charSwapTime = 2f;
@@ -27,7 +27,7 @@ public class AntiguoPlayerManager : MonoBehaviour
 
     void Awake() 
     {
-        hud_Controller = GameObject.Find("HealthBars").GetComponent<HUD_Controller>();    
+        //hud_Controller = GameObject.Find("HealthBars").GetComponent<HUD_Controller>();    
     }
     void Start()
     {
@@ -140,7 +140,7 @@ public class AntiguoPlayerManager : MonoBehaviour
         activeCharacter = characters[i];
         activeCharacter.name = characters[i].name.ToString();
 
-        hud_Controller.ChangeActiveCharacter(i);
+        //hud_Controller.ChangeActiveCharacter(i);
         StartCoroutine(CharSwapCD());
         CharChange_CoolDown._charChange_CoolDown.StartCoroutine("StartTimer");
     }
