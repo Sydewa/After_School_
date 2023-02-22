@@ -16,20 +16,6 @@ public class MossiAnimationEvents : MonoBehaviour
         //elapsedTime = 0f;
         StartCoroutine(RootsCoroutine());
     }
-    
-    /*IEnumerator RootsCoroutine()
-    {
-        GameObject clone = Instantiate(rootsPrefab, spawnPosition.position, Quaternion.Euler(0f, transform.eulerAngles.y, 0f), null);
-        float x = clone.transform.localPosition.x;
-        while(elapsedTime < rootsVelocity)
-        {
-            elapsedTime += Time.deltaTime;
-            
-            clone.transform.localPosition = new Vector3(rootsAnimation.Evaluate(elapsedTime), 0f, 0f);
-            yield return null;
-        }
-        Destroy(clone);
-    }*/
 
     IEnumerator RootsCoroutine()
     {
