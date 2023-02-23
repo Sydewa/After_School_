@@ -27,6 +27,8 @@ public class MossiStateManager : MonoBehaviour, IStateManager
     public int Power { get { return mossiStats.Power; } set { mossiStats.Power = value; } }
     public float AttackSpeed { get { return mossiStats.AttackSpeed; } set { mossiStats.AttackSpeed = value; } }
 
+    public bool isDead { get; set; }
+
     //Habilidades
     public Ability basicAbility { get { return mossiStats.basicAbility; } }
     public Ability ultimateAbility { get { return mossiStats.ultimateAbility; } }
@@ -38,6 +40,7 @@ public class MossiStateManager : MonoBehaviour, IStateManager
     public MossiAbilityState AbilityState = new MossiAbilityState();
     public MossiUltimateState UltimateState = new MossiUltimateState();
     public MossiAttackDashState AttackDashState = new MossiAttackDashState();
+    public DyingState DyingState = new DyingState();
 
     //Variables temporales de input
     public Vector2 CurrentMovementInput { get; set; }
@@ -86,6 +89,7 @@ public class MossiStateManager : MonoBehaviour, IStateManager
 
         //Otras variables que por si acaso ponemos en el awake
         CurrentHealth = Health;
+        isDead = false;
 
         // enable controls and set player inputs
         EnableControls();
@@ -137,11 +141,6 @@ public class MossiStateManager : MonoBehaviour, IStateManager
 
     void Update()
     {
-        //Comprobamos que no este muerto
-        if(CurrentHealth <= 0)
-        {
-            //Cambiar a estado muerto
-        }
         // Anyadimos la state machine que nos cambiará de estado
         StateMachine();
 

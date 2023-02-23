@@ -28,6 +28,8 @@ public class AntiaStateManager : MonoBehaviour, IStateManager
     public int Power { get { return antiaStats.Power; } set { antiaStats.Power = value; } }
     public float AttackSpeed { get { return antiaStats.AttackSpeed; } set { antiaStats.AttackSpeed = value; } }
 
+    public bool isDead { get; set; }
+
     //Habilidades
     public Ability basicAbility { get { return antiaStats.basicAbility; } }
     public Ability ultimateAbility { get { return antiaStats.ultimateAbility; } }
@@ -39,6 +41,7 @@ public class AntiaStateManager : MonoBehaviour, IStateManager
     public AntiaAbilityState AbilityState = new AntiaAbilityState();
     public AntiaUltimateState UltimateState = new AntiaUltimateState();
     public AntiaReloadState ReloadState = new AntiaReloadState();
+    public DyingState DyingState = new DyingState();
 
     //Variables temporales de input
     public Vector2 CurrentMovementInput { get; set; }
@@ -88,6 +91,7 @@ public class AntiaStateManager : MonoBehaviour, IStateManager
         //Otras variables que por si acaso ponemos en el awake
         currentWaterAmount = maxWaterAmount;
         CurrentHealth = Health;
+        isDead = false;
         // enable controls and set player inputs
         EnableControls();
         PlayerInput.CharacterControls.Move.started += onMovementInput;
@@ -137,11 +141,6 @@ public class AntiaStateManager : MonoBehaviour, IStateManager
 
     void Update()
     {
-        //Comprobamos que no este muerto
-        if(CurrentHealth <= 0)
-        {
-            //Cambiar a estado muerto
-        }
         // Anyadimos la state machine que nos cambiará de estado
         StateMachine();
 

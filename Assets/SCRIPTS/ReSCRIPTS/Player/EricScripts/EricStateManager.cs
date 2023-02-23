@@ -26,6 +26,8 @@ public class EricStateManager : MonoBehaviour, IStateManager
     public int Power { get { return ericStats.Power; } set { ericStats.Power = value; } }
     public float AttackSpeed { get { return ericStats.AttackSpeed; } set { ericStats.AttackSpeed = value; } }
 
+    public bool isDead { get; set; }
+
     //Habilidades
     public Ability basicAbility { get { return ericStats.basicAbility; } }
     public Ability ultimateAbility { get { return ericStats.ultimateAbility; } }
@@ -36,6 +38,7 @@ public class EricStateManager : MonoBehaviour, IStateManager
     public EricAttackState AttackState = new EricAttackState();
     public EricAbilityState AbilityState = new EricAbilityState();
     public EricUltimateState UltimateState = new EricUltimateState();
+    public DyingState DyingState = new DyingState();
 
     //Variables temporales de input
     public Vector2 CurrentMovementInput { get; set; }
@@ -75,6 +78,7 @@ public class EricStateManager : MonoBehaviour, IStateManager
 
         //Otras variables que por si acaso ponemos en el awake
         CurrentHealth = Health;
+        isDead = false;
 
         // enable controls and set player inputs
         EnableControls();
@@ -125,11 +129,6 @@ public class EricStateManager : MonoBehaviour, IStateManager
 
     void Update()
     {
-        //Comprobamos que no este muerto
-        if(CurrentHealth <= 0)
-        {
-            //Cambiar a estado muerto
-        }
         // Anyadimos la state machine que nos cambiará de estado
         StateMachine();
 
@@ -211,6 +210,9 @@ public class EricStateManager : MonoBehaviour, IStateManager
             case "EricUltimateState":
                 Debug.Log("Ultimate");
                 ultimateAbility.PutOnCooldown();
+            break;
+
+            case "DyingState":
             break;
 
             default:

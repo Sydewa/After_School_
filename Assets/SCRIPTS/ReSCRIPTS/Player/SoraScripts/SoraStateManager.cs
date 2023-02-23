@@ -27,6 +27,8 @@ public class SoraStateManager : MonoBehaviour, IStateManager
     public int Power { get { return soraStats.Power; } set { soraStats.Power = value; } }
     public float AttackSpeed { get { return soraStats.AttackSpeed; } set { soraStats.AttackSpeed = value; } }
 
+    public bool isDead { get; set; }
+
     //Habilidades
     public Ability basicAbility { get { return soraStats.basicAbility; } }
     public Ability ultimateAbility { get { return soraStats.ultimateAbility; } }
@@ -37,6 +39,7 @@ public class SoraStateManager : MonoBehaviour, IStateManager
     public SoraAttackState AttackState = new SoraAttackState();
     public SoraAbilityState AbilityState = new SoraAbilityState();
     public SoraUltimateState UltimateState = new SoraUltimateState();
+    public DyingState DyingState = new DyingState();
 
     //Variables temporales de input
     public Vector2 CurrentMovementInput { get; set; }
@@ -82,6 +85,7 @@ public class SoraStateManager : MonoBehaviour, IStateManager
 
         //Otras variables que por si acaso ponemos en el awake
         CurrentHealth = Health;
+        isDead = false;
 
         // enable controls and set player inputs
         EnableControls();
@@ -132,11 +136,6 @@ public class SoraStateManager : MonoBehaviour, IStateManager
 
     void Update()
     {
-        //Comprobamos que no este muerto
-        if(CurrentHealth <= 0)
-        {
-            //Cambiar a estado muerto
-        }
         // Anyadimos la state machine que nos cambiará de estado
         StateMachine();
 

@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerManager : MonoBehaviour
 {
-    //public static PlayerManager Instance;
+    public static PlayerManager Instance;
 
     //Variables importantes
     PlayerInput PlayerInput;
@@ -25,7 +25,7 @@ public class PlayerManager : MonoBehaviour
 
     void Awake() 
     {
-        /*
+        
 #region Singelton
         if(Instance == null)
         {
@@ -37,7 +37,7 @@ public class PlayerManager : MonoBehaviour
         }
         DontDestroyOnLoad(this);
 #endregion
-        */
+        
         //hud_Controller = GameObject.Find("HealthBars").GetComponent<HUD_Controller>();
         PlayerInput = new PlayerInput();
         OnEnable();
@@ -104,7 +104,7 @@ public class PlayerManager : MonoBehaviour
         switch (buttonName)
         {
             case "1":
-                if(EricStateManager.Instance.CurrentHealth <= 0)
+                if(EricStateManager.Instance.isDead)
                 {
                     return;
                 }
@@ -112,7 +112,7 @@ public class PlayerManager : MonoBehaviour
                 CharacterSwap(characterOrder);
             break;
             case "2":
-                if(AntiaStateManager.Instance.CurrentHealth <= 0)
+                if(AntiaStateManager.Instance.isDead)
                 {
                     return;
                 }
@@ -120,7 +120,7 @@ public class PlayerManager : MonoBehaviour
                 CharacterSwap(characterOrder);
             break;
             case "3":
-                if(SoraStateManager.Instance.CurrentHealth <= 0)
+                if(SoraStateManager.Instance.isDead)
                 {
                     return;
                 }
@@ -128,7 +128,7 @@ public class PlayerManager : MonoBehaviour
                 CharacterSwap(characterOrder);
             break;
             case "4":
-                if(MossiStateManager.Instance.CurrentHealth <= 0)
+                if(MossiStateManager.Instance.isDead)
                 {
                     return;
                 }
@@ -165,6 +165,15 @@ public class PlayerManager : MonoBehaviour
         HUDManager.Instance.ChangeActiveCharacter(i);
         StartCoroutine(CharSwapCD());
         //CharChange_CoolDown._charChange_CoolDown.StartCoroutine("StartTimer");
+    }
+
+    public void ForceCharacterSwap()
+    {
+        int nextCharacterIndex = characterOrder;
+        do {
+            nextCharacterIndex = (nextCharacterIndex + 1) % characters.Length;
+        } while (characters[nextCharacterIndex].GetComponent<IStateManager>().isDead == true);
+        CharacterSwap(nextCharacterIndex);
     }
 
 }

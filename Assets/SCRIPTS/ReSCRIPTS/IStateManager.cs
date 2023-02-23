@@ -19,6 +19,8 @@ public interface IStateManager
     int Power { get; set; }
     float AttackSpeed { get; set; }
 
+    bool isDead { get; set; }
+
     //Habilidades
     Ability basicAbility { get; }
     Ability ultimateAbility { get;}
