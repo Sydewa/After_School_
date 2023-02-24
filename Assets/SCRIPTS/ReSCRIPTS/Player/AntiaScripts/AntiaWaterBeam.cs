@@ -89,6 +89,7 @@ public class AntiaWaterBeam : MonoBehaviour
         elapsedTime += Time.deltaTime;
         if(elapsedTime >= dmgIntervalTime)
         {
+            AntiaStateManager.Instance.currentWaterAmount --;
             Debug.Log("Dmg enemy");
             CheckCollidersInRadius();
             elapsedTime = 0f;
