@@ -21,6 +21,7 @@ public class MossiStats : MonoBehaviour
     [Header ("Ability")]
     public float StunnedTime;
 
+
     public Ability basicAbility;
     public Ability ultimateAbility;
 }

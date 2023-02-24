@@ -53,6 +53,7 @@ public class AntiaStateManager : MonoBehaviour, IStateManager
         public int maxWaterAmount;
         public int currentWaterAmount;
         public AntiaAmunitionManager amunitionManager;
+        public AntiaWaterBeam waterBeam;
         public bool isReloading;
 
         //Variables de ability
@@ -87,6 +88,7 @@ public class AntiaStateManager : MonoBehaviour, IStateManager
         CharacterController = GetComponent<CharacterController>();
         PlayerInput = new PlayerInput();
         amunitionManager = GetComponentInParent<AntiaAmunitionManager>();
+        waterBeam = GetComponentInChildren<AntiaWaterBeam>();
 
         //Otras variables que por si acaso ponemos en el awake
         currentWaterAmount = maxWaterAmount;

@@ -30,10 +30,10 @@ public class InventoryManager : MonoBehaviour
         {
             if (isInventoryOpen)
             {
-                PlayerInput.CharacterControls.Enable();
                 isInventoryOpen = false;
                 Time.timeScale = 1f;
                 CloseInventory();
+                PlayerInput.CharacterControls.Enable();
             }
             else
             {

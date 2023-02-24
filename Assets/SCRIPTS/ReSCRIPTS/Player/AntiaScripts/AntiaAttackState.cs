@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class AntiaAttackState : BaseState
 {
-
     public override void EnterState(IStateManager character)
     {
-        
+        AntiaStateManager.Instance.waterBeam.StartLaser();
     }
     
     public override void UpdateState(IStateManager character)
@@ -27,13 +27,11 @@ public class AntiaAttackState : BaseState
 
         //Moverse mientras dispara
         character.CharacterController.Move(character.CurrentMovement.normalized * character.Speed/5f * Time.deltaTime);
-
-        //Disparar
-        AntiaStateManager.Instance.amunitionManager.SpawnBullet();
+        AntiaStateManager.Instance.waterBeam.UpdateLaser();
     }
 
     public override void ExitState(IStateManager character)
     {
-        
+        AntiaStateManager.Instance.waterBeam.ExitLaser();
     }
 }
