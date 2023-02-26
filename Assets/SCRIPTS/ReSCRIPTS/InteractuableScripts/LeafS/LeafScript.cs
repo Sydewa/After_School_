@@ -9,7 +9,20 @@ public class LeafScript : MonoBehaviour
 
     //States
     public FallingLeafState FallingLeafState = new FallingLeafState();
-    
+    public LeafOnGround LeafOnGround = new LeafOnGround();
+    public LeafPushedState LeafPushedState = new LeafPushedState();
+    public LeafBurningState LeafBurningState = new LeafBurningState();
+
+    public float maxTimeOnGround;
+    float elapsedTimeOnGround = 0f;
+    public AnimationCurve onGroundCurve;
+
+    [Header ("Pushed variables")]
+    public float pushForce;
+    public Vector3 direction;
+    public float maxTimePushed;
+
+    Vector3 boxSize = new Vector3(1f, 10f, 1f);
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -23,6 +36,7 @@ public class LeafScript : MonoBehaviour
 
     void Update()
     {
+        StateMachine();
         currentState.UpdateState(this.gameObject);
     }
 
@@ -31,6 +45,24 @@ public class LeafScript : MonoBehaviour
         switch (currentState.GetType().Name)
         {
             case "FallingLeafState":
+            break;
+
+            case "LeafOnGround":
+                elapsedTimeOnGround += Time.deltaTime;
+                float leafSize = transform.localScale.x;
+                float currentScale = onGroundCurve.Evaluate(elapsedTimeOnGround/maxTimeOnGround);
+                transform.localScale = new Vector3(currentScale, leafSize, currentScale);
+                if(elapsedTimeOnGround >= maxTimeOnGround)
+                {
+                    Debug.Log("LeafDestroyed");
+                    Destroy(this.gameObject);
+                }
+            break;
+
+            case "LeafPushedState":
+            break;
+
+            case "LeafBurningState":
             break;
 
             default:
@@ -50,4 +82,16 @@ public class LeafScript : MonoBehaviour
         currentState.ExitState(this.gameObject);
     }
 
+    public void OnLeafPushed(Vector3 directionForce)
+    {
+        direction = directionForce;
+        SwitchState(LeafPushedState);
+    }
+
+    private void OnDrawGizmos() 
+    {
+        
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(transform.position, boxSize);    
+    }
 }
