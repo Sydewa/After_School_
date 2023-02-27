@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "New Ability", menuName = "Ability")]
 public class Ability : ScriptableObject
@@ -9,10 +10,17 @@ public class Ability : ScriptableObject
     
     public float maxCooldown;
     public float currentCooldown = 0f;
+    public Sprite Sprite;
+
+    public event System.Action CooldownStarted;
 
     public void PutOnCooldown()
     {
         CoolDownManager.Instance.StartCooldown(this);
+        if (CooldownStarted != null)
+        {
+            CooldownStarted();
+        }
     }
 
     //Reseteamos la variable para que cada vez que reiniciemos el juego los cooldowns esten reiniciados
@@ -26,7 +34,4 @@ public class Ability : ScriptableObject
     {
         return currentCooldown <= 0f;
     }
-
-    //Hacer en un futuro la funcion para que se muestre el cool down en el HUD
-    //Calculo para mostrar en el cooldown (1f - currentCooldown/maxCooldown)
 }

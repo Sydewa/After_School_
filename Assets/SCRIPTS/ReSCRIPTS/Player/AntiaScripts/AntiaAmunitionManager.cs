@@ -1,17 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AntiaAmunitionManager : MonoBehaviour
 {
     [Header ("Reload")]
     public float reloadInterval;
+    [SerializeField]public static Image mask;
 
 
     public void Reload()
     {
         AntiaStateManager.Instance.isReloading = true;
         StartCoroutine(ReloadCoroutine());
+    }
+
+    public static void UpdateWaterHUD()
+    {
+        var fillAmount = AntiaStateManager.Instance.currentWaterAmount / AntiaStateManager.Instance.maxWaterAmount;
+        mask.fillAmount = fillAmount;
     }
 
     IEnumerator ReloadCoroutine()

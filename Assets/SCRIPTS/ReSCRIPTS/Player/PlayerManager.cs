@@ -15,9 +15,8 @@ public class PlayerManager : MonoBehaviour
     //Stats personajes
 
     //Variables de input
-    int characterOrder;
+    public int characterOrder;
     string buttonName;
-    //public HUD_Controller hud_Controller;
 
     //Character Swap variables
     [SerializeField]public static float charSwapTime = 2f;
@@ -37,15 +36,17 @@ public class PlayerManager : MonoBehaviour
         }
         DontDestroyOnLoad(this);
 #endregion
-        
-        //hud_Controller = GameObject.Find("HealthBars").GetComponent<HUD_Controller>();
         PlayerInput = new PlayerInput();
         OnEnable();
-        Reset();
 
         //Setea los player inputs
         PlayerInput.CharacterControls.SwitchCharacter.started += onCharacterSwitchInput;
         PlayerInput.CharacterControls.SwitchCharacter.canceled += onCharacterSwitchInput;  
+    }
+
+    void Start()
+    {
+        Reset();
     }
 
 #region "Input functions"
@@ -95,7 +96,6 @@ public class PlayerManager : MonoBehaviour
         {
             SwitchCharacter();
         }
-        //Debug.Log(buttonName);
     }
     
     void SwitchCharacter()
@@ -164,7 +164,7 @@ public class PlayerManager : MonoBehaviour
 
         HUDManager.Instance.ChangeActiveCharacter(i);
         StartCoroutine(CharSwapCD());
-        //CharChange_CoolDown._charChange_CoolDown.StartCoroutine("StartTimer");
+        CharChange_CoolDown._charChange_CoolDown.StartCoroutine("StartTimer");
     }
 
     public void ForceCharacterSwap()

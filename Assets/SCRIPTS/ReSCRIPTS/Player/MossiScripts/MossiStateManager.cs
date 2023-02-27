@@ -71,6 +71,7 @@ public class MossiStateManager : MonoBehaviour, IStateManager
 
     void Awake() 
     {
+        Debug.Log("Mossi awake");
 #region Singelton
         if(Instance == null)
         {

@@ -53,8 +53,8 @@ public class LeafPushedState : LeafBaseState
                 EnemyDamaged _enemyDamaged = enemyCollider.GetComponent<EnemyDamaged>();
                 if(_enemyDamaged != null)
                 {
-                    _enemyDamaged.OnEnemyDamaged(Mathf.CeilToInt((SoraStateManager.Instance.Attack + SoraStateManager.Instance.Power) * leaf.transform.localScale.magnitude * 15f));
-                    Debug.Log(Mathf.CeilToInt((SoraStateManager.Instance.Attack + SoraStateManager.Instance.Power) * leaf.transform.localScale.magnitude * 15f));
+                    _enemyDamaged.OnEnemyDamaged(Mathf.CeilToInt(SoraStateManager.Instance.Attack + SoraStateManager.Instance.Power));
+                    Debug.Log(Mathf.CeilToInt((SoraStateManager.Instance.Attack + SoraStateManager.Instance.Power)));
                 }
             }
         }
