@@ -7,8 +7,12 @@ public class AntiaAmunitionManager : MonoBehaviour
 {
     [Header ("Reload")]
     public float reloadInterval;
-    [SerializeField]public static Image mask;
+    [SerializeField]Image mask;
 
+    void Start()
+    {
+        UpdateWaterHUD();
+    }
 
     public void Reload()
     {
@@ -16,9 +20,9 @@ public class AntiaAmunitionManager : MonoBehaviour
         StartCoroutine(ReloadCoroutine());
     }
 
-    public static void UpdateWaterHUD()
+    public void UpdateWaterHUD()
     {
-        var fillAmount = AntiaStateManager.Instance.currentWaterAmount / AntiaStateManager.Instance.maxWaterAmount;
+        var fillAmount = (float)AntiaStateManager.Instance.currentWaterAmount / (float)AntiaStateManager.Instance.maxWaterAmount;
         mask.fillAmount = fillAmount;
     }
 
@@ -31,6 +35,7 @@ public class AntiaAmunitionManager : MonoBehaviour
         {
             yield return new WaitForSeconds(reloadInterval);
             AntiaStateManager.Instance.currentWaterAmount ++/*= Mathf.Min(AntiaStateManager.Instance.currentWaterAmount + (int)increment, AntiaStateManager.Instance.maxWaterAmount)*/;
+            UpdateWaterHUD();
         }
 
         AntiaStateManager.Instance.isReloading = false;

@@ -71,7 +71,6 @@ public class MossiStateManager : MonoBehaviour, IStateManager
 
     void Awake() 
     {
-        Debug.Log("Mossi awake");
 #region Singelton
         if(Instance == null)
         {
@@ -218,6 +217,7 @@ public class MossiStateManager : MonoBehaviour, IStateManager
             case "MossiUltimateState":
                 Debug.Log("Ultimate");
                 ultimateAbility.PutOnCooldown();
+                GoIdle();
             break;
 
             default:

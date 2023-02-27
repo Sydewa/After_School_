@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f5f8dce75f53354aba18ef616d818ea, type: 3}
   m_Name: AntiaUltimateAbility
   m_EditorClassIdentifier: 
-  maxCooldown: 20
+  maxCooldown: 4
   currentCooldown: 0
+  Sprite: {fileID: 0}

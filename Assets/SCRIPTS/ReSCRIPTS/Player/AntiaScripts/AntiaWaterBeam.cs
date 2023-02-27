@@ -43,6 +43,7 @@ public class AntiaWaterBeam : MonoBehaviour
     {
         StartCoroutine(ExitLaserCoroutine());
     }
+
     public IEnumerator StartLaserCoroutine()
     {
         lineRenderer.enabled = true;
@@ -90,6 +91,7 @@ public class AntiaWaterBeam : MonoBehaviour
         if(elapsedTime >= dmgIntervalTime)
         {
             AntiaStateManager.Instance.currentWaterAmount --;
+            AntiaStateManager.Instance.amunitionManager.UpdateWaterHUD();
             Debug.Log("Dmg enemy");
             CheckCollidersInRadius();
             elapsedTime = 0f;

@@ -73,7 +73,7 @@ public class EnemyDamaged : MonoBehaviour
         while(elapsedTime < 0.5f)
         {
             elapsedTime += Time.deltaTime;
-            currentSpeed = currentSpeed/3f;
+            agent.speed = currentSpeed/3f * _stats.SlowResistance;
             yield return null;
         }
         elapsedTime = 0f;

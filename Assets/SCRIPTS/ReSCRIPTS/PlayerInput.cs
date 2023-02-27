@@ -71,6 +71,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""6b25a1f7-2da8-4eb1-9379-a729db2a0044"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -205,6 +214,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""SwitchCharacter"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""59ea64a5-5673-4de7-81ce-0c0183768979"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -266,6 +286,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_CharacterControls_Ability = m_CharacterControls.FindAction("Ability", throwIfNotFound: true);
         m_CharacterControls_Ultimate = m_CharacterControls.FindAction("Ultimate", throwIfNotFound: true);
         m_CharacterControls_SwitchCharacter = m_CharacterControls.FindAction("SwitchCharacter", throwIfNotFound: true);
+        m_CharacterControls_Interact = m_CharacterControls.FindAction("Interact", throwIfNotFound: true);
         // InventoryControls
         m_InventoryControls = asset.FindActionMap("InventoryControls", throwIfNotFound: true);
         m_InventoryControls_OpenClose = m_InventoryControls.FindAction("OpenClose", throwIfNotFound: true);
@@ -334,6 +355,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterControls_Ability;
     private readonly InputAction m_CharacterControls_Ultimate;
     private readonly InputAction m_CharacterControls_SwitchCharacter;
+    private readonly InputAction m_CharacterControls_Interact;
     public struct CharacterControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -343,6 +365,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Ability => m_Wrapper.m_CharacterControls_Ability;
         public InputAction @Ultimate => m_Wrapper.m_CharacterControls_Ultimate;
         public InputAction @SwitchCharacter => m_Wrapper.m_CharacterControls_SwitchCharacter;
+        public InputAction @Interact => m_Wrapper.m_CharacterControls_Interact;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -367,6 +390,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @SwitchCharacter.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnSwitchCharacter;
                 @SwitchCharacter.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnSwitchCharacter;
                 @SwitchCharacter.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnSwitchCharacter;
+                @Interact.started -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_CharacterControlsActionsCallbackInterface.OnInteract;
             }
             m_Wrapper.m_CharacterControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -386,6 +412,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @SwitchCharacter.started += instance.OnSwitchCharacter;
                 @SwitchCharacter.performed += instance.OnSwitchCharacter;
                 @SwitchCharacter.canceled += instance.OnSwitchCharacter;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
             }
         }
     }
@@ -438,6 +467,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnAbility(InputAction.CallbackContext context);
         void OnUltimate(InputAction.CallbackContext context);
         void OnSwitchCharacter(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
     }
     public interface IInventoryControlsActions
     {

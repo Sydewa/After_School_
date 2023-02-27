@@ -227,6 +227,7 @@ public class AntiaStateManager : MonoBehaviour, IStateManager
             case "AntiaUltimateState":
                 Debug.Log("Ultimate");
                 ultimateAbility.PutOnCooldown();
+                GoIdle();
             break;
             /*
             case "AntiaReloadState":

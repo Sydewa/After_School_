@@ -214,6 +214,7 @@ public class SoraStateManager : MonoBehaviour, IStateManager
             case "SoraUltimateState":
                 Debug.Log("Ultimate");
                 ultimateAbility.PutOnCooldown();
+                GoIdle();
             break;
 
             default:

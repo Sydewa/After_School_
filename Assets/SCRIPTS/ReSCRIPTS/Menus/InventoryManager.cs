@@ -56,18 +56,6 @@ public class InventoryManager : MonoBehaviour
     }
 #endregion
 
-    void AlternateInventory()
-    {
-        if(isInventoryOpen)
-        {
-            OpenInventory();
-        }
-        else
-        {
-            CloseInventory();
-        }
-    }
-
     void OpenInventory()
     {
         Inventory.SetActive(true);
