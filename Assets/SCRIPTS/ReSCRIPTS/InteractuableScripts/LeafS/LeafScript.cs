@@ -22,6 +22,9 @@ public class LeafScript : MonoBehaviour
     public Vector3 direction;
     public float maxTimePushed;
 
+    [Header ("Burning variables")]
+    bool isBurning = false;
+
     Vector3 boxSize = new Vector3(1f, 10f, 1f);
     void Awake()
     {
@@ -84,8 +87,21 @@ public class LeafScript : MonoBehaviour
 
     public void OnLeafPushed(Vector3 directionForce)
     {
-        direction = directionForce;
-        SwitchState(LeafPushedState);
+        if(isBurning)
+        {
+            return;
+        }
+        else
+        {
+            direction = directionForce;
+            SwitchState(LeafPushedState);   
+        }
+    }
+
+    public void OnLeafBurned()
+    {
+        isBurning = true;
+        SwitchState(LeafBurningState);
     }
 
     private void OnDrawGizmos() 

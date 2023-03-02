@@ -29,7 +29,7 @@ public class LeafPushedState : LeafBaseState
         direction = leaf.GetComponent<LeafScript>().direction;
         maxTimePushed = leaf.GetComponent<LeafScript>().maxTimePushed;
 
-        rb.AddForce(new Vector3(0f, 1f, 0f) * 10f, ForceMode.Impulse);
+        rb.AddForce(new Vector3(0f, 1f, 0f) * 8f, ForceMode.Impulse);
     }
 
     public override void UpdateState(GameObject leaf)
